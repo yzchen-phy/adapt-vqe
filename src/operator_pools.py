@@ -82,7 +82,7 @@ class spin_complement_GSD(OperatorPool):
         0a,0b,1a,1b,2a,2b,3a,3b,....  -> 0,1,2,3,...
         """
         
-        print(" Form singlet GSD operators")
+        print(" Form spin-complemented GSD operators")
         
         self.fermi_ops = []
         for p in range(0,self.n_orb):
@@ -152,8 +152,8 @@ class spin_complement_GSD(OperatorPool):
                         if termB.many_body_order() > 0:
                             self.fermi_ops.append(termB)
 
-                        #if termC.many_body_order() > 0:
-                        #    self.fermi_ops.append(termC)
+                        if termC.many_body_order() > 0:
+                            self.fermi_ops.append(termC)
 
         self.n_ops = len(self.fermi_ops)
         print(" Number of operators: ", self.n_ops)
