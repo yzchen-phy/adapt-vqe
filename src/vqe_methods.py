@@ -550,4 +550,5 @@ if __name__== "__main__":
     #vqe_methods.ucc(geometry,pool = operator_pools.singlet_SD())
     #vqe_methods.adapt_vqe(geometry,pool = operator_pools.singlet_SD())
     #vqe_methods.adapt_vqe(geometry,pool = operator_pools.hamiltonian(), adapt_thresh=1e-7, theta_thresh=1e-8)
-    vqe_methods.adapt_vqe(geometry,pool = operator_pools.singlet_GSD(), adapt_thresh=1e-3)
+    #vqe_methods.adapt_vqe(geometry,pool = operator_pools.singlet_GSD(), adapt_thresh=1e-3)
+    vqe_methods.adapt_vqe(geometry,pool = operator_pools.spin_complement_GSD(), adapt_thresh=1e-1)
