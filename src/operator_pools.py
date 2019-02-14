@@ -45,6 +45,36 @@ class OperatorPool:
         assert(len(self.spmat_ops) == self.n_ops)
         return
 
+    def get_string_for_term(self,op):
+
+        opstring = ""
+        spins = ""
+        for t in op.terms:
+       
+            
+            opstring = "("
+            for ti in t:
+                opstring += str(int(ti[0]/2))
+                if ti[1] == 0:
+                    opstring += "  "
+                elif ti[1] == 1:
+                    opstring += "' "
+                else:
+                    print("wrong")
+                    exit()
+                spins += str(ti[0]%2)
+
+#            if self.fermi_ops[i].terms[t] > 0:
+#                spins = "+"+spins
+#            if self.fermi_ops[i].terms[t] < 0:
+#                spins = "-"+spins
+            opstring += ")" 
+            spins += " "
+        opstring = " %18s : %s" %(opstring, spins)
+        return opstring
+
+
+
     def compute_gradient_i(self,i,v,sig):
         """
         For a previously optimized state |n>, compute the gradient g(k) of exp(c(k) A(k))|n>
@@ -63,13 +93,11 @@ class OperatorPool:
         gi = gi[0,0]
         assert(np.isclose(gi.imag,0))
         gi = gi.real
-        
-        opstring = ""
-        for t in self.fermi_ops[i].terms:
-            opstring += str(t)
-            break
+       
+        opstring = self.get_string_for_term(self.fermi_ops[i])
+
         if abs(gi) > self.gradient_print_thresh:
-            print(" %4i %40s %12.8f" %(i, opstring, gi) )
+            print(" %4i %12.8f %s" %(i, gi, opstring) )
     
         return gi
    
@@ -128,16 +156,30 @@ class spin_complement_GSD(OperatorPool):
                     
                         if(pq > rs):
                             continue
-
+                        
                         termA =  FermionOperator(((ra,1),(pa,0),(sa,1),(qa,0)))
                         termA += FermionOperator(((rb,1),(pb,0),(sb,1),(qb,0)))
-                                                                      
+                        
                         termB =  FermionOperator(((ra,1),(pa,0),(sb,1),(qb,0)))
                         termB += FermionOperator(((rb,1),(pb,0),(sa,1),(qa,0)))
                         
                         termC =  FermionOperator(((ra,1),(pb,0),(sb,1),(qa,0)))
                         termC += FermionOperator(((rb,1),(pa,0),(sa,1),(qb,0)))
- 
+
+#                        termA =  FermionOperator(((ra,1),(pa,0),(sa,1),(qa,0)))
+#                        termA += FermionOperator(((rb,1),(pb,0),(sb,1),(qb,0)))
+#                                                                      
+#                        termB =  FermionOperator(((ra,1),(pa,0),(sb,1),(qb,0)))
+#                        termB += FermionOperator(((rb,1),(pb,0),(sa,1),(qa,0)))
+#                        
+#                        termC =  FermionOperator(((ra,1),(pb,0),(sb,1),(qa,0)))
+#                        termC += FermionOperator(((rb,1),(pa,0),(sa,1),(qb,0)))
+
+#                        print()
+#                        print(p,q,r,s)
+#                        print(termA)
+#                        print(termB)
+#                        print(termC)
                         termA -= hermitian_conjugated(termA)
                         termB -= hermitian_conjugated(termB)
                         termC -= hermitian_conjugated(termC)

@@ -14,6 +14,7 @@ from tVQE import *
 from openfermion import *
 
 
+
 def adapt_vqe(geometry,
         basis           = "sto-3g",
         multiplicity    = 1,
@@ -123,14 +124,10 @@ def adapt_vqe(geometry,
             print(" Number of operators in ansatz: ", len(ansatz_ops))
             print(" *Finished: %20.12f" % trial_model.curr_energy)
             print(" -----------Final ansatz----------- ")
-            print(" %4s %40s %12s" %("#","Term","Coeff"))
+            print(" %4s %12s %18s" %("#","Coeff","Term"))
             for si in range(len(ansatz_ops)):
-                s = ansatz_ops[si]
-                opstring = ""
-                for t in s.terms:
-                    opstring += str(t)
-                    break
-                print(" %4i %40s %12.8f" %(si, opstring, parameters[si]) )
+                opstring = pool.get_string_for_term(ansatz_ops[si])
+                print(" %4i %12.8f %s" %(si, parameters[si], opstring) )
             break
         
         print(" Add operator %4i" %next_index)
@@ -148,14 +145,10 @@ def adapt_vqe(geometry,
         curr_state = trial_model.prepare_state(parameters)
         print(" Finished: %20.12f" % trial_model.curr_energy)
         print(" -----------New ansatz----------- ")
-        print(" %4s %40s %12s" %("#","Term","Coeff"))
+        print(" %4s %12s %18s" %("#","Coeff","Term"))
         for si in range(len(ansatz_ops)):
-            s = ansatz_ops[si]
-            opstring = ""
-            for t in s.terms:
-                opstring += str(t)
-                break
-            print(" %4i %40s %12.8f" %(si, opstring, parameters[si]) )
+            opstring = pool.get_string_for_term(ansatz_ops[si])
+            print(" %4i %12.8f %s" %(si, parameters[si], opstring) )
 
 # }}}
 
@@ -532,5 +525,5 @@ if __name__== "__main__":
     #vqe_methods.ucc(geometry,pool = operator_pools.singlet_SD())
     #vqe_methods.adapt_vqe(geometry,pool = operator_pools.singlet_SD())
     #vqe_methods.adapt_vqe(geometry,pool = operator_pools.hamiltonian(), adapt_thresh=1e-7, theta_thresh=1e-8)
-    vqe_methods.adapt_vqe(geometry,pool = operator_pools.singlet_GSD(), adapt_thresh=1e-1, adapt_conver='uncertainty')
+    vqe_methods.adapt_vqe(geometry,pool = operator_pools.singlet_SD(), adapt_thresh=1e-1, adapt_conver='uncertainty')
     #vqe_methods.adapt_vqe(geometry,pool = operator_pools.spin_complement_GSD(), adapt_thresh=1e-3)
