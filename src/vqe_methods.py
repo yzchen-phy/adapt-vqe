@@ -82,7 +82,7 @@ def adapt_vqe(geometry,
         
         print(" Check each new operator for coupling")
         next_term = []
-        print(" Measure commutators:")
+        print(" Measure Operator Pool Gradients:")
         sig = hamiltonian.dot(curr_state)
         e_curr = curr_state.T.conj().dot(sig)[0,0]
         var = sig.T.conj().dot(sig)[0,0] - e_curr**2
@@ -90,35 +90,14 @@ def adapt_vqe(geometry,
         assert(np.isclose(var.imag,0))
         print(" Variance:    %12.8f" %var.real)
         print(" Uncertainty: %12.8f" %uncertainty)
-        for op_trial in range(pool.n_ops):
+        for oi in range(pool.n_ops):
             
-            gi = pool.compute_gradient_i(op_trial, curr_state, sig)
+            gi = pool.compute_gradient_i(oi, curr_state, sig)
             
-#            pi = cp.deepcopy(parameters)
-#            oi = cp.deepcopy(ansatz_ops)
-#            mi = cp.deepcopy(ansatz_mat)
-#
-#            pi.insert(0,0)
-#            oi.insert(0,pool.fermi_ops[op_trial])
-#            mi.insert(0,pool.spmat_ops[op_trial])
-#            
-#            model = tUCCSD(hamiltonian, mi, reference_ket, pi)
-#            ee = model.energy(pi)
-#            step = 1e-6
-#            pi[0] = step
-#            ef = model.energy(pi)
-#            
-#            pi[0] = -step
-#            er = model.energy(pi)
-#
-#            #print(" Energies: %12.8f: %12.8f: %12.8f " %(ee, ef, er))
-#            der = (ef - er)/(2*step)
-#            print(" %5i Compare: %12.8f vs %12.8f" %(op_trial, gi, der))
-#            print() 
             curr_norm += gi*gi
             if abs(gi) > abs(next_deriv):
                 next_deriv = gi
-                next_index = op_trial
+                next_index = oi
 
         curr_norm = np.sqrt(curr_norm)
 
@@ -131,6 +110,9 @@ def adapt_vqe(geometry,
         converged = False
         if adapt_conver == "norm":
             if curr_norm < adapt_thresh:
+                converged = True
+        elif adapt_conver == "uncertainty":
+            if uncertainty < adapt_thresh:
                 converged = True
         else:
             print(" FAIL: Convergence criterion not defined")
@@ -550,5 +532,5 @@ if __name__== "__main__":
     #vqe_methods.ucc(geometry,pool = operator_pools.singlet_SD())
     #vqe_methods.adapt_vqe(geometry,pool = operator_pools.singlet_SD())
     #vqe_methods.adapt_vqe(geometry,pool = operator_pools.hamiltonian(), adapt_thresh=1e-7, theta_thresh=1e-8)
-    #vqe_methods.adapt_vqe(geometry,pool = operator_pools.singlet_GSD(), adapt_thresh=1e-3)
-    vqe_methods.adapt_vqe(geometry,pool = operator_pools.spin_complement_GSD(), adapt_thresh=1e-3)
+    vqe_methods.adapt_vqe(geometry,pool = operator_pools.singlet_GSD(), adapt_thresh=1e-3)
+    #vqe_methods.adapt_vqe(geometry,pool = operator_pools.spin_complement_GSD(), adapt_thresh=1e-3)

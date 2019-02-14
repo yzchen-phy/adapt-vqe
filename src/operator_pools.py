@@ -56,7 +56,6 @@ class OperatorPool:
         v   = current_state
         sig = H*v
 
-
         """
         opA = self.spmat_ops[i]
         gi = 2*(sig.transpose().conj().dot(opA.dot(v)))
