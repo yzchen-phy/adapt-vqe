@@ -4,6 +4,7 @@ import openfermionpsi4
 import os
 import numpy as np
 import copy
+<<<<<<< HEAD:OF_VQE.py
 import random
 import logging
 import argparse
@@ -72,7 +73,32 @@ molecule = Harvest_CCSD_Amps(molecule)
 logging.debug('Molecule: '+str(geometry))
 logging.debug('Qubits: '+str(molecule.n_qubits))
 logging.debug('Spin-Orbitals: '+str(molecule.n_orbitals*2))
+=======
+import random 
+
+#Manually initialize state
+basis = 'sto-3g'
+multiplicity = 1
+geometry = [('H', (0,0,1.5)),('H', (0, 0, 3)), ('H', (0,0,4.5)), ('H', (0, 0, 6))]
+geometry = [('H', (0,0,1.5)),('H', (0, 0, 3)), ('H', (0,0,4.5)), ('H', (0, 0, 6)), ('H', (0, 0, 7.5)), ('H', (0, 0, 9))]
+r1 = 1.5
+geometry = [('H', (0,0,1*r1)), ('H', (0,0,2*r1)), ('H', (0,0,3*r1)), ('H', (0,0,4*r1)), ('H', (0,0,5*r1)), ('H', (0,0,6*r1)), ('H', (0,0,7*r1)), ('H', (0,0,8*r1))]
+molecule = openfermion.hamiltonians.MolecularData(geometry, basis, multiplicity)
+molecule = openfermionpsi4.run_psi4(molecule, run_scf = 1, run_mp2=1, run_cisd=1, run_ccsd = 1, run_fci=1, delete_input=0)
+>>>>>>> packaging:save/OF_VQE.py
 n_spinorbitals = int(molecule.n_orbitals*2)
+print('HF energy      %20.16f au' %(molecule.hf_energy))
+print('MP2 energy     %20.16f au' %(molecule.mp2_energy))
+print('CISD energy    %20.16f au' %(molecule.cisd_energy))
+print('CCSD energy    %20.16f au' %(molecule.ccsd_energy))
+print('FCI energy     %20.16f au' %(molecule.fci_energy))
+
+global global_der 
+global global_energy  
+global global_iter  
+global_der = np.array([])
+global_energy = 0.0 
+global_iter = 0 
 
 #Build p-h reference and map it to JW transform
 reference_ket = scipy.sparse.csc_matrix(openfermion.jw_configuration_state(list(range(0,molecule.n_electrons)), molecule.n_qubits)).transpose()
@@ -196,6 +222,7 @@ if args.config == 'ijab':
 if args.config == 'pqrs':
     SQ_CC_ops, parameters = ops_pqrs()
 
+print(" Number of parameters: ", len(parameters))
 #Jordan_Wigners into the Pauli Matrices, then computes their products as sparse matrices.
 JW_CC_ops = []
 for classical_op in SQ_CC_ops:
@@ -323,16 +350,61 @@ SPE based on full, 1st-order Trotter decomposition
 v'=exp(n)exp(n-1)...exp(a)v
 '''
 def Trotter_SPE(parameters):
+    global global_energy  
     new_state = reference_ket
     for k in reversed(range(0, len(parameters))):
         new_state = scipy.sparse.linalg.expm_multiply((parameters[k]*JW_CC_ops[k]), new_state)
     new_bra = new_state.transpose().conj()
     assert(new_bra.dot(new_state).toarray()[0][0]-1<0.0000001)
     energy = new_bra.dot(hamiltonian.dot(new_state))
-    return energy.toarray()[0][0].real
+    global_energy = energy.toarray()[0][0].real
+    assert(global_energy.imag <  1e-14)
+    global_energy = global_energy.real
+    return global_energy 
 
+<<<<<<< HEAD:OF_VQE.py
+=======
+
+                 
+                
+#Numerical trotterized gradient
+def Numerical_Trot_Grad(parameters):
+    global global_der
+    step_size = 1e-6
+    grad = []
+    for k in reversed(range(0, len(parameters))):
+        para = copy.copy(parameters)
+        para[k]+=step_size
+        diff = Trotter_SPE(para)
+        para[k]-=2*step_size
+        diff -= Trotter_SPE(para)
+        grad.append(diff/(step_size*2))
+    global_der = np.asarray(grad)
+    return np.asarray(grad)
+
+def Five_Point_Grad(parameters):
+    grad = []
+    for k in reversed(range(0, len(parameters))):
+        forw = copy.copy(parameters)
+        forw2 = copy.copy(parameters)
+        reve = copy.copy(parameters)
+        reve2 = copy.copy(parameters)
+        forw[k]+=1e-7
+        forw2[k]+=2e-7
+        reve[k]-=1e-7
+        reve2[k]-=2e-7
+        f2 = Trotter_SPE(forw2)
+        f1 = Trotter_SPE(forw)
+        r1 = Trotter_SPE(reve)
+        r2 = Trotter_SPE(reve2)
+        diff = (-f2+8*f1-8*r1+r2)/(1.2e-6)
+        grad.append(diff)
+    return np.asarray(grad)
+
+>>>>>>> packaging:save/OF_VQE.py
 #Analytical trotter gradient
 def Trotter_Gradient(parameters):
+    global global_der 
     grad = []
     new_state = copy.copy(reference_ket)
     for k in reversed(range(0, len(parameters))):
@@ -342,6 +414,7 @@ def Trotter_Gradient(parameters):
     term = 0
     ket = copy.copy(new_state)
     grad = Recurse(parameters, grad, hbra, ket, term)
+    global_der = grad
     return np.asarray(grad)
 
 #Recursive component of analytical trotter gradient
@@ -360,6 +433,7 @@ def Recurse(parameters, grad, hbra, ket, term):
 
 #Callback Function
 def callback(parameters):
+<<<<<<< HEAD:OF_VQE.py
     global iterations
     logging.debug(Trotter_SPE(parameters))
     iterations+= 1
@@ -368,6 +442,28 @@ logging.debug('HF = '+str(molecule.hf_energy))
 logging.debug('CCSD = '+str(molecule.ccsd_energy))
 logging.debug('FCI = '+str(molecule.fci_energy))
 logging.debug('Optimizing:')
+=======
+    global global_der 
+    global global_energy  
+    global global_iter 
+    err = np.sqrt(np.vdot(global_der, global_der))
+    print(" Iter:%4i Current Energy = %20.16f Gradient Norm %10.1e Gradient Max %10.1e" %(global_iter,
+        global_energy, err, np.max(np.abs(global_der))))
+    global_iter += 1
+
+
+#for p in range(len(parameters)):
+#    parameters[p] = (random.random()-.5)*.001
+
+#der_num = Numerical_Trot_Grad(parameters)
+#der_ana = Trotter_Gradient(parameters)
+#print(" Numerical: ")
+#print(der_num)
+#print("\n Analytical: ")
+#print(der_ana)
+#print("\n Error: ")
+#print(np.linalg.norm(der_num-der_ana))
+>>>>>>> packaging:save/OF_VQE.py
 
 global iterations
 iterations = 1
