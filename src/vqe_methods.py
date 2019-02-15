@@ -112,8 +112,9 @@ def adapt_vqe(geometry,
         if adapt_conver == "norm":
             if curr_norm < adapt_thresh:
                 converged = True
-        elif adapt_conver == "uncertainty":
-            if uncertainty < adapt_thresh:
+        elif adapt_conver == "var":
+            if var < adapt_thresh:
+                #variance
                 converged = True
         else:
             print(" FAIL: Convergence criterion not defined")
