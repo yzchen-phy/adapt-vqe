@@ -105,6 +105,73 @@ class OperatorPool:
 class spin_complement_GSD(OperatorPool):
 # {{{
     def generate_SQ_Operators(self):
+        alpha_orbs = [2*i for i in range(self.n_orb)]
+        beta_orbs = [2*i+1 for i in range(self.n_orb)]
+    
+        ops = []
+        #aa
+        for p in alpha_orbs:
+            for q in alpha_orbs:
+                if p>=q:
+                    continue
+                #if abs(hamiltonian_op.one_body_tensor[p,q]) < 1e-8:
+                #    print(" Dropping term %4i %4i" %(p,q), " V= %+6.1e" %hamiltonian_op.one_body_tensor[p,q])
+                #    continue
+                one_elec = openfermion.FermionOperator(((q,1),(p,0)))-openfermion.FermionOperator(((p,1),(q,0)))
+                one_elec += openfermion.FermionOperator(((q+1,1),(p+1,0)))-openfermion.FermionOperator(((p+1,1),(q+1,0)))
+                ops.append(one_elec)
+        #aa
+        pq = 0
+        for p in alpha_orbs:
+            for q in alpha_orbs:
+                if p>q:
+                    continue
+                rs = 0
+                for r in alpha_orbs:
+                    for s in alpha_orbs:
+                        if r>s:
+                            continue
+                        if pq<rs:
+                            continue
+                        #if abs(hamiltonian_op.two_body_tensor[p,r,s,q]) < 1e-8:
+                            #print(" Dropping term %4i %4i %4i %4i" %(p,r,s,q), " V= %+6.1e" %hamiltonian_op.two_body_tensor[p,r,s,q])
+                            #continue
+                        two_elec = openfermion.FermionOperator(((r,1),(p,0),(s,1),(q,0)))-openfermion.FermionOperator(((q,1),(s,0),(p,1),(r,0)))
+                        two_elec += openfermion.FermionOperator(((r+1,1),(p+1,0),(s+1,1),(q+1,0)))-openfermion.FermionOperator(((q+1,1),(s+1,0),(p+1,1),(r+1,0)))
+                        ops.append(two_elec)
+                        rs += 1
+                pq += 1
+        
+        
+        #ab
+        pq = 0
+        for p in alpha_orbs:
+            for q in beta_orbs:
+                rs = 0
+                for r in alpha_orbs:
+                    for s in beta_orbs:
+                        if pq<rs:
+                            continue
+                        two_elec = openfermion.FermionOperator(((r,1),(p,0),(s,1),(q,0)))-openfermion.FermionOperator(((q,1),(s,0),(p,1),(r,0)))
+                        if p>q:
+                            continue
+                        two_elec += openfermion.FermionOperator(((s-1,1),(q-1,0),(r+1,1),(p+1,0)))-openfermion.FermionOperator(((p+1,1),(r+1,0),(q-1,1),(s-1,0)))
+                        ops.append(two_elec)
+                        rs += 1
+                pq += 1
+
+        self.fermi_ops = ops
+        self.n_ops = len(self.fermi_ops)
+        print(" Number of operators: ", self.n_ops)
+        return 
+# }}}
+
+
+
+
+class spin_complement_GSD2(OperatorPool):
+# {{{
+    def generate_SQ_Operators(self):
         """
         n_orb is number of spatial orbitals assuming that spin orbitals are labelled
         0a,0b,1a,1b,2a,2b,3a,3b,....  -> 0,1,2,3,...
