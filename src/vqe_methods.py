@@ -113,7 +113,7 @@ def adapt_vqe(geometry,
             if curr_norm < adapt_thresh:
                 converged = True
         elif adapt_conver == "var":
-            if var < adapt_thresh:
+            if abs(var) < adapt_thresh:
                 #variance
                 converged = True
         else:
