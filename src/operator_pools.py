@@ -73,9 +73,8 @@ class OperatorPool:
         opstring = " %18s : %s" %(opstring, spins)
         return opstring
 
-
-
     def compute_gradient_i(self,i,v,sig):
+    # {{{
         """
         For a previously optimized state |n>, compute the gradient g(k) of exp(c(k) A(k))|n>
         g(k) = 2Real<HA(k)>
@@ -100,7 +99,55 @@ class OperatorPool:
             print(" %4i %12.8f %s" %(i, gi, opstring) )
     
         return gi
-   
+   # }}}
+
+    def compute_var_gradient_i(self,i,v,H):
+# {{{
+        """
+        For a previously optimized state |n>, compute the derivative of the expectation value of 
+                variance for state exp(c(k) A(k))|n>
+
+                v = <exp(-c(k) A(k)) HH exp(c(k)A(k))> - <exp(-c(k) A(k)) H exp(c(k)A(k))>^2
+                  = <U' HH U> - <U' H U>^2
+
+                dv/dc(k) = -<U'AHHU> + <U'HHAU> + 2<U'HU><U'AHU> - 2<U'HU><U'HAU> = <U'[HH,A]U> - 2E<U'[H,A]U>
+                
+                [dv/dc(k)]_0 = <[HH,A]> - 2E<[H,A]>
+                             
+                             since A' = -A
+                             = <HHA> - <AHH> - 2E(<HA>-<AH>) = <HHA> + <HHA>' - 2E(<HA> + <HA>')
+                             = 2Real<HHA> - 4E*Real<HA>
+                             = 2Real(<HH| - 2E*<H|)|A>
+                             = 2Real<vsig|A>
+
+        Note - this assumes A(k) is a real antihermitian operator. If this is not the case, the derived class should 
+        reimplement this function. Of course, also assumes H is hermitian
+
+        v   = current_state
+        vsig = H*H*v - 2*E*H*v
+
+        """
+
+        Hv = H.dot(v)
+        HHv = H.dot(Hv)
+        Av = self.spmat_ops[i].dot(v)
+        E = v.T.conj().dot(Hv)
+
+        gi = 2* HHv.T.conj().dot(Av) - 4*E*Hv.T.conj().dot(Av) 
+        assert(gi.shape == (1,1))
+        gi = gi[0,0]
+        assert(np.isclose(gi.imag,0))
+        gi = gi.real
+       
+        opstring = self.get_string_for_term(self.fermi_ops[i])
+
+        if abs(gi) > self.gradient_print_thresh:
+            print(" %4i %12.8f %s" %(i, gi, opstring) )
+    
+        return gi
+   # }}}
+
+
 
 class spin_complement_GSD(OperatorPool):
 # {{{

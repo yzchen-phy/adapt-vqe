@@ -86,15 +86,25 @@ def adapt_vqe(geometry,
         print(" Measure Operator Pool Gradients:")
         sig = hamiltonian.dot(curr_state)
         e_curr = curr_state.T.conj().dot(sig)[0,0]
+        
         var = sig.T.conj().dot(sig)[0,0] - e_curr**2
         uncertainty = np.sqrt(var.real)
         assert(np.isclose(var.imag,0))
         print(" Variance:    %12.8f" %var.real)
         print(" Uncertainty: %12.8f" %uncertainty)
         for oi in range(pool.n_ops):
-            
-            gi = pool.compute_gradient_i(oi, curr_state, sig)
-            
+          
+            gi = 0
+            if adapt_conver == 'norm':
+                # Compute gradient of energy
+                gi = pool.compute_gradient_i(oi, curr_state, sig)
+            elif adapt_conver == 'var':
+                # Compute gradient of varience 
+                gi = pool.compute_var_gradient_i(oi, curr_state, hamiltonian)
+            else:
+                print(" Wrong value for adapt_conver")
+                exit()
+
             curr_norm += gi*gi
             if abs(gi) > abs(next_deriv):
                 next_deriv = gi
@@ -526,5 +536,5 @@ if __name__== "__main__":
     #vqe_methods.ucc(geometry,pool = operator_pools.singlet_SD())
     #vqe_methods.adapt_vqe(geometry,pool = operator_pools.singlet_SD())
     #vqe_methods.adapt_vqe(geometry,pool = operator_pools.hamiltonian(), adapt_thresh=1e-7, theta_thresh=1e-8)
-    #vqe_methods.adapt_vqe(geometry,pool = operator_pools.singlet_SD(), adapt_thresh=1e-1, adapt_conver='uncertainty')
-    vqe_methods.adapt_vqe(geometry,pool = operator_pools.spin_complement_GSD(), adapt_thresh=1e-2, theta_thresh=1e-9)
+    vqe_methods.adapt_vqe(geometry,pool = operator_pools.singlet_SD(), adapt_thresh=1e-6, adapt_conver='var')
+    #vqe_methods.adapt_vqe(geometry,pool = operator_pools.spin_complement_GSD(), adapt_thresh=1e-2, theta_thresh=1e-9)
