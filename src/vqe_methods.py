@@ -19,7 +19,7 @@ def adapt_vqe(geometry,
         basis           = "sto-3g",
         multiplicity    = 1,
         charge          = 1,
-        adapt_conver    = 'norm',
+        adapt_conver    = 'norm/max',  #norm
         adapt_thresh    = 1e-3,
         theta_thresh    = 1e-7,
         adapt_maxiter   = 200,
@@ -27,7 +27,8 @@ def adapt_vqe(geometry,
         spin_adapt      = True,
         psi4_filename   = "psi4_%12.12f"%random.random(),
         frzn_occ        = [],
-        frzn_vir        = []
+        frzn_vir        = [],
+        ref_state       = None
         ):
 # {{{
     molecule = openfermion.hamiltonians.MolecularData(geometry, basis, multiplicity)
@@ -60,7 +61,10 @@ def adapt_vqe(geometry,
     n_active_orbs = len(active_list)
     n_active_qubits = 2*n_active_orbs
 
-    reference_ket = scipy.sparse.csc_matrix(openfermion.jw_configuration_state(list(range(n_active_orbs)), n_active_qubits)).transpose()
+    if ref_state == None:
+        ref_state = list(range(n_active_orbs))
+    
+    reference_ket = scipy.sparse.csc_matrix(openfermion.jw_configuration_state(ref_state, n_active_qubits)).transpose()
 
     #form Hamiltonian computed classically with OFPsi4
     hamiltonian_op = molecule.get_molecular_hamiltonian(occupied_indices=frzn_occ, active_indices=active_list)
@@ -79,6 +83,8 @@ def adapt_vqe(geometry,
     op_indices = []
     parameters = []
     curr_state = 1.0*reference_ket
+
+    diis_error_vecs = [] 
 
     print(" Now start to grow the ansatz")
     for n_iter in range(0,adapt_maxiter):
@@ -102,6 +108,8 @@ def adapt_vqe(geometry,
         assert(np.isclose(var.imag,0))
         print(" Variance:    %12.8f" %var.real)
         print(" Uncertainty: %12.8f" %uncertainty)
+
+        grad = np.zeros((pool.n_ops,1)) 
         for oi in range(pool.n_ops):
             
             gi = pool.compute_gradient_i(oi, curr_state, sig)
@@ -112,13 +120,51 @@ def adapt_vqe(geometry,
                 next_deriv = gi
                 next_index = oi
 
+            grad[oi] = gi
+       
+        diis= 1
+        if diis == 1 and n_iter > 3:
+            diis_error_vecs.append(grad)
+            n_evecs = len(diis_error_vecs)
+            diis_subspace = np.hstack(diis_error_vecs)
+            
+            S = diis_subspace.T.dot(diis_subspace)
+            print(" Number of error vectors: %4i " %n_evecs)
+            B = np.ones( (n_evecs+1, n_evecs+1) )
+            B[-1,-1] = 0
+            B[0:-1,0:-1] = cp.deepcopy(S) 
+            r = np.zeros( (n_evecs+1,1) )
+            r[-1] = 1
+            if n_evecs > 0: 
+                x = np.linalg.pinv(B).dot(r)
+                
+                extrap_err_vec = np.zeros((pool.n_ops))
+                extrap_err_vec.shape = (extrap_err_vec.shape[0])
+    
+                for i in range(0,x.shape[0]-1):
+                    extrap_err_vec += x[i]*diis_subspace[:,i]
+                
+                print(" DIIS Coeffs")
+                for i in x:
+                    print("  %12.8f" %i)
+                #print x.T
+                print(" CURRENT           error vector %12.2e " % grad.T.dot(grad))
+                print(" CURRENT exptrap   error vector %12.2e " % extrap_err_vec.T.dot(extrap_err_vec))
+                tmp = abs(extrap_err_vec)
+                next_index = np.argmax(tmp)
+                next_deriv = tmp[next_index]
+
+                for i in extrap_err_vec:
+                    print(" %12.8f" %i)
+        
         curr_norm = np.sqrt(curr_norm)
 
         min_options = {'gtol': theta_thresh, 'disp':False}
      
-        max_of_gi = next_deriv
+        curr_max  = max([abs(i) for i in grad])
+        curr_norm = np.sqrt(grad.T.dot(grad))
         print(" Norm of <[H,A]> = %12.8f" %curr_norm)
-        print(" Max  of <[H,A]> = %12.8f" %max_of_gi)
+        print(" Max  of <[H,A]> = %12.8f" %curr_max)
 
         converged = False
         if adapt_conver == "norm":
@@ -541,5 +587,5 @@ if __name__== "__main__":
     #vqe_methods.adapt_vqe(geometry,pool = operator_pools.singlet_SD(), adapt_thresh=1e-1, adapt_conver='uncertainty')
     #vqe_methods.adapt_vqe(geometry,pool = operator_pools.singlet_SD(), adapt_thresh=1e-3, theta_thresh=1e-9,
     #        frzn_occ=[], adapt_conver = 'norm/max')
-    vqe_methods.adapt_vqe(geometry,pool = operator_pools.singlet_SD(), adapt_thresh=1e-3, theta_thresh=1e-9,
+    vqe_methods.adapt_vqe(geometry,pool = operator_pools.singlet_SD(), adapt_thresh=1e-3, theta_thresh=1e-8,
             frzn_occ=[], adapt_conver = 'norm')
