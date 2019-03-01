@@ -48,7 +48,7 @@ def adapt_vqe(geometry,
     #print(' CCSD energy    %20.16f au' %(molecule.ccsd_energy))
     print(' FCI energy     %20.16f au' %(molecule.fci_energy))
 
-    #Build p-h reference and map it to JW transform
+    #Reference
     active_list = []
     for i in range(molecule.n_orbitals):
         if i in frzn_occ:
@@ -61,7 +61,6 @@ def adapt_vqe(geometry,
     n_active_qubits = 2*n_active_orbs
 
     reference_ket = scipy.sparse.csc_matrix(openfermion.jw_configuration_state(list(range(n_active_orbs)), n_active_qubits)).transpose()
-    reference_bra = reference_ket.transpose().conj()
 
     #JW transform Hamiltonian computed classically with OFPsi4
     hamiltonian_op = molecule.get_molecular_hamiltonian(occupied_indices=frzn_occ, active_indices=active_list)
@@ -199,7 +198,6 @@ def ucc(geometry,
     reference_ket = scipy.sparse.csc_matrix(
             openfermion.jw_configuration_state(
                 list(range(0,molecule.n_electrons)), molecule.n_qubits)).transpose()
-    reference_bra = reference_ket.transpose().conj()
 
     #JW transform Hamiltonian computed classically with OFPsi4
     hamiltonian_op = molecule.get_molecular_hamiltonian()
@@ -261,7 +259,6 @@ def test_random(geometry,
     reference_ket = scipy.sparse.csc_matrix(
             openfermion.jw_configuration_state(
                 list(range(0,molecule.n_electrons)), molecule.n_qubits)).transpose()
-    reference_bra = reference_ket.transpose().conj()
 
     #JW transform Hamiltonian computed classically with OFPsi4
     hamiltonian_op = molecule.get_molecular_hamiltonian()
@@ -412,7 +409,6 @@ def test_lexical(geometry,
     reference_ket = scipy.sparse.csc_matrix(
             openfermion.jw_configuration_state(
                 list(range(0,molecule.n_electrons)), molecule.n_qubits)).transpose()
-    reference_bra = reference_ket.transpose().conj()
 
     #JW transform Hamiltonian computed classically with OFPsi4
     hamiltonian_op = molecule.get_molecular_hamiltonian()
