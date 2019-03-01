@@ -17,12 +17,16 @@ class OperatorPool:
         self.n_spin_orb = 0
         self.gradient_print_thresh = 0
 
-    def init(self,molecule):
+    def init(self,molecule, 
+            n_frzn_occ=0, 
+            n_frzn_vir=0):
+        print(" Number of Frozen Occupieds: %i" %n_frzn_occ)
+        print(" Number of Frozen Virtuals : %i" %n_frzn_vir)
         self.molecule = molecule
-        self.n_orb = molecule.n_orbitals
+        self.n_orb = molecule.n_orbitals - n_frzn_occ - n_frzn_vir
         self.n_spin_orb = 2*self.n_orb 
-        self.n_occ_a = molecule.get_n_alpha_electrons()
-        self.n_occ_b = molecule.get_n_beta_electrons()
+        self.n_occ_a = molecule.get_n_alpha_electrons() - n_frzn_occ
+        self.n_occ_b = molecule.get_n_beta_electrons() - n_frzn_occ
     
         self.n_vir_a = self.n_orb - self.n_occ_a
         self.n_vir_b = self.n_orb - self.n_occ_b

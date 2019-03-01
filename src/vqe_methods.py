@@ -25,7 +25,9 @@ def adapt_vqe(geometry,
         adapt_maxiter   = 200,
         pool            = operator_pools.singlet_GSD(),
         spin_adapt      = True,
-        psi4_filename   = "psi4_%12.12f"%random.random()
+        psi4_filename   = "psi4_%12.12f"%random.random(),
+        frzn_occ        = [],
+        frzn_vir        = []
         ):
 # {{{
     molecule = openfermion.hamiltonians.MolecularData(geometry, basis, multiplicity)
@@ -37,7 +39,7 @@ def adapt_vqe(geometry,
                 run_ccsd = 0, 
                 run_fci=1, 
                 delete_input=1)
-    pool.init(molecule)
+    pool.init(molecule, n_frzn_occ=len(frzn_occ), n_frzn_vir=len(frzn_vir))
     print(" Basis: ", basis)
 
     print(' HF energy      %20.16f au' %(molecule.hf_energy))
@@ -47,15 +49,26 @@ def adapt_vqe(geometry,
     print(' FCI energy     %20.16f au' %(molecule.fci_energy))
 
     #Build p-h reference and map it to JW transform
-    reference_ket = scipy.sparse.csc_matrix(
-            openfermion.jw_configuration_state(
-                list(range(0,molecule.n_electrons)), molecule.n_qubits)).transpose()
+    active_list = []
+    for i in range(molecule.n_orbitals):
+        if i in frzn_occ:
+            pass
+        elif i in frzn_vir:
+            pass
+        else:
+            active_list.append(i)
+    n_active_orbs = len(active_list)
+    n_active_qubits = 2*n_active_orbs
+
+    reference_ket = scipy.sparse.csc_matrix(openfermion.jw_configuration_state(list(range(n_active_orbs)), n_active_qubits)).transpose()
     reference_bra = reference_ket.transpose().conj()
 
     #JW transform Hamiltonian computed classically with OFPsi4
-    hamiltonian_op = molecule.get_molecular_hamiltonian()
+    hamiltonian_op = molecule.get_molecular_hamiltonian(occupied_indices=frzn_occ, active_indices=active_list)
     hamiltonian = openfermion.transforms.get_sparse_operator(hamiltonian_op)
 
+    print(hamiltonian.shape)
+    print(reference_ket.shape)
     #Thetas
     parameters = []
 
@@ -527,4 +540,4 @@ if __name__== "__main__":
     #vqe_methods.adapt_vqe(geometry,pool = operator_pools.singlet_SD())
     #vqe_methods.adapt_vqe(geometry,pool = operator_pools.hamiltonian(), adapt_thresh=1e-7, theta_thresh=1e-8)
     #vqe_methods.adapt_vqe(geometry,pool = operator_pools.singlet_SD(), adapt_thresh=1e-1, adapt_conver='uncertainty')
-    vqe_methods.adapt_vqe(geometry,pool = operator_pools.spin_complement_GSD(), adapt_thresh=1e-2, theta_thresh=1e-9)
+    vqe_methods.adapt_vqe(geometry,pool = operator_pools.singlet_SD(), adapt_thresh=1e-3, theta_thresh=1e-9, frzn_occ=[0])
