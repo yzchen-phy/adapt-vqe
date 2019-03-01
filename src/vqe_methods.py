@@ -62,12 +62,10 @@ def adapt_vqe(geometry,
 
     reference_ket = scipy.sparse.csc_matrix(openfermion.jw_configuration_state(list(range(n_active_orbs)), n_active_qubits)).transpose()
 
-    #JW transform Hamiltonian computed classically with OFPsi4
+    #form Hamiltonian computed classically with OFPsi4
     hamiltonian_op = molecule.get_molecular_hamiltonian(occupied_indices=frzn_occ, active_indices=active_list)
     hamiltonian = openfermion.transforms.get_sparse_operator(hamiltonian_op)
 
-    print(hamiltonian.shape)
-    print(reference_ket.shape)
     #Thetas
     parameters = []
 
@@ -92,6 +90,7 @@ def adapt_vqe(geometry,
         next_index = None
         next_deriv = 0
         curr_norm = 0
+        curr_max = 0
         
         print(" Check each new operator for coupling")
         next_term = []
@@ -108,6 +107,7 @@ def adapt_vqe(geometry,
             gi = pool.compute_gradient_i(oi, curr_state, sig)
             
             curr_norm += gi*gi
+            curr_max = max(abs(gi), curr_max)
             if abs(gi) > abs(next_deriv):
                 next_deriv = gi
                 next_index = oi
@@ -123,6 +123,9 @@ def adapt_vqe(geometry,
         converged = False
         if adapt_conver == "norm":
             if curr_norm < adapt_thresh:
+                converged = True
+        elif adapt_conver == "norm/max":
+            if curr_norm < adapt_thresh and curr_max < adapt_thresh*1e-2:
                 converged = True
         elif adapt_conver == "var":
             if abs(var) < adapt_thresh:
@@ -526,14 +529,17 @@ def test_lexical(geometry,
 
 
 if __name__== "__main__":
-    r = 1.5
+    r = 4.5
     #geometry = [('H', (0,0,1*r)), ('H', (0,0,2*r)), ('H', (0,0,3*r)), ('H', (0,0,4*r))]
-    geometry = [('H',  (0, 0, 0)), 
-                ('Li', (0, 0, r*2.39))]
-    #geometry = [('H', (0,0,1*r)), ('H', (0,0,2*r)), ('H', (0,0,3*r)), ('H', (0,0,4*r)), ('H', (0,0,5*r)), ('H', (0,0,6*r))]
+    #geometry = [('H',  (0, 0, 0)), 
+    #            ('Li', (0, 0, r*2.39))]
+    geometry = [('H', (0,0,1*r)), ('H', (0,0,2*r)), ('H', (0,0,3*r)), ('H', (0,0,4*r)), ('H', (0,0,5*r)), ('H', (0,0,6*r))]
 
     #vqe_methods.ucc(geometry,pool = operator_pools.singlet_SD())
     #vqe_methods.adapt_vqe(geometry,pool = operator_pools.singlet_SD())
     #vqe_methods.adapt_vqe(geometry,pool = operator_pools.hamiltonian(), adapt_thresh=1e-7, theta_thresh=1e-8)
     #vqe_methods.adapt_vqe(geometry,pool = operator_pools.singlet_SD(), adapt_thresh=1e-1, adapt_conver='uncertainty')
-    vqe_methods.adapt_vqe(geometry,pool = operator_pools.singlet_SD(), adapt_thresh=1e-3, theta_thresh=1e-9, frzn_occ=[0])
+    #vqe_methods.adapt_vqe(geometry,pool = operator_pools.singlet_SD(), adapt_thresh=1e-3, theta_thresh=1e-9,
+    #        frzn_occ=[], adapt_conver = 'norm/max')
+    vqe_methods.adapt_vqe(geometry,pool = operator_pools.singlet_SD(), adapt_thresh=1e-3, theta_thresh=1e-9,
+            frzn_occ=[], adapt_conver = 'norm')
