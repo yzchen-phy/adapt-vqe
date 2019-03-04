@@ -123,18 +123,21 @@ def adapt_vqe(geometry,
             grad[oi] = gi
        
         diis= 1
-        if diis == 1 and n_iter > 3:
+        if diis == 1 and n_iter > 0:
             diis_error_vecs.append(grad)
             n_evecs = len(diis_error_vecs)
             diis_subspace = np.hstack(diis_error_vecs)
             
+            print('diis_subspace')
+            print(diis_subspace)
             S = diis_subspace.T.dot(diis_subspace)
             print(" Number of error vectors: %4i " %n_evecs)
-            B = np.ones( (n_evecs+1, n_evecs+1) )
+            B = np.ones( (n_evecs+1, n_evecs+1) )*-1
             B[-1,-1] = 0
             B[0:-1,0:-1] = cp.deepcopy(S) 
             r = np.zeros( (n_evecs+1,1) )
-            r[-1] = 1
+            r[-1] = -1
+            print(B)
             if n_evecs > 0: 
                 x = np.linalg.pinv(B).dot(r)
                 
@@ -145,8 +148,8 @@ def adapt_vqe(geometry,
                     extrap_err_vec += x[i]*diis_subspace[:,i]
                 
                 print(" DIIS Coeffs")
-                for i in x:
-                    print("  %12.8f" %i)
+                for i in range(x.shape[0]):
+                    print(" %4i %12.8f" %(i,x[i]))
                 #print x.T
                 print(" CURRENT           error vector %12.2e " % grad.T.dot(grad))
                 print(" CURRENT exptrap   error vector %12.2e " % extrap_err_vec.T.dot(extrap_err_vec))
@@ -154,8 +157,8 @@ def adapt_vqe(geometry,
                 next_index = np.argmax(tmp)
                 next_deriv = tmp[next_index]
 
-                for i in extrap_err_vec:
-                    print(" %12.8f" %i)
+                for i in range(extrap_err_vec.shape[0]):
+                    print(" %4i %12.8f %12.8f" %(i,extrap_err_vec[i],grad[i]))
         
         curr_norm = np.sqrt(curr_norm)
 
