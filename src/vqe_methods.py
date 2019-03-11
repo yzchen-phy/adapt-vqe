@@ -33,7 +33,9 @@ def adapt_vqe(hamiltonian_op, pool, reference_ket,
 # {{{
     
     hamiltonian = openfermion.transforms.get_sparse_operator(hamiltonian_op)
-    
+    ref_energy = reference_ket.T.conj().dot(hamiltonian.dot(reference_ket))[0,0].real
+    print(" Reference Energy: %12.8f" %ref_energy)
+
     #Thetas
     parameters = []
 
@@ -507,14 +509,15 @@ if __name__== "__main__":
     basis = 'sto-3g'
     [n_orb, n_a, n_b, h, g, mol, E_nuc, E_scf, C, S] = pyscf_helper.init(geometry,charge,spin,basis)
     
-    X = np.linalg.inv(scipy.linalg.sqrtm(S))
+    #X = np.linalg.inv(scipy.linalg.sqrtm(S))
 
     sq_ham = pyscf_helper.SQ_Hamiltonian()
-    sq_ham.init(mol, X)
+    sq_ham.init(mol, C)
     print(" HF Energy: %12.8f" %(E_nuc + sq_ham.energy_of_determinant(range(n_a),range(n_a))))
 
     fermi_ham  = sq_ham.export_FermionOperator()
-    
+   
+    fermi_ham += FermionOperator((),E_nuc)
     pyscf.molden.from_mo(mol, "full.molden", sq_ham.C)
     
     fci = 1
@@ -529,9 +532,9 @@ if __name__== "__main__":
         print()
  
     #Build p-h reference and map it to JW transform
-    reference_ket = scipy.sparse.csc_matrix(openfermion.jw_configuration_state(list(range(0,n_a+n_b)), n_orb)).transpose()
+    reference_ket = scipy.sparse.csc_matrix(openfermion.jw_configuration_state(list(range(0,n_a+n_b)), 2*n_orb)).transpose()
 
-    pool = operator_pools.spin_complement_GSD()
+    pool = operator_pools.singlet_GSD()
     pool.init(n_orb)
     
     vqe_methods.adapt_vqe(fermi_ham, pool, reference_ket, adapt_thresh=1e-2, theta_thresh=1e-9)
@@ -543,4 +546,4 @@ if __name__== "__main__":
     #vqe_methods.adapt_vqe(geometry,pool = operator_pools.singlet_SD())
     #vqe_methods.adapt_vqe(geometry,pool = operator_pools.hamiltonian(), adapt_thresh=1e-7, theta_thresh=1e-8)
     #vqe_methods.adapt_vqe(geometry,pool = operator_pools.singlet_sd(), adapt_thresh=1e-1, adapt_conver='uncertainty')
-    vqe_methods.adapt_vqe(geometry,pool = operator_pools.spin_complement_GSD(), adapt_thresh=1e-2, theta_thresh=1e-9)
+    vqe_methods.adapt_vqe(geometry,pool = operator_pools.singlet_GSD(), adapt_thresh=1e-2, theta_thresh=1e-9)
