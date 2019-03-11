@@ -1,3 +1,4 @@
+
 import scipy
 import openfermion
 import openfermionpsi4
@@ -7,6 +8,11 @@ import copy
 import random 
 import sys
 
+import pyscf
+from pyscf import lib
+from pyscf import gto, scf, mcscf, fci, ao2mo, lo, molden, cc
+from pyscf.cc import ccsd
+
 import operator_pools
 import vqe_methods
 from tVQE import *
@@ -14,48 +20,20 @@ from tVQE import *
 from openfermion import *
 
 
+import pyscf_helper
 
-def adapt_vqe(geometry,
-        basis           = "sto-3g",
-        multiplicity    = 1,
-        charge          = 1,
+def adapt_vqe(hamiltonian_op, pool, reference_ket,
         adapt_conver    = 'norm',
         adapt_thresh    = 1e-3,
         theta_thresh    = 1e-7,
         adapt_maxiter   = 200,
-        pool            = operator_pools.singlet_GSD(),
         spin_adapt      = True,
         psi4_filename   = "psi4_%12.12f"%random.random()
         ):
 # {{{
-    molecule = openfermion.hamiltonians.MolecularData(geometry, basis, multiplicity)
-    molecule.filename = psi4_filename
-    molecule = openfermionpsi4.run_psi4(molecule, 
-                run_scf = 1, 
-                run_mp2=1, 
-                run_cisd=0, 
-                run_ccsd = 0, 
-                run_fci=1, 
-                delete_input=1)
-    pool.init(molecule)
-    print(" Basis: ", basis)
-
-    print(' HF energy      %20.16f au' %(molecule.hf_energy))
-    print(' MP2 energy     %20.16f au' %(molecule.mp2_energy))
-    #print(' CISD energy    %20.16f au' %(molecule.cisd_energy))
-    #print(' CCSD energy    %20.16f au' %(molecule.ccsd_energy))
-    print(' FCI energy     %20.16f au' %(molecule.fci_energy))
-
-    #Build p-h reference and map it to JW transform
-    reference_ket = scipy.sparse.csc_matrix(
-            openfermion.jw_configuration_state(
-                list(range(0,molecule.n_electrons)), molecule.n_qubits)).transpose()
-    reference_bra = reference_ket.transpose().conj()
-
-    #JW transform Hamiltonian computed classically with OFPsi4
-    hamiltonian_op = molecule.get_molecular_hamiltonian()
+    
     hamiltonian = openfermion.transforms.get_sparse_operator(hamiltonian_op)
-
+    
     #Thetas
     parameters = []
 
@@ -523,8 +501,46 @@ if __name__== "__main__":
                 ('Li', (0, 0, r*2.39))]
     #geometry = [('H', (0,0,1*r)), ('H', (0,0,2*r)), ('H', (0,0,3*r)), ('H', (0,0,4*r)), ('H', (0,0,5*r)), ('H', (0,0,6*r))]
 
+   
+    charge = 0
+    spin = 0
+    basis = 'sto-3g'
+    [n_orb, n_a, n_b, h, g, mol, E_nuc, E_scf, C, S] = pyscf_helper.init(geometry,charge,spin,basis)
+    
+    X = np.linalg.inv(scipy.linalg.sqrtm(S))
+
+    sq_ham = pyscf_helper.SQ_Hamiltonian()
+    sq_ham.init(mol, X)
+    print(" HF Energy: %12.8f" %(E_nuc + sq_ham.energy_of_determinant(range(n_a),range(n_a))))
+
+    fermi_ham  = sq_ham.export_FermionOperator()
+    
+    pyscf.molden.from_mo(mol, "full.molden", sq_ham.C)
+    
+    fci = 1
+    #pyscf FCI
+    if fci:
+        print()
+        print(" ----------------------")
+        print(" PYSCF")
+        cisolver = pyscf.fci.direct_spin1.FCI(mol)                                     
+        efci, ci = cisolver.kernel(h, g, h.shape[1], mol.nelec, ecore=mol.energy_nuc())
+        print(" PYSCF: FCI energy: %12.8f" %(efci))
+        print()
+ 
+    #Build p-h reference and map it to JW transform
+    reference_ket = scipy.sparse.csc_matrix(openfermion.jw_configuration_state(list(range(0,n_a+n_b)), n_orb)).transpose()
+
+    pool = operator_pools.spin_complement_GSD()
+    pool.init(n_orb)
+    
+    vqe_methods.adapt_vqe(fermi_ham, pool, reference_ket, adapt_thresh=1e-2, theta_thresh=1e-9)
+
+    exit()
+    
+
     #vqe_methods.ucc(geometry,pool = operator_pools.singlet_SD())
     #vqe_methods.adapt_vqe(geometry,pool = operator_pools.singlet_SD())
     #vqe_methods.adapt_vqe(geometry,pool = operator_pools.hamiltonian(), adapt_thresh=1e-7, theta_thresh=1e-8)
-    #vqe_methods.adapt_vqe(geometry,pool = operator_pools.singlet_SD(), adapt_thresh=1e-1, adapt_conver='uncertainty')
+    #vqe_methods.adapt_vqe(geometry,pool = operator_pools.singlet_sd(), adapt_thresh=1e-1, adapt_conver='uncertainty')
     vqe_methods.adapt_vqe(geometry,pool = operator_pools.spin_complement_GSD(), adapt_thresh=1e-2, theta_thresh=1e-9)

@@ -17,18 +17,21 @@ class OperatorPool:
         self.n_spin_orb = 0
         self.gradient_print_thresh = 0
 
-    def init(self,molecule):
-        self.molecule = molecule
-        self.n_orb = molecule.n_orbitals
+    def init(self,n_orb, 
+            n_occ_a=None, 
+            n_occ_b=None, 
+            n_vir_a=None, 
+            n_vir_b=None):
+        self.n_orb = n_orb 
         self.n_spin_orb = 2*self.n_orb 
-        self.n_occ_a = molecule.get_n_alpha_electrons()
-        self.n_occ_b = molecule.get_n_beta_electrons()
-    
-        self.n_vir_a = self.n_orb - self.n_occ_a
-        self.n_vir_b = self.n_orb - self.n_occ_b
         
-        self.n_occ = self.n_occ_a
-        self.n_vir = self.n_vir_a
+        if n_occ_a!=None and n_occ_b!=None:
+            self.n_occ = n_occ_a + n_occ_b
+            self.n_occ_a = n_occ_a
+            self.n_occ_b = n_occ_b
+            self.n_vir = n_vir_a + n_vir_b
+            self.n_vir_a = n_vir_a
+            self.n_vir_b = n_vir_b
         self.n_ops = 0
 
         self.generate_SQ_Operators()
@@ -334,6 +337,25 @@ class singlet_GSD(OperatorPool):
                         if(pq > rs):
                             continue
 
+#                        oplist = []
+#                        oplist.append(FermionOperator(((ra,1),(pa,0),(sa,1),(qa,0)), 2/np.sqrt(12)))
+#                        oplist.append(FermionOperator(((rb,1),(pb,0),(sb,1),(qb,0)), 2/np.sqrt(12)))
+#                        oplist.append(FermionOperator(((ra,1),(pa,0),(sb,1),(qb,0)), 1/np.sqrt(12)))
+#                        oplist.append(FermionOperator(((rb,1),(pb,0),(sa,1),(qa,0)), 1/np.sqrt(12)))
+#                        oplist.append(FermionOperator(((ra,1),(pb,0),(sb,1),(qa,0)), 1/np.sqrt(12)))
+#                        oplist.append(FermionOperator(((rb,1),(pa,0),(sa,1),(qb,0)), 1/np.sqrt(12)))
+#                       
+#                        print(p,q,r,s)
+#                        for i in range(len(oplist)):
+#                            oplist[i] -= hermitian_conjugated(oplist[i])  
+#                        for i in range(len(oplist)):
+#                            for j in range(i+1,len(oplist)):
+#                                opi = oplist[i]
+#                                opj = oplist[i]
+#                                opij = opi*opj - opj*opi
+#                                opij = normal_ordered(opij)
+#                                print(opij, end='')
+#                        print()
                         termA =  FermionOperator(((ra,1),(pa,0),(sa,1),(qa,0)), 2/np.sqrt(12))
                         termA += FermionOperator(((rb,1),(pb,0),(sb,1),(qb,0)), 2/np.sqrt(12))
                         termA += FermionOperator(((ra,1),(pa,0),(sb,1),(qb,0)), 1/np.sqrt(12))
