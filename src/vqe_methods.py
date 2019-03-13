@@ -503,33 +503,33 @@ if __name__== "__main__":
                 ('Li', (0, 0, r*2.39))]
     #geometry = [('H', (0,0,1*r)), ('H', (0,0,2*r)), ('H', (0,0,3*r)), ('H', (0,0,4*r)), ('H', (0,0,5*r)), ('H', (0,0,6*r))]
 
-   
+  
     charge = 0
     spin = 0
     basis = 'sto-3g'
-    [n_orb, n_a, n_b, h, g, mol, E_nuc, E_scf, C, S] = pyscf_helper.init(geometry,charge,spin,basis)
     
-    #X = np.linalg.inv(scipy.linalg.sqrtm(S))
-
+    geometry = [('Sc', (0,0,0))]
+    charge = 1
+    spin = 0
+    #[n_orb, n_a, n_b, h, g, mol, E_nuc, E_scf, C, S] = pyscf_helper.init(geometry,charge,spin,
+    #        basis, n_frzn_occ=0, n_act=15)
+    [n_orb, n_a, n_b, h, g, mol, E_nuc, E_scf, C, S] = pyscf_helper.init(geometry,charge,spin,basis,n_frzn_occ=9, n_act=6)
+    
     sq_ham = pyscf_helper.SQ_Hamiltonian()
-    sq_ham.init(mol, C)
-    print(" HF Energy: %12.8f" %(E_nuc + sq_ham.energy_of_determinant(range(n_a),range(n_a))))
+    sq_ham.init(h, g, C, S)
+    print(" HF Energy: %12.8f" %(E_nuc + sq_ham.energy_of_determinant(range(n_a),range(n_b))))
 
     fermi_ham  = sq_ham.export_FermionOperator()
    
+    hamiltonian = openfermion.transforms.get_sparse_operator(fermi_ham)
+    print(hamiltonian.shape)
+    
+
+    [e,v] = scipy.sparse.linalg.eigsh(hamiltonian.real,10)
+    print(e)
     fermi_ham += FermionOperator((),E_nuc)
     pyscf.molden.from_mo(mol, "full.molden", sq_ham.C)
     
-    fci = 1
-    #pyscf FCI
-    if fci:
-        print()
-        print(" ----------------------")
-        print(" PYSCF")
-        cisolver = pyscf.fci.direct_spin1.FCI(mol)                                     
-        efci, ci = cisolver.kernel(h, g, h.shape[1], mol.nelec, ecore=mol.energy_nuc())
-        print(" PYSCF: FCI energy: %12.8f" %(efci))
-        print()
  
     #Build p-h reference and map it to JW transform
     reference_ket = scipy.sparse.csc_matrix(openfermion.jw_configuration_state(list(range(0,n_a+n_b)), 2*n_orb)).transpose()

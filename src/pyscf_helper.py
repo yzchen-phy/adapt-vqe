@@ -3,7 +3,9 @@ import scipy
 from pyscf import gto, scf, mcscf, fci, ao2mo, lo, molden, cc
 from pyscf.cc import ccsd
 import copy as cp
-   
+
+from sys import getsizeof
+import h5py
 import pyscf
 from pyscf import lib
 
@@ -11,288 +13,6 @@ from functools import reduce
 
 import openfermion 
 
-
-def compute_dp_effective_ham(dp_state, op):
-    """
-    op is a sum of JW operators
-    dp_state is a JW_DirectProductState
-
-    Compute <N|..<B|<A|sum_p o_p |A>|B>...|N>
-    where, o_p is some JW operator string
-    """
-   
-    print(" Compute effective Hamiltonian")
-    #start by dissecting the operators
-
-
-
-    #clustered ops is a list of lists of operators for each cluster
-
-
-    # the goal is to take each term and separate it into a product of terms:
-    #   X4X5Z8Z9Y11 -> (X4X5)(Z9)(Y11)
-    #               -> (X{4-2}X{5-2}) (Z{9-6}) (Y{11-10}) etc 
-    #
-    #   However, each cluster is indexed starting at 0 so that it doesn't blow up
-    #       assume all qubits are ordered sequentially in groups
-
-  
-
-    dim_state = 1
-    for ci in dp_state.vecs:
-        if len(ci.shape) > 1:
-            dim_state *= ci.shape[1]
-
-    h_eff = scipy.sparse.csc_matrix((dim_state,dim_state)) 
-    clustered_ops = []
-    for term in op.terms:
-        coeff = op.terms[term]
-        cl_terms = []
-        #print("\n",term, coeff)
-        for ci in range(dp_state.n_clusters):
-            cl_terms.append(openfermion.QubitOperator((), 1))
-        for pp in term:
-            ci =  dp_state.qubit_to_cluster[pp[0]]  #cluster index
-            qi =  pp[0]-dp_state.clusters[ci][0]    #qubit index for cluster ci
-            pauli = pp[1]                           #cluster index
-            #print("a:", pp, ci, qi, pauli)
-            
-            tmp = openfermion.QubitOperator((qi,pauli))
-            cl_terms[ci] *= tmp
-       
-        term_exval = coeff * scipy.sparse.eye(1)
-        # now compute expectation values cluster-wise
-        for ci in range(dp_state.n_clusters):
-            n_qubits_i = len(dp_state.clusters[ci])
-            mat = openfermion.transforms.get_sparse_operator(cl_terms[ci], n_qubits=n_qubits_i)
-            v = dp_state.vecs[ci]
-        
-            term_exval = scipy.sparse.kron(term_exval, v.conj().T.dot(mat.dot(v)) )
-
-        h_eff += term_exval
-
-    return h_eff
-
-def compute_dp_expectation_value(dp_state, op):
-    """
-    op is a sum of JW operators
-    dp_state is a JW_DirectProductState
-
-    Compute <N|..<B|<A|sum_p o_p |A>|B>...|N>
-    where, o_p is some JW operator string
-    """
-   
-    #start by dissecting the operators
-
-
-
-    #clustered ops is a list of lists of operators for each cluster
-
-
-    # the goal is to take each term and separate it into a product of terms:
-    #   X4X5Z8Z9Y11 -> (X4X5)(Z9)(Y11)
-    #               -> (X{4-2}X{5-2}) (Z{9-6}) (Y{11-10}) etc 
-    #
-    #   However, each cluster is indexed starting at 0 so that it doesn't blow up
-    #       assume all qubits are ordered sequentially in groups
-
-   
-    exval = 0
-    clustered_ops = []
-    for term in op.terms:
-        coeff = op.terms[term]
-        cl_terms = []
-        #print("\n",term, coeff)
-        for ci in range(dp_state.n_clusters):
-            cl_terms.append(openfermion.QubitOperator((), 1))
-        for pp in term:
-            ci =  dp_state.qubit_to_cluster[pp[0]]  #cluster index
-            qi =  pp[0]-dp_state.clusters[ci][0]    #qubit index for cluster ci
-            pauli = pp[1]                           #cluster index
-            #print("a:", pp, ci, qi, pauli)
-            
-            tmp = openfermion.QubitOperator((qi,pauli))
-            cl_terms[ci] *= tmp
-       
-        term_exval = coeff*1.0
-        # now compute expectation values cluster-wise
-        for ci in range(dp_state.n_clusters):
-            n_qubits_i = len(dp_state.clusters[ci])
-            mat = openfermion.transforms.get_sparse_operator(cl_terms[ci], n_qubits=n_qubits_i)
-            v = dp_state.vecs[ci]
-            term_exval *= v.conj().T.dot(mat.dot(v))
-
-        exval += term_exval
-
-    assert(np.isclose(exval.imag, 0))
-    return exval.real
-
-class JW_ClusterBasis:
-    def __init__(self):
-        self.n_qubits       = 0
-        self.clusters       = []
-        self.n_clusters     = 0
-        self.vecs           = []    #cluster states
-        self.total_dim      = 1     #dimension of full space
-        self.cluster_dims   = []    #dimensions of each cluster's hilbert space
-        self.qubit_to_cluster = []
-        self.cluster_n_qubits = []
-        
-        #thermal stuff
-        self.pops           = []    #list of occupation numbers for each cluster state in thermal state
-        self.beta           = 1000
-
-    def init(self, clusters):
-        """
-        clusters is a list of lists of qubits
-        destroys current state
-        """
-    
-        self.vecs = []
-        self.total_dim
-        self.clusters = cp.deepcopy(clusters)
-        self.n_clusters = len(self.clusters)
-        self.cluster_dims = []
-        self.cluster_n_qubits = []
-        for c in self.clusters:
-            self.cluster_n_qubits.append(len(c))
-            self.vecs.append( np.zeros((2**len(c),1)))
-            self.total_dim = self.total_dim*(2**len(c))
-            self.n_qubits += len(c)
-            self.cluster_dims.append(2**len(c))
-            self.pops.append(0)
-
-        self.pops[0] = 1
-
-        self.qubit_to_cluster = [0 for i in range(self.n_qubits)]
-        for ci in range(self.n_clusters):
-            for qi in self.clusters[ci]:
-                self.qubit_to_cluster[qi] = ci
-        assert(2**self.n_qubits == self.total_dim)
-
-
-    def compute_initial_guess_vectors(self,sq_ham):
-        self.pops = []
-        for ci in range(self.n_clusters):
-            nqubits = len(self.clusters[ci])
-            #orb_ss = self.clusters[ci] 
-            orb_ss = range(int(self.clusters[ci][0]/2),int((self.clusters[ci][-1]+1)/2))
-            ss_ham_i = sq_ham.extract_local_hamiltonian(orb_ss)
-            fe_ham_i  = ss_ham_i.export_FermionOperator()
-            ss_ham_mat_i = openfermion.transforms.get_sparse_operator(fe_ham_i)
-            
-            [curr_e, curr_v] = scipy.sparse.linalg.eigs(ss_ham_mat_i, 9, which="SR")
-            #[curr_e, curr_v] = scipy.linalg.eig(ss_ham_mat_i.todense())
-            assert(np.all(np.isclose(curr_e.imag,0)))
-            curr_e = curr_e.real
-            
-            idx = curr_e.argsort()   
-            curr_e = curr_e[idx]
-            curr_v = curr_v[:,idx]
-            
-            # number ops
-            na = openfermion.FermionOperator()
-            nb = openfermion.FermionOperator()
-            for p in range(len(orb_ss)):
-                na += openfermion.FermionOperator(((2*p,1),(2*p,0)),1)
-                nb += openfermion.FermionOperator(((2*p+1,1),(2*p+1,0)),1)
-            na = openfermion.transforms.get_sparse_operator(na, n_qubits=nqubits)
-            nb = openfermion.transforms.get_sparse_operator(nb, n_qubits=nqubits)
-
-            na = curr_v.conj().T.dot(na.dot(curr_v)).diagonal().real
-            nb = curr_v.conj().T.dot(nb.dot(curr_v)).diagonal().real
-            
-            print(" Sub-Block energy:          %-12.8f" %(curr_e[0].real))
-           
-            self.vecs[ci] = curr_v
-            
-            beta = self.beta
-            e0 = curr_e[0]
-            Z = 0
-            pops = []
-            print(" %4s  %12s  %12s  %6s  %6s  %6s" %("#", "Energy", "Occupation", "Na", "Nb", "N"))
-            for i in range(curr_v.shape[1]):
-                ei = curr_e[i]-e0
-                Z += np.exp(- beta * (ei))
-            for i in range(curr_v.shape[1]):
-                ei = curr_e[i]-e0
-                occnum = np.exp(- beta * (ei))
-                pops.append(occnum/Z)
-                print(" %4i  %12.8f  %12.8f  %6.3f  %6.3f  %6.3f" %(i, curr_e[i], occnum/Z, na[i], nb[i], na[i]+nb[i]))
-            self.pops.append(pops)
-
-    def form_cluster_densities(self):
-        self.rho = []
-        for ci in range(self.n_clusters):
-            v = self.vecs[ci]
-            di = v.dot(np.diag(self.pops[ci])).dot(v.T.conj())
-            self.rho.append(di)
-
-    def compute_thermal_cluster_exp_val(self, ham):
-        assert(self.rho != None)
-        e = 0
-        for op in ham.ops:
-            term = ham.ops[op]
-            for ci in range(self.n_clusters):
-                opi = op[ci]
-                if len(opi) == 0:
-                    continue
-                term *= np.trace(np.diag(self.pops[ci]).dot(ham.local_ops_mat[ci][opi]))
-                #term *= np.trace(self.rho[ci].dot(ham.local_ops_mat[ci][opi]))
-            e += term
-        assert(np.isclose(e.imag,0))
-        e = e.real
-        return e
-
-
-    def compute_thermal_effective_ham(self, ham, i):
-        """
-        Ha = tr(H pb x pc x ...)
-            = sum (Oa) tr(Ob Pb) tr(Oc Pc) ...
-
-        """
-        #assert(self.rho != None)
-        e = 0
-        hi = scipy.sparse.csc_matrix((self.vecs[i].shape[1],self.vecs[i].shape[1]))
-        for op in ham.ops:
-            term1 = ham.ops[op]
-            term2 = 1
-            for ci in range(self.n_clusters):
-                if ci == i:
-                    continue
-                opi = op[ci]
-                if len(opi) == 0:
-                    continue
-                term2 *= np.trace(np.diag(self.pops[ci]).dot(ham.local_ops_mat[ci][opi]))
-                #term *= np.trace(self.rho[ci].dot(ham.local_ops_mat[ci][opi]))
-            term = term1*term2
-            hi += ham.local_ops_mat[i][op[i]]*term
-        return hi 
-
-
-class JW_DirectProductState:
-    def __init__(self, basis):
-        """
-        basis: JW_ClusterBasis object
-        defaults to ground state
-        """
-        self.basis = basis
-        self.vecs = []
-        self.n_clusters = cp.deepcopy(basis.n_clusters)
-        for v in basis.vecs:
-            self.vecs.append(v[:,0])
-        self.cluster_dims = cp.deepcopy(basis.cluster_dims)
-        self.qubit_to_cluster = cp.deepcopy(basis.qubit_to_cluster)
-        self.clusters = cp.deepcopy(basis.clusters)
-
-    def create_full_vector(self):
-        assert(self.n_clusters == len(self.vecs))
-        v = cp.deepcopy(self.vecs[0])
-        for vi in range(1,self.n_clusters):
-            #v = np.tensordot(v,self.vecs[vi],axes=(0,1))
-            v = np.kron(v,self.vecs[vi]) 
-        assert(v.size == self.basis.total_dim)
-        return v
 
 
 
@@ -318,20 +38,15 @@ class SQ_Hamiltonian:
 
         self.n_orb = 0
 
-    def init(self, mol, C):
+    def init(self, h, v, C, S):
         # molecule is a pyscf molecule object from gto.Mole()
-        T = mol.intor('int1e_kin_sph')
-        V = mol.intor('int1e_nuc_sph') 
         
-        self.S = mol.intor('int1e_ovlp_sph')
+        self.S = cp.deepcopy(S) 
         self.C = cp.deepcopy(C) 
         self.n_orb = self.C.shape[1]
         
-        self.int_H = T + V
-        self.int_V = mol.intor('int2e_sph')
-
-        #self.int_V = pyscf.ao2mo.restore(1, self.int_V, mol.nao_nr())
-        self.transform_orbitals(self.C)
+        self.int_H = cp.deepcopy(h) 
+        self.int_V = cp.deepcopy(v) 
 
     def transform_orbitals(self, U):
         """
@@ -495,7 +210,7 @@ class SQ_Hamiltonian:
 
 
 
-def init(molecule,charge,spin,basis):
+def init(molecule,charge,spin,basis,n_frzn_occ=0, n_act=0):
 # {{{
     #PYSCF inputs
     print(" ---------------------------------------------------------")
@@ -557,10 +272,83 @@ def init(molecule,charge,spin,basis):
     g = np.einsum("lmrs,rn->lmns",g,C)
     g = np.einsum("lmns,so->lmno",g,C)
 
-    h = reduce(np.dot, (C.conj().T, hcore, C))
 
+    assert(n_frzn_occ <= n_b)
+    n_frzn_vir = n_orb - n_act - n_frzn_occ
+    assert(n_frzn_vir >= 0)
+
+    n_a   -= n_frzn_occ
+    n_b   -= n_frzn_occ
+    n_orb -= n_frzn_occ
+
+    print(" NElectrons: %4i %4i" %(n_a, n_b))
+    Cact = C[:,n_frzn_occ:n_frzn_occ+n_act]
+    Cocc = C[:,0:n_frzn_occ]
+
+    dm = Cocc @ Cocc.T
+    j, k = scf.hf.get_jk(mol, dm)
+ 
+    t = hcore + 2*j - k
+    h = reduce(np.dot, (Cact.conj().T, hcore + 2*j - k, Cact))
+    ecore = np.trace(2*dm @ (hcore + j - .5*k))
+    print(" ecore: %12.8f" %ecore)
+
+    E_nuc += ecore
+    def view(h5file, dataname='eri_mo'):
+        f5 = h5py.File(h5file)
+        print('dataset %s, shape %s' % (str(f5.keys()), str(f5[dataname].shape)))
+        f5.close()
     
-    return(n_orb, n_a, n_b, h, g, mol, E_nuc ,mf.e_tot,C,S)
+    eri_act = ao2mo.outcore.general_iofree(mol, (Cact,Cact,Cact,Cact), intor='int2e', aosym='s4', compact=True)
+    #view('ints_occ.h5')
+    #view('ints_act.h5')
+    eri_act = ao2mo.restore('s1', eri_act, Cact.shape[1])
+    print(" ERIs in the active-space:")
+    print(eri_act.shape, " %12.8f Mb" %(eri_act.nbytes*1e-6))
+
+    if False:
+        #compute slater determinant energy
+        e1 = 0
+        e2 = 0
+        config_a = range(n_a)
+        config_b = range(n_b)
+        print(config_a,config_b)
+        for i in config_a:
+            e1 += h[i,i]
+        for i in config_b:
+            e1 += h[i,i]
+        for i in config_a:
+            for j in config_a:
+                if i>=j:
+                    continue
+                e2 += eri_act[i,i,j,j]
+                e2 -= eri_act[i,j,j,i]
+        for i in config_b:             
+            for j in config_b:         
+                if i>=j:                
+                    continue           
+                e2 += eri_act[i,i,j,j]
+                e2 -= eri_act[i,j,j,i]
+        for i in config_a:             
+            for j in config_b:         
+                e2 += eri_act[i,i,j,j]
+        e = e1+e2
+        print("*HF Energy: %12.8f" %(e+E_nuc))
+    
+    fci = 0
+    #pyscf FCI
+    if fci:
+        print()
+        print(" ----------------------")
+        print(" PYSCF")
+        mc = mcscf.CASCI(mf, n_act, (n_a,n_b),ncore=n_frzn_occ)
+        #mc.fcisolver = pyscf.fci.solver(mf, singlet=True)
+        #mc.fcisolver = pyscf.fci.direct_spin1.FCISolver(mol)
+        efci, ci = mc.kernel()
+        print(" PYSCF: FCI energy: %12.8f" %(efci))
+        print()
+    
+    return(n_orb, n_a, n_b, h, eri_act, mol, E_nuc ,mf.e_tot,C,S)
 # }}}
 
 
