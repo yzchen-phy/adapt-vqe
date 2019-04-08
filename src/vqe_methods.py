@@ -494,6 +494,84 @@ def test_lexical(geometry,
     return
 # }}}
 
+def Make_S2(n_orb):
+# {{{
+    ap =scipy.sparse.csc_matrix(np.array([[0, 0], [1, 0]]))    #creation operator
+    am =scipy.sparse.csc_matrix( np.array([[0, 1], [0, 0]])) #annihilation operator
+    no =scipy.sparse.csc_matrix( np.array([[0, 0], [0, 1]]))     #number operator
+    ho =scipy.sparse.csc_matrix( np.array([[1, 0], [0, 0]]))     #hole operator
+    I2 =scipy.sparse.csc_matrix( np.array([[1, 0], [0, 1]]))     #identity operator
+    Iz =scipy.sparse.csc_matrix( np.array([[1, 0], [0, -1]]))    #pauli z operat
+    S2 =scipy.sparse.csc_matrix( np.zeros((4**n_orb,4**n_orb)))
+    s2 =scipy.sparse.csc_matrix( np.array([[0,0],[0,0.75]]))
+
+    for i in range(0,n_orb):
+        bfor  = 2*i
+        aftr  = 2*n_orb-2*i-2
+
+        Ia = np.eye(np.power(2,bfor))
+        Ib = np.eye(np.power(2,aftr))
+        a_temp = scipy.sparse.kron(s2,I2)
+        b_temp = scipy.sparse.kron(I2,s2)
+        S2a = scipy.sparse.kron(Ia,scipy.sparse.kron(a_temp,Ib))
+        S2b = scipy.sparse.kron(Ia,scipy.sparse.kron(b_temp,Ib))
+
+        S2 += abs(S2a -S2b)
+        
+
+        for j in range(i+1,n_orb):
+            
+            intr = 2*j-2*i-2 
+            aftr = 2*n_orb-2*j-2
+
+            Ib = np.eye(np.power(2,intr))
+            Zb = np.eye(1)
+            for k in range(2*i+2,2*j):
+                Zb = scipy.sparse.kron(Zb,Iz)
+
+            Ic = np.eye(np.power(2,aftr))
+            Zc = np.eye(1)
+            for k in range(2*j,2*n_orb-2):
+                Zc = scipy.sparse.kron(Zc,Iz)
+            
+            assert(Zc.shape == Ic.shape)
+            assert(Zb.shape == Ib.shape)
+
+            
+            Sptemp = scipy.sparse.kron(ap,am) 
+            Smtemp = scipy.sparse.kron(am,ap) 
+            ANtemp = scipy.sparse.kron(no,I2)
+            BNtemp = scipy.sparse.kron(I2,no)
+
+            ##CASE A
+            aiaj = scipy.sparse.kron(Ia,scipy.sparse.kron(Sptemp,scipy.sparse.kron(Ib,scipy.sparse.kron(Smtemp,Ic))))
+            S2  +=  (aiaj)
+
+            ##CASE B
+            aiaj = scipy.sparse.kron(Ia,scipy.sparse.kron(Smtemp,scipy.sparse.kron(Ib,scipy.sparse.kron(Sptemp,Ic))))
+            S2  +=  (aiaj)
+
+            ##CASE C
+            aiaj = scipy.sparse.kron(Ia,scipy.sparse.kron(ANtemp,scipy.sparse.kron(Ib,scipy.sparse.kron(BNtemp,Ic))))
+            S2  -= 0.5 * (aiaj)
+
+            ##CASE D
+            aiaj = scipy.sparse.kron(Ia,scipy.sparse.kron(BNtemp,scipy.sparse.kron(Ib,scipy.sparse.kron(ANtemp,Ic))))
+            S2  -= 0.5 * (aiaj)
+
+            ##CASE E
+            aiaj = scipy.sparse.kron(Ia,scipy.sparse.kron(ANtemp,scipy.sparse.kron(Ib,scipy.sparse.kron(ANtemp,Ic))))
+            S2  += 0.5 * (aiaj)
+
+            ##CASE F
+            aiaj = scipy.sparse.kron(Ia,scipy.sparse.kron(BNtemp,scipy.sparse.kron(Ib,scipy.sparse.kron(BNtemp,Ic))))
+            S2  += 0.5 * (aiaj)
+
+    return scipy.sparse.csc_matrix(S2)
+    # }}}
+
+
+
 
 
 if __name__== "__main__":
@@ -511,10 +589,20 @@ if __name__== "__main__":
     geometry = [('Sc', (0,0,0))]
     charge = 1
     spin = 0
-    #[n_orb, n_a, n_b, h, g, mol, E_nuc, E_scf, C, S] = pyscf_helper.init(geometry,charge,spin,
-    #        basis, n_frzn_occ=0, n_act=15)
-    [n_orb, n_a, n_b, h, g, mol, E_nuc, E_scf, C, S] = pyscf_helper.init(geometry,charge,spin,basis,n_frzn_occ=9, n_act=6)
-    
+    #[n_orb, n_a, n_b, h, g, mol, E_nuc, E_scf, C, S] = pyscf_helper.init(geometry,charge,spin,basis)
+    mo_order = []
+    mo_order.extend(range(0,9))
+    mo_order.extend(range(9,10))
+    mo_order.extend(range(13,18))
+    mo_order.extend(range(10,13))
+    print(" mo_order: ", mo_order)
+    [n_orb, n_a, n_b, h, g, mol, E_nuc, E_scf, C, S] = pyscf_helper.init(geometry,charge,spin,basis,n_frzn_occ=9,
+            n_act=6, mo_order=mo_order)
+   
+    print(" n_orb: %4i" %n_orb)
+    print(" n_a  : %4i" %n_a)
+    print(" n_b  : %4i" %n_b)
+
     sq_ham = pyscf_helper.SQ_Hamiltonian()
     sq_ham.init(h, g, C, S)
     print(" HF Energy: %12.8f" %(E_nuc + sq_ham.energy_of_determinant(range(n_a),range(n_b))))
@@ -522,18 +610,20 @@ if __name__== "__main__":
     fermi_ham  = sq_ham.export_FermionOperator()
    
     hamiltonian = openfermion.transforms.get_sparse_operator(fermi_ham)
-    print(hamiltonian.shape)
     
-
-    [e,v] = scipy.sparse.linalg.eigsh(hamiltonian.real,10)
-    print(e)
-    fermi_ham += FermionOperator((),E_nuc)
-    pyscf.molden.from_mo(mol, "full.molden", sq_ham.C)
-    
- 
     #Build p-h reference and map it to JW transform
     reference_ket = scipy.sparse.csc_matrix(openfermion.jw_configuration_state(list(range(0,n_a+n_b)), 2*n_orb)).transpose()
 
+    [e,v] = scipy.sparse.linalg.eigsh(hamiltonian.real,1,which='SA')
+    print(min(e)+E_nuc)
+    fermi_ham += FermionOperator((),E_nuc)
+    pyscf.molden.from_mo(mol, "full.molden", sq_ham.C)
+    
+    s2 = Make_S2(n_orb)
+    s2 = v.conj().T.dot(s2.dot(v))
+    print(" S2: %12.8f" %s2[0,0])
+    exit()
+ 
     pool = operator_pools.singlet_GSD()
     pool.init(n_orb)
     

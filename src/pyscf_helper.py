@@ -210,7 +210,7 @@ class SQ_Hamiltonian:
 
 
 
-def init(molecule,charge,spin,basis,n_frzn_occ=0, n_act=0):
+def init(molecule,charge,spin,basis,n_frzn_occ=0, n_act=None, mo_order=None):
 # {{{
     #PYSCF inputs
     print(" ---------------------------------------------------------")
@@ -237,9 +237,16 @@ def init(molecule,charge,spin,basis,n_frzn_occ=0, n_act=0):
     n_b , n_a = mol.nelec 
     nel = n_a + n_b
 
+    if n_act == None:
+        n_act = n_orb
     #SCF 
     mf = scf.RHF(mol).run()
     #mf = scf.ROHF(mol).run()
+    
+    if mo_order != None:
+        assert(len(mo_order) == mf.mo_coeff.shape[1])
+        mf.mo_coeff = mf.mo_coeff[:,mo_order]
+    
     C = mf.mo_coeff #MO coeffs
     S = mf.get_ovlp()
 
@@ -348,7 +355,8 @@ def init(molecule,charge,spin,basis,n_frzn_occ=0, n_act=0):
         print(" PYSCF: FCI energy: %12.8f" %(efci))
         print()
     
-    return(n_orb, n_a, n_b, h, eri_act, mol, E_nuc ,mf.e_tot,C,S)
+    Cact = C[:,n_frzn_occ:n_frzn_occ+n_act]
+    return(n_act, n_a, n_b, h, eri_act, mol, E_nuc ,mf.e_tot,Cact,S)
 # }}}
 
 
