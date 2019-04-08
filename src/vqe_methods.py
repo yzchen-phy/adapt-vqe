@@ -130,6 +130,7 @@ def adapt_vqe(hamiltonian_op, pool, reference_ket,
         for si in range(len(ansatz_ops)):
             opstring = pool.get_string_for_term(ansatz_ops[si])
             print(" %4i %12.8f %s" %(si, parameters[si], opstring) )
+    return trial_model.curr_energy, curr_state, parameters
 
 # }}}
 
@@ -611,24 +612,34 @@ if __name__== "__main__":
    
     hamiltonian = openfermion.transforms.get_sparse_operator(fermi_ham)
     
-    #Build p-h reference and map it to JW transform
-    reference_ket = scipy.sparse.csc_matrix(openfermion.jw_configuration_state(list(range(0,n_a+n_b)), 2*n_orb)).transpose()
+    s2 = Make_S2(n_orb)
+    
+    n_a += 1
 
-    [e,v] = scipy.sparse.linalg.eigsh(hamiltonian.real,1,which='SA')
-    print(min(e)+E_nuc)
+    #build reference configuration
+    occupied_list = []
+    for i in range(n_a):
+        occupied_list.append(i*2)
+    for i in range(n_b):
+        occupied_list.append(i*2+1)
+
+    print(" Build reference state with %4i alpha and %4i beta electrons" %(n_a,n_b), occupied_list)
+    reference_ket = scipy.sparse.csc_matrix(openfermion.jw_configuration_state(occupied_list, 2*n_orb)).transpose()
+
+    [e,v] = scipy.sparse.linalg.eigsh(hamiltonian.real,1,which='SA',v0=reference_ket.todense())
+    for ei in range(len(e)):
+        S2 = v[:,ei].conj().T.dot(s2.dot(v[:,ei]))
+        print(" State %4i: %12.8f au  <S2>: %12.8f" %(ei,e[ei]+E_nuc,S2))
     fermi_ham += FermionOperator((),E_nuc)
     pyscf.molden.from_mo(mol, "full.molden", sq_ham.C)
-    
-    s2 = Make_S2(n_orb)
-    s2 = v.conj().T.dot(s2.dot(v))
-    print(" S2: %12.8f" %s2[0,0])
-    exit()
- 
+   
     pool = operator_pools.singlet_GSD()
     pool.init(n_orb)
     
-    vqe_methods.adapt_vqe(fermi_ham, pool, reference_ket, adapt_thresh=1e-2, theta_thresh=1e-9)
-
+    [e,v,params] = vqe_methods.adapt_vqe(fermi_ham, pool, reference_ket, adapt_thresh=1e-6, theta_thresh=1e-9)
+    
+    print(" Final ADAPT-VQE energy: %12.8f" %e)
+    print(" <S^2> of final state  : %12.8f" %(v.conj().T.dot(s2.dot(v))[0,0].real))
     exit()
     
 
