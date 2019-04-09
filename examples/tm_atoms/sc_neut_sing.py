@@ -21,26 +21,20 @@ from openfermion import *
 
 import pyscf_helper
 
-r = 1.5
-#geometry = [('H', (0,0,1*r)), ('H', (0,0,2*r)), ('H', (0,0,3*r)), ('H', (0,0,4*r))]
-geometry = [('H',  (0, 0, 0)), 
-            ('Li', (0, 0, r*2.39))]
-#geometry = [('H', (0,0,1*r)), ('H', (0,0,2*r)), ('H', (0,0,3*r)), ('H', (0,0,4*r)), ('H', (0,0,5*r)), ('H', (0,0,6*r))]
 
 
-charge = 0
+charge = 1
 spin = 0
 basis = 'cc-pvdz'
 
 geometry = [('Sc', (0,0,0))]
-charge = 1
-spin = 2
-#[n_orb, n_a, n_b, h, g, mol, E_nuc, E_scf, C, S] = pyscf_helper.init(geometry,charge,spin,basis)
+
 mo_order = []
 mo_order.extend(range(0,11))
 mo_order.extend(range(14,18))
 mo_order.extend(range(11,14))
 mo_order.extend(range(18,43))
+
 print(" mo_order: ", mo_order)
 [n_orb, n_a, n_b, h, g, mol, E_nuc, E_scf, C, S] = pyscf_helper.init(geometry,charge,spin,basis,n_frzn_occ=9,
         n_act=6, mo_order=mo_order)
@@ -71,10 +65,11 @@ for i in range(n_b):
 print(" Build reference state with %4i alpha and %4i beta electrons" %(n_a,n_b), occupied_list)
 reference_ket = scipy.sparse.csc_matrix(openfermion.jw_configuration_state(occupied_list, 2*n_orb)).transpose()
 
+print(" Do exact diagonalization of full Hilbert space Hamiltonian")
 [e,v] = scipy.sparse.linalg.eigsh(hamiltonian.real,180,which='SA',v0=reference_ket.todense())
 for ei in range(len(e)):
     S2 = v[:,ei].conj().T.dot(s2.dot(v[:,ei]))
-    print(" State %4i: %12.8f au  <S2>: %12.8f" %(ei,e[ei]+E_nuc,S2))
+    print(" FCI State %4i: %12.8f au  <S2>: %12.8f" %(ei,e[ei]+E_nuc,S2))
 fermi_ham += FermionOperator((),E_nuc)
 pyscf.molden.from_mo(mol, "full.molden", sq_ham.C)
 
