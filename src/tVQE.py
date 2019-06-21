@@ -24,10 +24,10 @@ class Variational_Ansatz:
         self.H = _H
         self.G = _G
         self.ref = cp.deepcopy(_ref)
-        self.curr_params = _params 
+        self.curr_params = _params
         self.n_params = len(self.curr_params)
-        self.hilb_dim = self.H.shape[0] 
-        
+        self.hilb_dim = self.H.shape[0]
+
         self.iter = 0
         self.energy_per_iteration = []
         self.psi_norm = 1.0
@@ -36,16 +36,16 @@ class Variational_Ansatz:
     def energy(self,params):
         print(" VIRTUAL Class: please override")
         exit()
-    
+
     def gradient(self,params):
         print(" VIRTUAL Class: please override")
         exit()
-    
+
     def prepare_state(self,params):
         print(" VIRTUAL Class: please override")
         exit()
 
-        
+
     def callback(self,x):
         try:
             err = np.sqrt(np.vdot(self.der, self.der))
@@ -61,18 +61,19 @@ class Variational_Ansatz:
 
 
 
-class tUCCSD(Variational_Ansatz):
-    
+class tUCC(Variational_Ansatz):
+
     def energy(self,params):
         new_state = self.prepare_state(params)
-        assert(new_state.transpose().conj().dot(new_state).toarray()[0][0]-1<0.0000001)
+        assert(new_state.transpose().conj().dot(new_state)[0][0]-1<0.0000001)
+        # assert(new_state.transpose().conj().dot(new_state).toarray()[0][0]-1<0.0000001)
         energy = new_state.transpose().conj().dot(self.H.dot(new_state))[0,0]
         assert(np.isclose(energy.imag,0))
         self.curr_energy = energy.real
         return energy.real
 
     def prepare_state(self,parameters):
-        """ 
+        """
         Prepare state:
         exp{A1}exp{A2}exp{A3}...exp{An}|ref>
         """
@@ -80,15 +81,15 @@ class tUCCSD(Variational_Ansatz):
         for k in reversed(range(0, len(parameters))):
             new_state = scipy.sparse.linalg.expm_multiply((parameters[k]*self.G[k]), new_state)
         return new_state
-    
-    
+
+
     def gradient(self,parameters):
-        """ 
+        """
         """
         grad = []
         new_ket = self.prepare_state(parameters)
         new_bra = new_ket.transpose().conj()
-        
+
         hbra = new_bra.dot(self.H)
         term = 0
         ket = cp.deepcopy(new_ket)
@@ -114,17 +115,18 @@ class tUCCSD(Variational_Ansatz):
 
 
 class UCC(Variational_Ansatz):
-    
+
     def energy(self,params):
         new_state = self.prepare_state(params)
-        assert(new_state.transpose().conj().dot(new_state).toarray()[0][0]-1<0.0000001)
+        # print(new_state.transpose().conj().dot(new_state))
+        assert(new_state.transpose().conj().dot(new_state)-1<0.0000001)
         energy = new_state.transpose().conj().dot(self.H.dot(new_state))[0,0]
         assert(np.isclose(energy.imag,0))
         self.curr_energy = energy.real
         return energy.real
 
     def prepare_state(self,parameters):
-        """ 
+        """
         Prepare state:
         exp{A1+A2+A3...+An}|ref>
         """
@@ -134,6 +136,3 @@ class UCC(Variational_Ansatz):
             generator = generator+parameters[mat_op]*self.G[mat_op]
         new_state = scipy.sparse.linalg.expm_multiply(generator, self.ref)
         return new_state
-    
-    
-

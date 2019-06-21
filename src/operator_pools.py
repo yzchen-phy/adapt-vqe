@@ -17,14 +17,14 @@ class OperatorPool:
         self.n_spin_orb = 0
         self.gradient_print_thresh = 0
 
-    def init(self,n_orb, 
-            n_occ_a=None, 
-            n_occ_b=None, 
-            n_vir_a=None, 
+    def init(self,n_orb,
+            n_occ_a=None,
+            n_occ_b=None,
+            n_vir_a=None,
             n_vir_b=None):
-        self.n_orb = n_orb 
-        self.n_spin_orb = 2*self.n_orb 
-        
+        self.n_orb = n_orb
+        self.n_spin_orb = 2*self.n_orb
+
         if n_occ_a!=None and n_occ_b!=None:
             self.n_occ = n_occ_a + n_occ_b
             self.n_occ_a = n_occ_a
@@ -53,8 +53,8 @@ class OperatorPool:
         opstring = ""
         spins = ""
         for t in op.terms:
-       
-            
+
+
             opstring = "("
             for ti in t:
                 opstring += str(int(ti[0]/2))
@@ -71,7 +71,7 @@ class OperatorPool:
 #                spins = "+"+spins
 #            if self.fermi_ops[i].terms[t] < 0:
 #                spins = "-"+spins
-            opstring += ")" 
+            opstring += ")"
             spins += " "
         opstring = " %18s : %s" %(opstring, spins)
         return opstring
@@ -83,7 +83,7 @@ class OperatorPool:
         For a previously optimized state |n>, compute the gradient g(k) of exp(c(k) A(k))|n>
         g(k) = 2Real<HA(k)>
 
-        Note - this assumes A(k) is an antihermitian operator. If this is not the case, the derived class should 
+        Note - this assumes A(k) is an antihermitian operator. If this is not the case, the derived class should
         reimplement this function. Of course, also assumes H is hermitian
 
         v   = current_state
@@ -91,26 +91,28 @@ class OperatorPool:
 
         """
         opA = self.spmat_ops[i]
-        gi = 2*(sig.transpose().conj().dot(opA.dot(v)))
+        gi = 2*(sig.transpose().conj().dot(opA.dot(v))).real
+        # gi = sig.transpose().conj().dot(opA.dot(v)) - v.transpose().conj().dot(opA.dot(sig))
         assert(gi.shape == (1,1))
         gi = gi[0,0]
-        assert(np.isclose(gi.imag,0))
-        gi = gi.real
-       
+        # print(gi)
+        # assert(np.isclose(gi.imag,0))
+        # gi = gi.real
+
         opstring = self.get_string_for_term(self.fermi_ops[i])
 
         if abs(gi) > self.gradient_print_thresh:
             print(" %4i %12.8f %s" %(i, gi, opstring) )
-    
+
         return gi
-   
+
 
 class spin_complement_GSD(OperatorPool):
 # {{{
     def generate_SQ_Operators(self):
         alpha_orbs = [2*i for i in range(self.n_orb)]
         beta_orbs = [2*i+1 for i in range(self.n_orb)]
-    
+
         ops = []
         #aa
         for p in alpha_orbs:
@@ -144,8 +146,8 @@ class spin_complement_GSD(OperatorPool):
                         ops.append(two_elec)
                         rs += 1
                 pq += 1
-        
-        
+
+
         #ab
         pq = 0
         for p in alpha_orbs:
@@ -166,7 +168,7 @@ class spin_complement_GSD(OperatorPool):
         self.fermi_ops = ops
         self.n_ops = len(self.fermi_ops)
         print(" Number of operators: ", self.n_ops)
-        return 
+        return
 # }}}
 
 
@@ -179,69 +181,69 @@ class spin_complement_GSD2(OperatorPool):
         n_orb is number of spatial orbitals assuming that spin orbitals are labelled
         0a,0b,1a,1b,2a,2b,3a,3b,....  -> 0,1,2,3,...
         """
-        
+
         print(" Form spin-complemented GSD operators")
-        
+
         self.fermi_ops = []
         for p in range(0,self.n_orb):
             pa = 2*p
             pb = 2*p+1
- 
+
             for q in range(p,self.n_orb):
                 qa = 2*q
                 qb = 2*q+1
-        
+
                 termA =  FermionOperator(((pa,1),(qa,0)))
                 termA += FermionOperator(((pb,1),(qb,0)))
- 
+
                 termA -= hermitian_conjugated(termA)
-               
+
                 termA = normal_ordered(termA)
-                
+
                 if termA.many_body_order() > 0:
                     self.fermi_ops.append(termA)
-                       
-      
-        pq = -1 
+
+
+        pq = -1
         for p in range(0,self.n_orb):
             pa = 2*p
             pb = 2*p+1
- 
+
             for q in range(p,self.n_orb):
                 qa = 2*q
                 qb = 2*q+1
-        
+
                 pq += 1
-        
-                rs = -1 
+
+                rs = -1
                 for r in range(0,self.n_orb):
                     ra = 2*r
                     rb = 2*r+1
-                    
+
                     for s in range(r,self.n_orb):
                         sa = 2*s
                         sb = 2*s+1
-                    
+
                         rs += 1
-                    
+
                         if(pq > rs):
                             continue
-                        
+
                         termA =  FermionOperator(((ra,1),(pa,0),(sa,1),(qa,0)))
                         termA += FermionOperator(((rb,1),(pb,0),(sb,1),(qb,0)))
-                        
+
                         termB =  FermionOperator(((ra,1),(pa,0),(sb,1),(qb,0)))
                         termB += FermionOperator(((rb,1),(pb,0),(sa,1),(qa,0)))
-                        
+
                         termC =  FermionOperator(((ra,1),(pb,0),(sb,1),(qa,0)))
                         termC += FermionOperator(((rb,1),(pa,0),(sa,1),(qb,0)))
 
 #                        termA =  FermionOperator(((ra,1),(pa,0),(sa,1),(qa,0)))
 #                        termA += FermionOperator(((rb,1),(pb,0),(sb,1),(qb,0)))
-#                                                                      
+#
 #                        termB =  FermionOperator(((ra,1),(pa,0),(sb,1),(qb,0)))
 #                        termB += FermionOperator(((rb,1),(pb,0),(sa,1),(qa,0)))
-#                        
+#
 #                        termC =  FermionOperator(((ra,1),(pb,0),(sb,1),(qa,0)))
 #                        termC += FermionOperator(((rb,1),(pa,0),(sa,1),(qb,0)))
 
@@ -253,14 +255,14 @@ class spin_complement_GSD2(OperatorPool):
                         termA -= hermitian_conjugated(termA)
                         termB -= hermitian_conjugated(termB)
                         termC -= hermitian_conjugated(termC)
-               
+
                         termA = normal_ordered(termA)
                         termB = normal_ordered(termB)
                         termC = normal_ordered(termC)
-                        
+
                         if termA.many_body_order() > 0:
                             self.fermi_ops.append(termA)
-                        
+
                         if termB.many_body_order() > 0:
                             self.fermi_ops.append(termB)
 
@@ -269,7 +271,7 @@ class spin_complement_GSD2(OperatorPool):
 
         self.n_ops = len(self.fermi_ops)
         print(" Number of operators: ", self.n_ops)
-        return 
+        return
 # }}}
 
 
@@ -282,58 +284,58 @@ class singlet_GSD(OperatorPool):
         n_orb is number of spatial orbitals assuming that spin orbitals are labelled
         0a,0b,1a,1b,2a,2b,3a,3b,....  -> 0,1,2,3,...
         """
-        
+
         print(" Form singlet GSD operators")
-        
+
         self.fermi_ops = []
         for p in range(0,self.n_orb):
             pa = 2*p
             pb = 2*p+1
- 
+
             for q in range(p,self.n_orb):
                 qa = 2*q
                 qb = 2*q+1
-        
+
                 termA =  FermionOperator(((pa,1),(qa,0)))
                 termA += FermionOperator(((pb,1),(qb,0)))
- 
+
                 termA -= hermitian_conjugated(termA)
-               
+
                 termA = normal_ordered(termA)
-                
+
                 #Normalize
                 coeffA = 0
                 for t in termA.terms:
                     coeff_t = termA.terms[t]
                     coeffA += coeff_t * coeff_t
-            
+
                 if termA.many_body_order() > 0:
                     termA = termA/np.sqrt(coeffA)
                     self.fermi_ops.append(termA)
-                       
-      
-        pq = -1 
+
+
+        pq = -1
         for p in range(0,self.n_orb):
             pa = 2*p
             pb = 2*p+1
- 
+
             for q in range(p,self.n_orb):
                 qa = 2*q
                 qb = 2*q+1
-        
+
                 pq += 1
-        
-                rs = -1 
+
+                rs = -1
                 for r in range(0,self.n_orb):
                     ra = 2*r
                     rb = 2*r+1
-                    
+
                     for s in range(r,self.n_orb):
                         sa = 2*s
                         sb = 2*s+1
-                    
+
                         rs += 1
-                    
+
                         if(pq > rs):
                             continue
 
@@ -344,10 +346,10 @@ class singlet_GSD(OperatorPool):
 #                        oplist.append(FermionOperator(((rb,1),(pb,0),(sa,1),(qa,0)), 1/np.sqrt(12)))
 #                        oplist.append(FermionOperator(((ra,1),(pb,0),(sb,1),(qa,0)), 1/np.sqrt(12)))
 #                        oplist.append(FermionOperator(((rb,1),(pa,0),(sa,1),(qb,0)), 1/np.sqrt(12)))
-#                       
+#
 #                        print(p,q,r,s)
 #                        for i in range(len(oplist)):
-#                            oplist[i] -= hermitian_conjugated(oplist[i])  
+#                            oplist[i] -= hermitian_conjugated(oplist[i])
 #                        for i in range(len(oplist)):
 #                            for j in range(i+1,len(oplist)):
 #                                opi = oplist[i]
@@ -362,18 +364,18 @@ class singlet_GSD(OperatorPool):
                         termA += FermionOperator(((rb,1),(pb,0),(sa,1),(qa,0)), 1/np.sqrt(12))
                         termA += FermionOperator(((ra,1),(pb,0),(sb,1),(qa,0)), 1/np.sqrt(12))
                         termA += FermionOperator(((rb,1),(pa,0),(sa,1),(qb,0)), 1/np.sqrt(12))
-                                                                      
+
                         termB =  FermionOperator(((ra,1),(pa,0),(sb,1),(qb,0)),  1/2.0)
                         termB += FermionOperator(((rb,1),(pb,0),(sa,1),(qa,0)),  1/2.0)
                         termB += FermionOperator(((ra,1),(pb,0),(sb,1),(qa,0)), -1/2.0)
                         termB += FermionOperator(((rb,1),(pa,0),(sa,1),(qb,0)), -1/2.0)
- 
+
                         termA -= hermitian_conjugated(termA)
                         termB -= hermitian_conjugated(termB)
-               
+
                         termA = normal_ordered(termA)
                         termB = normal_ordered(termB)
-                        
+
                         #Normalize
                         coeffA = 0
                         coeffB = 0
@@ -384,18 +386,115 @@ class singlet_GSD(OperatorPool):
                             coeff_t = termB.terms[t]
                             coeffB += coeff_t * coeff_t
 
-                        
+
                         if termA.many_body_order() > 0:
                             termA = termA/np.sqrt(coeffA)
                             self.fermi_ops.append(termA)
-                        
+
                         if termB.many_body_order() > 0:
                             termB = termB/np.sqrt(coeffB)
                             self.fermi_ops.append(termB)
 
         self.n_ops = len(self.fermi_ops)
         print(" Number of operators: ", self.n_ops)
-        return 
+        return
+# }}}
+
+
+
+
+class fermion_2site(OperatorPool):
+# {{{
+    def generate_SQ_Operators(self):
+        """
+        O(i,j) = o(i)o(j)
+        where o(i) = {a(i), a'(i), aa'(i), a'a(i)}
+        """
+
+        print(" Form fermionic_2site operators")
+
+        self.fermi_ops = []
+
+        fermi_ops_1site = []
+        for p in range(0,self.n_orb):
+            pa = 2*p
+            pb = 2*p+1
+
+
+            pca = FermionOperator(((pa,1)))
+            pcb = FermionOperator(((pb,1)))
+            paa = FermionOperator(((pa,0)))
+            pab = FermionOperator(((pb,0)))
+
+            site1 = []
+            site1.append(pca)
+            site1.append(pcb)
+            site1.append(paa)
+            site1.append(pab)
+
+            tmp = []
+            for oii,oi in enumerate(site1):
+                for ojj,oj in enumerate(site1):
+                    tmp.append(oi*oj)
+            site1.extend(tmp)
+            fermi_ops_1site.append(site1)
+
+        for sii,si in enumerate(fermi_ops_1site):
+            for sjj,sj in enumerate(fermi_ops_1site):
+                if sii>sjj:
+                    continue
+                print(sii,sjj)
+                for oii,oi in enumerate(si):
+                    for ojj,oj in enumerate(sj):
+                        op = oi*oj
+                        op -= hermitian_conjugated(op)
+                        op = normal_ordered(op)
+                        if op.many_body_order() in [2,4]:
+                        # if op.many_body_order() > 0:
+                            self.fermi_ops.append(op)
+
+                        op = oi*oj
+                        op += hermitian_conjugated(op)
+                        op = 1j*normal_ordered(op)
+                        if op.many_body_order() in [2,4]:
+                            self.fermi_ops.append(op)
+        # for sii,si in enumerate(site1):
+        #     for sjj,sj in enumerate(site1):
+        #         if sii>sjj:
+        #             continue
+        #         for skk,sk in enumerate(site1):
+        #             if sjj<skk:
+        #                 continue
+        #
+        #             for oii,oi in enumerate(si):
+        #                 for ojj,oj in enumerate(sj):
+        #                     for okk,ok in enumerate(sk):
+        #                         op = oi*oj*ok
+        #                         op -= hermitian_conjugated(op)
+        #                         op = normal_ordered(op)
+        #                         if op.many_body_order() in [2,4,6]:
+        #                         # if op.many_body_order() > 0:
+        #                             self.fermi_ops.append(op)
+        #
+        #                         op = oi*oj*ok
+        #                         op += hermitian_conjugated(op)
+        #                         op = 1j*normal_ordered(op)
+        #                         if op.many_body_order() in [2,4,6]:
+        #                             self.fermi_ops.append(op)
+
+        unique = {}
+        for op in self.fermi_ops:
+            # print(str(op),op)
+            unique[str(op)]=op
+        self.fermi_ops = []
+        for op in unique:
+            print(op)
+            self.fermi_ops.append(unique[op])
+        # for op in self.fermi_ops:
+        #     print(op)
+        self.n_ops = len(self.fermi_ops)
+        print(" Number of operators: ", self.n_ops)
+        return
 # }}}
 
 
@@ -409,11 +508,11 @@ class singlet_SD(OperatorPool):
         """
 
         print(" Form singlet SD operators")
-        self.fermi_ops = [] 
-       
+        self.fermi_ops = []
+
         n_occ = self.n_occ
         n_vir = self.n_vir
-       
+
         for i in range(0,n_occ):
             ia = 2*i
             ib = 2*i+1
@@ -421,24 +520,24 @@ class singlet_SD(OperatorPool):
             for a in range(0,n_vir):
                 aa = 2*n_occ + 2*a
                 ab = 2*n_occ + 2*a+1
-                    
+
                 termA =  FermionOperator(((aa,1),(ia,0)), 1/np.sqrt(2))
                 termA += FermionOperator(((ab,1),(ib,0)), 1/np.sqrt(2))
-                
+
                 termA -= hermitian_conjugated(termA)
-                        
+
                 termA = normal_ordered(termA)
-               
+
                 #Normalize
                 coeffA = 0
                 for t in termA.terms:
                     coeff_t = termA.terms[t]
                     coeffA += coeff_t * coeff_t
-                
+
                 if termA.many_body_order() > 0:
                     termA = termA/np.sqrt(coeffA)
                     self.fermi_ops.append(termA)
-       
+
 
         for i in range(0,n_occ):
             ia = 2*i
@@ -447,7 +546,7 @@ class singlet_SD(OperatorPool):
             for j in range(i,n_occ):
                 ja = 2*j
                 jb = 2*j+1
-        
+
                 for a in range(0,n_vir):
                     aa = 2*n_occ + 2*a
                     ab = 2*n_occ + 2*a+1
@@ -462,18 +561,18 @@ class singlet_SD(OperatorPool):
                         termA += FermionOperator(((ab,1),(ba,1),(ib,0),(ja,0)), 1/np.sqrt(12))
                         termA += FermionOperator(((aa,1),(bb,1),(ib,0),(ja,0)), 1/np.sqrt(12))
                         termA += FermionOperator(((ab,1),(ba,1),(ia,0),(jb,0)), 1/np.sqrt(12))
-                                                                      
+
                         termB  = FermionOperator(((aa,1),(bb,1),(ia,0),(jb,0)), 1/2)
                         termB += FermionOperator(((ab,1),(ba,1),(ib,0),(ja,0)), 1/2)
                         termB += FermionOperator(((aa,1),(bb,1),(ib,0),(ja,0)), -1/2)
                         termB += FermionOperator(((ab,1),(ba,1),(ia,0),(jb,0)), -1/2)
-                
+
                         termA -= hermitian_conjugated(termA)
                         termB -= hermitian_conjugated(termB)
-               
+
                         termA = normal_ordered(termA)
                         termB = normal_ordered(termB)
-                        
+
                         #Normalize
                         coeffA = 0
                         coeffB = 0
@@ -484,18 +583,18 @@ class singlet_SD(OperatorPool):
                             coeff_t = termB.terms[t]
                             coeffB += coeff_t * coeff_t
 
-                        
+
                         if termA.many_body_order() > 0:
                             termA = termA/np.sqrt(coeffA)
                             self.fermi_ops.append(termA)
-                        
+
                         if termB.many_body_order() > 0:
                             termB = termB/np.sqrt(coeffB)
                             self.fermi_ops.append(termB)
-        
+
         self.n_ops = len(self.fermi_ops)
         print(" Number of operators: ", self.n_ops)
-        return 
+        return
     # }}}
 
 
@@ -503,7 +602,3 @@ class singlet_SD(OperatorPool):
 def unrestricted_SD(n_occ_a, n_occ_b, n_vir_a, n_vir_b):
     print("NYI")
     exit()
-                
-
-
-
