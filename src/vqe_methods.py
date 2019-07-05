@@ -22,13 +22,86 @@ from openfermion import *
 
 import pyscf_helper
 
+def newton_correction(state,
+                        hamiltonian,
+                        pool,
+                        lin_dep_thresh = 1e-4):
+    print(" Compute Gradient")
+    grad = np.zeros((pool.n_ops,1))
+    sig = hamiltonian.dot(state)
+    for op_trial in range(pool.n_ops):
+        
+        opA = pool.spmat_ops[op_trial]
+        com = 2*(state.transpose().conj().dot(opA.dot(sig))).real
+        assert(com.shape == (1,1))
+        com = com[0,0]
+        assert(np.isclose(com.imag,0))
+        com = com.real
+        grad[op_trial] = com
+    
+
+    print(" Compute Hessian")
+    hess = np.zeros((pool.n_ops,pool.n_ops))
+
+    # 2*R <HAB> + 2*R <AHB>
+    for ai in range(pool.n_ops):
+        opA = pool.spmat_ops[ai]
+        pA = opA.dot(state)
+    
+        for bi in range(pool.n_ops):
+            opB = pool.spmat_ops[bi]
+            pB = opB.dot(state)
+           
+            term1 = 2*(sig.transpose().conj().dot(opA.dot(pB))).real 
+            term2 = 2*(pA.transpose().conj().dot(hamiltonian.dot(pB))).real
+         
+            term = term1 + term2
+            assert(term.shape == (1,1))
+            term = term[0,0]
+            hess[ai,bi] = term
+   
+    U,s,V = np.linalg.svd(hess)
+    n_vecs = 0
+    for si in s:
+        if si > lin_dep_thresh:
+            n_vecs += 1
+    U = U[:,0:n_vecs]
+    s = s[0:n_vecs]
+    V = V[0:n_vecs,:].T
+
+    g = grad
+
+    gg = g.T @ U
+    ggg = V.T @ g
+    
+    dd  = -gg/s
+    ddd = -(ggg.T/s).T
+    
+    #delx  = - np.linalg.pinv(hess).dot(grad)
+    #delxt = - grad.T.conj().dot(np.linalg.pinv(hess.T.conj()))
+
+    #for i in range(s.shape[0]):
+    #    print(" %12.8f , %12.8f , %12.8f, %12.8f , %12.8f" %(s[i], gg[0,i],ggg[i,0],dd[0,i],ddd[i,0]))    
+    
+    e_pt2 =  dd @ ggg + .5*dd @ np.diag(s) @ ddd 
+
+    print(" # Variables %5i : # Linearly Independent Variables %5i" %(U.shape[0], U.shape[1]))
+    #assert(e_pt2.shape == (1,1))
+    e_pt2 = e_pt2[0,0]
+    #e_pt2 = grad.T.conj().dot(delx) + .5*delx.T.conj().dot(hess.dot(delx)) 
+    #print(" Correction =  %16.14f " %(e_pt2))
+    #print(np.linalg.norm(hess - hess.T))
+    return hess, grad, e_pt2
+
+
+
 def adapt_vqe(hamiltonian_op, pool, reference_ket,
         adapt_conver    = 'norm',
         adapt_thresh    = 1e-3,
         theta_thresh    = 1e-7,
         adapt_maxiter   = 200,
         spin_adapt      = True,
-        psi4_filename   = "psi4_%12.12f"%random.random()
+        pt2             = False
         ):
 # {{{
     
@@ -121,6 +194,16 @@ def adapt_vqe(hamiltonian_op, pool, reference_ket,
 
         opt_result = scipy.optimize.minimize(trial_model.energy, parameters, jac=trial_model.gradient, 
                 options = min_options, method = 'BFGS', callback=trial_model.callback)
+        
+        curr_state = trial_model.prepare_state(parameters)
+        trial_model.curr_params = parameters
+        if pt2:
+            print()
+            print(" ------------------------------")
+            print(" Compute Newton Correction")
+            print(" ------------------------------")
+            hess,grad,ept2 = newton_correction(curr_state, hamiltonian, pool) 
+            print(" E(2)    : %20.12f" % (trial_model.curr_energy+ept2))
     
         parameters = list(opt_result['x'])
         curr_state = trial_model.prepare_state(parameters)
@@ -577,6 +660,7 @@ def Make_S2(n_orb):
 
 if __name__== "__main__":
     r = 1.5
+    r=1
     #geometry = [('H', (0,0,1*r)), ('H', (0,0,2*r)), ('H', (0,0,3*r)), ('H', (0,0,4*r))]
     geometry = [('H',  (0, 0, 0)), 
                 ('Li', (0, 0, r*2.39))]
@@ -587,19 +671,20 @@ if __name__== "__main__":
     spin = 0
     basis = 'sto-3g'
     
-    geometry = [('Sc', (0,0,0))]
-    charge = 1
-    spin = 0
-    #[n_orb, n_a, n_b, h, g, mol, E_nuc, E_scf, C, S] = pyscf_helper.init(geometry,charge,spin,basis)
-    mo_order = []
-    mo_order.extend(range(0,9))
-    mo_order.extend(range(9,10))
-    mo_order.extend(range(13,18))
-    mo_order.extend(range(10,13))
-    print(" mo_order: ", mo_order)
-    [n_orb, n_a, n_b, h, g, mol, E_nuc, E_scf, C, S] = pyscf_helper.init(geometry,charge,spin,basis,n_frzn_occ=9,
-            n_act=6, mo_order=mo_order)
+#    geometry = [('Sc', (0,0,0))]
+#    charge = 1
+#    spin = 0
+#    #[n_orb, n_a, n_b, h, g, mol, E_nuc, E_scf, C, S] = pyscf_helper.init(geometry,charge,spin,basis)
+#    mo_order = []
+#    mo_order.extend(range(0,9))
+#    mo_order.extend(range(9,10))
+#    mo_order.extend(range(13,18))
+#    mo_order.extend(range(10,13))
+#    print(" mo_order: ", mo_order)
+#    [n_orb, n_a, n_b, h, g, mol, E_nuc, E_scf, C, S] = pyscf_helper.init(geometry,charge,spin,basis,n_frzn_occ=9,
+#            n_act=6, mo_order=mo_order)
    
+    [n_orb, n_a, n_b, h, g, mol, E_nuc, E_scf, C, S] = pyscf_helper.init(geometry,charge,spin,basis)
     print(" n_orb: %4i" %n_orb)
     print(" n_a  : %4i" %n_a)
     print(" n_b  : %4i" %n_b)
@@ -614,8 +699,6 @@ if __name__== "__main__":
     
     s2 = Make_S2(n_orb)
     
-    n_a += 1
-
     #build reference configuration
     occupied_list = []
     for i in range(n_a):
@@ -636,7 +719,7 @@ if __name__== "__main__":
     pool = operator_pools.singlet_GSD()
     pool.init(n_orb)
     
-    [e,v,params] = vqe_methods.adapt_vqe(fermi_ham, pool, reference_ket, adapt_thresh=1e-6, theta_thresh=1e-9)
+    [e,v,params] = vqe_methods.adapt_vqe(fermi_ham, pool, reference_ket, adapt_thresh=1e-6, theta_thresh=1e-9, pt2=True)
     
     print(" Final ADAPT-VQE energy: %12.8f" %e)
     print(" <S^2> of final state  : %12.8f" %(v.conj().T.dot(s2.dot(v))[0,0].real))
