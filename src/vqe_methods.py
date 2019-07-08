@@ -5,7 +5,7 @@ import openfermionpsi4
 import os
 import numpy as np
 import copy
-import random 
+import random
 import sys
 
 import pyscf
@@ -43,28 +43,43 @@ def newton_correction(state,
     print(" Compute Hessian")
     hess = np.zeros((pool.n_ops,pool.n_ops))
 
-    # 2*R <HAB> + 2*R <AHB>
+    # 2*<AHB> + 2*<HAB>
     for ai in range(pool.n_ops):
         opA = pool.spmat_ops[ai]
         pA = opA.dot(state)
     
-        for bi in range(pool.n_ops):
+        for bi in range(ai,pool.n_ops):
             opB = pool.spmat_ops[bi]
             pB = opB.dot(state)
            
-            term1 = 2*(sig.transpose().conj().dot(opA.dot(pB))).real 
-            term2 = 2*(pA.transpose().conj().dot(hamiltonian.dot(pB))).real
+            term1 = 2*pA.transpose().conj().dot(hamiltonian.dot(pB))
+            term2 = 2*sig.transpose().conj().dot(opA.dot(pB))
          
             term = term1 + term2
             assert(term.shape == (1,1))
             term = term[0,0]
+            assert(np.isclose(term.imag,0))
+            term = term.real
             hess[ai,bi] = term
-   
+            hess[bi,ai] = term
+            
+            #if ai==bi:
+            #    print(ai,grad[ai],term)
+  
     U,s,V = np.linalg.svd(hess)
     n_vecs = 0
+    print(" Singular Values:")
     for si in s:
+        print(" %12.8f" %si)
         if si > lin_dep_thresh:
             n_vecs += 1
+
+    print(" Hessian: ")
+    print(hess)
+    print(" Grad: ")
+    print(grad)
+    #exit()
+    
     U = U[:,0:n_vecs]
     s = s[0:n_vecs]
     V = V[0:n_vecs,:].T
@@ -77,17 +92,21 @@ def newton_correction(state,
     dd  = -gg/s
     ddd = -(ggg.T/s).T
     
-    #delx  = - np.linalg.pinv(hess).dot(grad)
+    delx  = - np.linalg.pinv(hess).dot(grad)
     #delxt = - grad.T.conj().dot(np.linalg.pinv(hess.T.conj()))
 
     #for i in range(s.shape[0]):
     #    print(" %12.8f , %12.8f , %12.8f, %12.8f , %12.8f" %(s[i], gg[0,i],ggg[i,0],dd[0,i],ddd[i,0]))    
     
-    e_pt2 =  dd @ ggg + .5*dd @ np.diag(s) @ ddd 
-
+    #e_pt2 =  ggg @ ddd.T + .5*dd @ np.diag(s) @ ddd 
+    #e_pt2 =  ggg @ ddd.T + .5*dd @ np.diag(s) @ ddd 
+    #print(" %12.8f vs. %12.8f" %((g.T @ delx)[0,0] , (delx.T @ hess @ delx)[0,0]))
+    e_pt2 =  grad.T @ delx + .5*delx.T @ hess @ delx
+    #print(e_pt2)
     print(" # Variables %5i : # Linearly Independent Variables %5i" %(U.shape[0], U.shape[1]))
     #assert(e_pt2.shape == (1,1))
-    e_pt2 = e_pt2[0,0]
+    e_pt2 = 1*e_pt2[0,0]
+    #print(e_pt2)
     #e_pt2 = grad.T.conj().dot(delx) + .5*delx.T.conj().dot(hess.dot(delx)) 
     #print(" Correction =  %16.14f " %(e_pt2))
     #print(np.linalg.norm(hess - hess.T))
@@ -104,7 +123,7 @@ def adapt_vqe(hamiltonian_op, pool, reference_ket,
         pt2             = False
         ):
 # {{{
-    
+
     hamiltonian = openfermion.transforms.get_sparse_operator(hamiltonian_op)
     ref_energy = reference_ket.T.conj().dot(hamiltonian.dot(reference_ket))[0,0].real
     print(" Reference Energy: %12.8f" %ref_energy)
@@ -114,26 +133,42 @@ def adapt_vqe(hamiltonian_op, pool, reference_ket,
 
     pool.generate_SparseMatrix()
     pool.gradient_print_thresh = theta_thresh
-    
+
     ansatz_ops = []     #SQ operator strings in the ansatz
     ansatz_mat = []     #Sparse Matrices for operators in ansatz
-    
+
     print(" Start ADAPT-VQE algorithm")
     op_indices = []
     parameters = []
     curr_state = 1.0*reference_ket
+    if pt2:
+        print()
+        print(" ------------------------------")
+        print(" Compute Newton Correction")
+        print(" ------------------------------")
+        hess,grad,ept2 = newton_correction(curr_state, hamiltonian, pool) 
+        print(" E(2)    : %20.12f" % (ref_energy+ept2))
+
+    
+#    parameters = [0,0]
+#    for pi in range(-10,10):
+#        piv = pi/10000
+#        parameters[1] = piv
+#        trial_model = tUCCSD(hamiltonian, pool.spmat_ops, reference_ket, parameters)
+#        e = trial_model.energy(parameters)
+#        print( " %4i  %12.8f  %12.8f" %(pi, piv, e))
 
     print(" Now start to grow the ansatz")
     for n_iter in range(0,adapt_maxiter):
-    
+
         print("\n\n\n")
         print(" --------------------------------------------------------------------------")
-        print("                         ADAPT-VQE iteration: ", n_iter)                 
+        print("                         ADAPT-VQE iteration: ", n_iter)
         print(" --------------------------------------------------------------------------")
         next_index = None
         next_deriv = 0
         curr_norm = 0
-        
+
         print(" Check each new operator for coupling")
         next_term = []
         print(" Measure Operator Pool Gradients:")
@@ -145,9 +180,9 @@ def adapt_vqe(hamiltonian_op, pool, reference_ket,
         print(" Variance:    %12.8f" %var.real)
         print(" Uncertainty: %12.8f" %uncertainty)
         for oi in range(pool.n_ops):
-            
+
             gi = pool.compute_gradient_i(oi, curr_state, sig)
-            
+
             curr_norm += gi*gi
             if abs(gi) > abs(next_deriv):
                 next_deriv = gi
@@ -156,7 +191,7 @@ def adapt_vqe(hamiltonian_op, pool, reference_ket,
         curr_norm = np.sqrt(curr_norm)
 
         min_options = {'gtol': theta_thresh, 'disp':False}
-     
+
         max_of_gi = next_deriv
         print(" Norm of <[H,A]> = %12.8f" %curr_norm)
         print(" Max  of <[H,A]> = %12.8f" %max_of_gi)
@@ -183,28 +218,27 @@ def adapt_vqe(hamiltonian_op, pool, reference_ket,
                 opstring = pool.get_string_for_term(ansatz_ops[si])
                 print(" %4i %12.8f %s" %(si, parameters[si], opstring) )
             break
-        
+
         print(" Add operator %4i" %next_index)
         parameters.insert(0,0)
         ansatz_ops.insert(0,pool.fermi_ops[next_index])
         ansatz_mat.insert(0,pool.spmat_ops[next_index])
-        
-        trial_model = tUCCSD(hamiltonian, ansatz_mat, reference_ket, parameters)
-        
 
-        opt_result = scipy.optimize.minimize(trial_model.energy, parameters, jac=trial_model.gradient, 
+        trial_model = tUCCSD(hamiltonian, ansatz_mat, reference_ket, parameters)
+
+
+        opt_result = scipy.optimize.minimize(trial_model.energy, parameters, jac=trial_model.gradient,
                 options = min_options, method = 'BFGS', callback=trial_model.callback)
+#        curr_state = trial_model.prepare_state(parameters)
+#        trial_model.curr_params = parameters
+#        if pt2:
+#            print()
+#            print(" ------------------------------")
+#            print(" Compute Newton Correction")
+#            print(" ------------------------------")
+#            hess,grad,ept2 = newton_correction(curr_state, hamiltonian, pool) 
+#            print(" E(2)    : %20.12f" % (trial_model.curr_energy+ept2))
         
-        curr_state = trial_model.prepare_state(parameters)
-        trial_model.curr_params = parameters
-        if pt2:
-            print()
-            print(" ------------------------------")
-            print(" Compute Newton Correction")
-            print(" ------------------------------")
-            hess,grad,ept2 = newton_correction(curr_state, hamiltonian, pool) 
-            print(" E(2)    : %20.12f" % (trial_model.curr_energy+ept2))
-    
         parameters = list(opt_result['x'])
         curr_state = trial_model.prepare_state(parameters)
         print(" Finished: %20.12f" % trial_model.curr_energy)
@@ -223,19 +257,18 @@ def ucc(geometry,
         charge          = 1,
         theta_thresh    = 1e-7,
         pool            = operator_pools.singlet_GSD(),
-        spin_adapt      = True,
         psi4_filename   = "psi4_%12.12f"%random.random()
         ):
 # {{{
 
     molecule = openfermion.hamiltonians.MolecularData(geometry, basis, multiplicity)
     molecule.filename = psi4_filename
-    molecule = openfermionpsi4.run_psi4(molecule, 
-                run_scf = 1, 
-                run_mp2=1, 
-                run_cisd=0, 
-                run_ccsd = 0, 
-                run_fci=1, 
+    molecule = openfermionpsi4.run_psi4(molecule,
+                run_scf = 1,
+                run_mp2=1,
+                run_cisd=0,
+                run_ccsd = 0,
+                run_fci=1,
                 delete_input=1)
     pool.init(molecule)
     print(" Basis: ", basis)
@@ -257,14 +290,14 @@ def ucc(geometry,
     hamiltonian = openfermion.transforms.get_sparse_operator(hamiltonian_op)
 
     #Thetas
-    parameters = [0]*pool.n_ops 
+    parameters = [0]*pool.n_ops
 
     pool.generate_SparseMatrix()
-    
+
     ucc = UCC(hamiltonian, pool.spmat_ops, reference_ket, parameters)
-    
-    opt_result = scipy.optimize.minimize(ucc.energy, 
-                parameters, options = {'gtol': 1e-6, 'disp':True}, 
+
+    opt_result = scipy.optimize.minimize(ucc.energy,
+                parameters, options = {'gtol': 1e-6, 'disp':True},
                 method = 'BFGS', callback=ucc.callback)
     print(" Finished: %20.12f" % ucc.curr_energy)
     parameters = opt_result['x']
@@ -282,7 +315,6 @@ def test_random(geometry,
         theta_thresh    = 1e-7,
         adapt_maxiter   = 200,
         pool            = operator_pools.singlet_GSD(),
-        spin_adapt      = True,
         psi4_filename   = "psi4_%12.12f"%random.random(),
         seed            = 1
         ):
@@ -292,12 +324,12 @@ def test_random(geometry,
 
     molecule = openfermion.hamiltonians.MolecularData(geometry, basis, multiplicity)
     molecule.filename = psi4_filename
-    molecule = openfermionpsi4.run_psi4(molecule, 
-                run_scf = 1, 
-                run_mp2=1, 
-                run_cisd=0, 
-                run_ccsd = 0, 
-                run_fci=1, 
+    molecule = openfermionpsi4.run_psi4(molecule,
+                run_scf = 1,
+                run_mp2=1,
+                run_cisd=0,
+                run_ccsd = 0,
+                run_fci=1,
                 delete_input=1)
     pool.init(molecule)
     print(" Basis: ", basis)
@@ -322,10 +354,10 @@ def test_random(geometry,
     parameters = []
 
     pool.generate_SparseMatrix()
-   
+
     ansatz_ops = []     #SQ operator strings in the ansatz
     ansatz_mat = []     #Sparse Matrices for operators in ansatz
-    
+
     print(" Start ADAPT-VQE algorithm")
     op_indices = []
     parameters = []
@@ -333,21 +365,21 @@ def test_random(geometry,
 
     print(" Now start to grow the ansatz")
     for n_iter in range(0,adapt_maxiter):
-    
+
         print("\n\n\n")
         print(" --------------------------------------------------------------------------")
-        print("                         ADAPT-VQE iteration: ", n_iter)                 
+        print("                         ADAPT-VQE iteration: ", n_iter)
         print(" --------------------------------------------------------------------------")
         next_index = None
         next_deriv = 0
         curr_norm = 0
-        
+
         print(" Check each new operator for coupling")
         next_term = []
         print(" Measure commutators:")
         sig = hamiltonian.dot(curr_state)
         for op_trial in range(pool.n_ops):
-            
+
             opA = pool.spmat_ops[op_trial]
             com = 2*(curr_state.transpose().conj().dot(opA.dot(sig))).real
             assert(com.shape == (1,1))
@@ -358,7 +390,7 @@ def test_random(geometry,
             for t in pool.fermi_ops[op_trial].terms:
                 opstring += str(t)
                 break
-       
+
             if abs(com) > adapt_thresh:
                 print(" %4i %40s %12.8f" %(op_trial, opstring, com) )
 
@@ -367,12 +399,12 @@ def test_random(geometry,
                 next_deriv = com
                 next_index = op_trial
 
-      
+
         next_index = random.choice(list(range(pool.n_ops)))
         curr_norm = np.sqrt(curr_norm)
 
         min_options = {'gtol': theta_thresh, 'disp':False}
-     
+
         max_of_com = next_deriv
         print(" Norm of <[A,H]> = %12.8f" %curr_norm)
         print(" Max  of <[A,H]> = %12.8f" %max_of_com)
@@ -399,18 +431,18 @@ def test_random(geometry,
                     break
                 print(" %4i %40s %12.8f" %(si, opstring, parameters[si]) )
             break
-        
+
         print(" Add operator %4i" %next_index)
         parameters.insert(0,0)
         ansatz_ops.insert(0,pool.fermi_ops[next_index])
         ansatz_mat.insert(0,pool.spmat_ops[next_index])
-        
-        trial_model = tUCCSD(hamiltonian, ansatz_mat, reference_ket, parameters)
-        
 
-        opt_result = scipy.optimize.minimize(trial_model.energy, parameters, jac=trial_model.gradient, 
+        trial_model = tUCCSD(hamiltonian, ansatz_mat, reference_ket, parameters)
+
+
+        opt_result = scipy.optimize.minimize(trial_model.energy, parameters, jac=trial_model.gradient,
                 options = min_options, method = 'BFGS', callback=trial_model.callback)
-    
+
         parameters = list(opt_result['x'])
         curr_state = trial_model.prepare_state(parameters)
         print(" Finished: %20.12f" % trial_model.curr_energy)
@@ -436,19 +468,18 @@ def test_lexical(geometry,
         theta_thresh    = 1e-7,
         adapt_maxiter   = 200,
         pool            = operator_pools.singlet_GSD(),
-        spin_adapt      = True,
         psi4_filename   = "psi4_%12.12f"%random.random()
         ):
 # {{{
 
     molecule = openfermion.hamiltonians.MolecularData(geometry, basis, multiplicity)
     molecule.filename = psi4_filename
-    molecule = openfermionpsi4.run_psi4(molecule, 
-                run_scf = 1, 
-                run_mp2=1, 
-                run_cisd=0, 
-                run_ccsd = 0, 
-                run_fci=1, 
+    molecule = openfermionpsi4.run_psi4(molecule,
+                run_scf = 1,
+                run_mp2=1,
+                run_cisd=0,
+                run_ccsd = 0,
+                run_fci=1,
                 delete_input=1)
     pool.init(molecule)
     print(" Basis: ", basis)
@@ -473,10 +504,10 @@ def test_lexical(geometry,
     parameters = []
 
     pool.generate_SparseMatrix()
-   
+
     ansatz_ops = []     #SQ operator strings in the ansatz
     ansatz_mat = []     #Sparse Matrices for operators in ansatz
-    
+
     print(" Start ADAPT-VQE algorithm")
     op_indices = []
     parameters = []
@@ -484,21 +515,21 @@ def test_lexical(geometry,
 
     print(" Now start to grow the ansatz")
     for n_iter in range(0,adapt_maxiter):
-    
+
         print("\n\n\n")
         print(" --------------------------------------------------------------------------")
-        print("                         ADAPT-VQE iteration: ", n_iter)                 
+        print("                         ADAPT-VQE iteration: ", n_iter)
         print(" --------------------------------------------------------------------------")
         next_index = None
         next_deriv = 0
         curr_norm = 0
-        
+
         print(" Check each new operator for coupling")
         next_term = []
         print(" Measure commutators:")
         sig = hamiltonian.dot(curr_state)
         for op_trial in range(pool.n_ops):
-            
+
             opA = pool.spmat_ops[op_trial]
             com = 2*(curr_state.transpose().conj().dot(opA.dot(sig))).real
             assert(com.shape == (1,1))
@@ -509,7 +540,7 @@ def test_lexical(geometry,
             for t in pool.fermi_ops[op_trial].terms:
                 opstring += str(t)
                 break
-       
+
             if abs(com) > adapt_thresh:
                 print(" %4i %40s %12.8f" %(op_trial, opstring, com) )
 
@@ -518,12 +549,12 @@ def test_lexical(geometry,
                 next_deriv = com
                 next_index = op_trial
 
-       
+
         next_index = n_iter % pool.n_ops
         curr_norm = np.sqrt(curr_norm)
 
         min_options = {'gtol': theta_thresh, 'disp':False}
-     
+
         max_of_com = next_deriv
         print(" Norm of <[A,H]> = %12.8f" %curr_norm)
         print(" Max  of <[A,H]> = %12.8f" %max_of_com)
@@ -550,18 +581,18 @@ def test_lexical(geometry,
                     break
                 print(" %4i %40s %12.8f" %(si, opstring, parameters[si]) )
             break
-        
+
         print(" Add operator %4i" %next_index)
         parameters.insert(0,0)
         ansatz_ops.insert(0,pool.fermi_ops[next_index])
         ansatz_mat.insert(0,pool.spmat_ops[next_index])
-        
-        trial_model = tUCCSD(hamiltonian, ansatz_mat, reference_ket, parameters)
-        
 
-        opt_result = scipy.optimize.minimize(trial_model.energy, parameters, jac=trial_model.gradient, 
+        trial_model = tUCCSD(hamiltonian, ansatz_mat, reference_ket, parameters)
+
+
+        opt_result = scipy.optimize.minimize(trial_model.energy, parameters, jac=trial_model.gradient,
                 options = min_options, method = 'BFGS', callback=trial_model.callback)
-    
+
         parameters = list(opt_result['x'])
         curr_state = trial_model.prepare_state(parameters)
         print(" Finished: %20.12f" % trial_model.curr_energy)
@@ -577,6 +608,112 @@ def test_lexical(geometry,
 
     return
 # }}}
+
+def seqGO(hamiltonian_op, pool, reference_ket,
+        theta_thresh    = 1e-7,
+        psi4_filename   = "psi4_%12.12f"%random.random()
+        ):
+    hamiltonian = openfermion.transforms.get_sparse_operator(hamiltonian_op)
+    ref_energy = reference_ket.T.conj().dot(hamiltonian.dot(reference_ket))[0,0].real
+    print(" Reference Energy: %12.8f" %ref_energy)
+
+    #Thetas
+    parameters = []
+
+    pool.generate_SparseMatrix()
+    pool.gradient_print_thresh = theta_thresh
+
+    ansatz_ops = []     #SQ operator strings in the ansatz
+    ansatz_mat = []     #Sparse Matrices for operators in ansatz
+
+    print(" Start ADAPT-VQE algorithm")
+    op_indices = []
+    parameters = []
+    curr_state = 1.0*reference_ket
+
+    print(" Now start to grow the ansatz")
+    for n_iter in range(0,pool.n_ops):
+
+        print("\n\n\n")
+        print(" --------------------------------------------------------------------------")
+        print("                         ADAPT-VQE iteration: ", n_iter)
+        print(" --------------------------------------------------------------------------")
+        next_index = None
+        next_deriv = 0
+        curr_norm = 0
+
+        print(" Check each new operator for coupling")
+        next_term = []
+        print(" Measure Operator Pool Gradients:")
+        sig = hamiltonian.dot(curr_state)
+        e_curr = curr_state.T.conj().dot(sig)[0,0]
+        var = sig.T.conj().dot(sig)[0,0] - e_curr**2
+        uncertainty = np.sqrt(var.real)
+        assert(np.isclose(var.imag,0))
+        print(" Variance:    %12.8f" %var.real)
+        print(" Uncertainty: %12.8f" %uncertainty)
+        for oi in range(pool.n_ops):
+
+            gi = pool.compute_gradient_i(oi, curr_state, sig)
+
+            curr_norm += gi*gi
+            if abs(gi) > abs(next_deriv):
+                next_deriv = gi
+                next_index = oi
+
+        curr_norm = np.sqrt(curr_norm)
+
+        min_options = {'gtol': theta_thresh, 'disp':False}
+
+        max_of_gi = next_deriv
+        print(" Norm of <[H,A]> = %12.8f" %curr_norm)
+        print(" Max  of <[H,A]> = %12.8f" %max_of_gi)
+
+        # converged = False
+        # if adapt_conver == "norm":
+        #     if curr_norm < adapt_thresh:
+        #         converged = True
+        # elif adapt_conver == "var":
+        #     if abs(var) < adapt_thresh:
+        #         #variance
+        #         converged = True
+        # else:
+        #     print(" FAIL: Convergence criterion not defined")
+        #     exit()
+        #
+        # if converged:
+        #     print(" Ansatz Growth Converged!")
+        #     print(" Number of operators in ansatz: ", len(ansatz_ops))
+        #     print(" *Finished: %20.12f" % trial_model.curr_energy)
+        #     print(" -----------Final ansatz----------- ")
+        #     print(" %4s %12s %18s" %("#","Coeff","Term"))
+        #     for si in range(len(ansatz_ops)):
+        #         opstring = pool.get_string_for_term(ansatz_ops[si])
+        #         print(" %4i %12.8f %s" %(si, parameters[si], opstring) )
+        #     break
+
+        print(" Add operator %4i" %next_index)
+        parameters.insert(0,0)
+        ansatz_ops.insert(0,pool.fermi_ops[next_index])
+        ansatz_mat.insert(0,pool.spmat_ops[next_index])
+
+        trial_model = tUCCSD(hamiltonian, ansatz_mat, reference_ket, parameters)
+
+
+        opt_result = scipy.optimize.minimize(trial_model.energy, parameters, jac=trial_model.gradient,
+                options = min_options, method = 'BFGS', callback=trial_model.callback)
+
+        parameters = list(opt_result['x'])
+        curr_state = trial_model.prepare_state(parameters)
+        print(" Finished: %20.12f" % trial_model.curr_energy)
+        print(" -----------New ansatz----------- ")
+        print(" %4s %12s %18s" %("#","Coeff","Term"))
+        for si in range(len(ansatz_ops)):
+            opstring = pool.get_string_for_term(ansatz_ops[si])
+            print(" %4i %12.8f %s" %(si, parameters[si], opstring) )
+    return trial_model.curr_energy, curr_state, parameters
+
+
 
 def Make_S2(n_orb):
 # {{{
@@ -601,11 +738,11 @@ def Make_S2(n_orb):
         S2b = scipy.sparse.kron(Ia,scipy.sparse.kron(b_temp,Ib))
 
         S2 += abs(S2a -S2b)
-        
+
 
         for j in range(i+1,n_orb):
-            
-            intr = 2*j-2*i-2 
+
+            intr = 2*j-2*i-2
             aftr = 2*n_orb-2*j-2
 
             Ib = np.eye(np.power(2,intr))
@@ -617,13 +754,13 @@ def Make_S2(n_orb):
             Zc = np.eye(1)
             for k in range(2*j,2*n_orb-2):
                 Zc = scipy.sparse.kron(Zc,Iz)
-            
+
             assert(Zc.shape == Ic.shape)
             assert(Zb.shape == Ib.shape)
 
-            
-            Sptemp = scipy.sparse.kron(ap,am) 
-            Smtemp = scipy.sparse.kron(am,ap) 
+
+            Sptemp = scipy.sparse.kron(ap,am)
+            Smtemp = scipy.sparse.kron(am,ap)
             ANtemp = scipy.sparse.kron(no,I2)
             BNtemp = scipy.sparse.kron(I2,no)
 
@@ -662,15 +799,19 @@ if __name__== "__main__":
     r = 1.5
     r=1
     #geometry = [('H', (0,0,1*r)), ('H', (0,0,2*r)), ('H', (0,0,3*r)), ('H', (0,0,4*r))]
-    geometry = [('H',  (0, 0, 0)), 
+    geometry = [('H',  (0, 0, 0)),
                 ('Li', (0, 0, r*2.39))]
-    #geometry = [('H', (0,0,1*r)), ('H', (0,0,2*r)), ('H', (0,0,3*r)), ('H', (0,0,4*r)), ('H', (0,0,5*r)), ('H', (0,0,6*r))]
+    geometry = [('H', (0,0,1*r)), ('H', (0,0,2*r)), ('H', (0,0,3*r)), ('H', (0,0,4*r)), ('H', (0,0,5*r)), ('H', (0,0,6*r))]
+    geometry = [('H',  (0, 0, 0)),
+                ('H',  (0, 0, .75))]
+    geometry = [('H',  (0, 0,-r)),
+                ('Be', (0, 0, 0)),
+                ('H',  (0, 0, r))]
 
-  
+
     charge = 0
     spin = 0
     basis = 'sto-3g'
-    
 #    geometry = [('Sc', (0,0,0))]
 #    charge = 1
 #    spin = 0
@@ -683,7 +824,6 @@ if __name__== "__main__":
 #    print(" mo_order: ", mo_order)
 #    [n_orb, n_a, n_b, h, g, mol, E_nuc, E_scf, C, S] = pyscf_helper.init(geometry,charge,spin,basis,n_frzn_occ=9,
 #            n_act=6, mo_order=mo_order)
-   
     [n_orb, n_a, n_b, h, g, mol, E_nuc, E_scf, C, S] = pyscf_helper.init(geometry,charge,spin,basis)
     print(" n_orb: %4i" %n_orb)
     print(" n_a  : %4i" %n_a)
@@ -694,9 +834,9 @@ if __name__== "__main__":
     print(" HF Energy: %12.8f" %(E_nuc + sq_ham.energy_of_determinant(range(n_a),range(n_b))))
 
     fermi_ham  = sq_ham.export_FermionOperator()
-   
+
     hamiltonian = openfermion.transforms.get_sparse_operator(fermi_ham)
-    
+
     s2 = Make_S2(n_orb)
     
     #build reference configuration
@@ -715,19 +855,11 @@ if __name__== "__main__":
         print(" State %4i: %12.8f au  <S2>: %12.8f" %(ei,e[ei]+E_nuc,S2))
     fermi_ham += FermionOperator((),E_nuc)
     pyscf.molden.from_mo(mol, "full.molden", sq_ham.C)
-   
-    pool = operator_pools.singlet_GSD()
-    pool.init(n_orb)
-    
-    [e,v,params] = vqe_methods.adapt_vqe(fermi_ham, pool, reference_ket, adapt_thresh=1e-6, theta_thresh=1e-9, pt2=True)
-    
+
+    pool = operator_pools.singlet_SD()
+    pool.init(n_orb, n_occ_a=n_a, n_occ_b=n_b, n_vir_a=n_orb-n_a, n_vir_b=n_orb-n_b)
+
+    [e,v,params] = vqe_methods.adapt_vqe(fermi_ham, pool, reference_ket, theta_thresh=1e-9, pt2=True)
+
     print(" Final ADAPT-VQE energy: %12.8f" %e)
     print(" <S^2> of final state  : %12.8f" %(v.conj().T.dot(s2.dot(v))[0,0].real))
-    exit()
-    
-
-    #vqe_methods.ucc(geometry,pool = operator_pools.singlet_SD())
-    #vqe_methods.adapt_vqe(geometry,pool = operator_pools.singlet_SD())
-    #vqe_methods.adapt_vqe(geometry,pool = operator_pools.hamiltonian(), adapt_thresh=1e-7, theta_thresh=1e-8)
-    #vqe_methods.adapt_vqe(geometry,pool = operator_pools.singlet_sd(), adapt_thresh=1e-1, adapt_conver='uncertainty')
-    vqe_methods.adapt_vqe(geometry,pool = operator_pools.singlet_GSD(), adapt_thresh=1e-2, theta_thresh=1e-9)
