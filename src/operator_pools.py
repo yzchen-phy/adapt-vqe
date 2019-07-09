@@ -1,7 +1,7 @@
 import openfermion
 import numpy as np
 import copy as cp
-
+import random
 from openfermion import *
 
 
@@ -41,6 +41,11 @@ class OperatorPool:
         print("Virtual: Reimplement")
         exit()
 
+#    def shuffle(self,seed=None):
+#        if seed != None:
+#            random.seed(seed)
+#        random.shuffle(self.spmat_ops)
+            
     def generate_SparseMatrix(self):
         self.spmat_ops = []
         print(" Generate Sparse Matrices for operators in pool")
@@ -495,6 +500,7 @@ class singlet_SD(OperatorPool):
                             termB = termB/np.sqrt(coeffB)
                             self.fermi_ops.append(termB)
 
+        #self.fermi_ops.append(self.fermi_ops[0])
         self.n_ops = len(self.fermi_ops)
         print(" Number of operators: ", self.n_ops)
         return

@@ -103,11 +103,14 @@ def newton_correction(state,
     #for i in range(s.shape[0]):
     #    print(" %12.8f , %12.8f , %12.8f, %12.8f , %12.8f" %(s[i], gg[0,i],ggg[i,0],dd[0,i],ddd[i,0]))
 
-    e_pt2 =  ddd.T @ ggg + .5*dd @ np.diag(s) @ ddd
-    # print(e_pt2)
+    e_pt2 =  - .5*dd @ np.diag(s) @ ddd
+    #e_pt2 =  dd @ gg.T + .5*dd @ np.diag(s) @ ddd
+    #print(e_pt2)
+    #e_pt2 =  ddd.T @ ggg + .5*dd @ np.diag(s) @ ddd
+    #print(e_pt2)
     #print(" %12.8f vs. %12.8f" %((g.T @ delx)[0,0] , (delx.T @ hess @ delx)[0,0]))
-    # e_pt2 =  grad.T @ delx + .5*delx.T @ hess @ delx
-    # print(e_pt2)
+    #e_pt2 =  grad.T @ delx + .5*delx.T @ hess @ delx
+    #print(e_pt2)
     print(" # Variables %5i : # Linearly Independent Variables %5i" %(U.shape[0], U.shape[1]))
     #assert(e_pt2.shape == (1,1))
     e_pt2 = 1*e_pt2[0,0]
@@ -151,9 +154,10 @@ def adapt_vqe(hamiltonian_op, pool, reference_ket,
         print(" ------------------------------")
         print(" Compute Newton Correction")
         print(" ------------------------------")
+        #pool.shuffle(seed=2)
         hess,grad,ept2 = newton_correction(curr_state, hamiltonian, pool)
         print(" E(2)    : %20.12f" % (ref_energy+ept2))
-        # exit()
+        exit()
 
     # parameters = [0,0]
     # for pi in range(-10,10):
@@ -259,49 +263,30 @@ def adapt_vqe(hamiltonian_op, pool, reference_ket,
 
 # }}}
 
-def ucc(geometry,
-        basis           = "sto-3g",
-        multiplicity    = 1,
-        charge          = 1,
+def ucc(hamiltonian_op, pool, reference_ket,
         theta_thresh    = 1e-7,
-        pool            = operator_pools.singlet_GSD(),
         psi4_filename   = "psi4_%12.12f"%random.random()
         ):
 # {{{
 
-    molecule = openfermion.hamiltonians.MolecularData(geometry, basis, multiplicity)
-    molecule.filename = psi4_filename
-    molecule = openfermionpsi4.run_psi4(molecule,
-                run_scf = 1,
-                run_mp2=1,
-                run_cisd=0,
-                run_ccsd = 0,
-                run_fci=1,
-                delete_input=1)
-    pool.init(molecule)
-    print(" Basis: ", basis)
-
-    print(' HF energy      %20.16f au' %(molecule.hf_energy))
-    print(' MP2 energy     %20.16f au' %(molecule.mp2_energy))
-    #print(' CISD energy    %20.16f au' %(molecule.cisd_energy))
-    #print(' CCSD energy    %20.16f au' %(molecule.ccsd_energy))
-    print(' FCI energy     %20.16f au' %(molecule.fci_energy))
-
-    #Build p-h reference and map it to JW transform
-    reference_ket = scipy.sparse.csc_matrix(
-            openfermion.jw_configuration_state(
-                list(range(0,molecule.n_electrons)), molecule.n_qubits)).transpose()
-    reference_bra = reference_ket.transpose().conj()
-
-    #JW transform Hamiltonian computed classically with OFPsi4
-    hamiltonian_op = molecule.get_molecular_hamiltonian()
     hamiltonian = openfermion.transforms.get_sparse_operator(hamiltonian_op)
+    ref_energy = reference_ket.T.conj().dot(hamiltonian.dot(reference_ket))[0,0].real
+    print(" Reference Energy: %12.8f" %ref_energy)
+
+    #Thetas
+    parameters = []
+
+    pool.generate_SparseMatrix()
+    pool.gradient_print_thresh = theta_thresh
+
+    ansatz_ops = []     #SQ operator strings in the ansatz
+    ansatz_mat = []     #Sparse Matrices for operators in ansatz
+
 
     #Thetas
     parameters = [0]*pool.n_ops
 
-    pool.generate_SparseMatrix()
-
+    #pool.shuffle(seed=2)
     ucc = UCC(hamiltonian, pool.spmat_ops, reference_ket, parameters)
 
     opt_result = scipy.optimize.minimize(ucc.energy,
@@ -809,12 +794,12 @@ if __name__== "__main__":
     #geometry = [('H', (0,0,1*r)), ('H', (0,0,2*r)), ('H', (0,0,3*r)), ('H', (0,0,4*r))]
     geometry = [('H',  (0, 0, 0)),
                 ('Li', (0, 0, r*2.39))]
-    geometry = [('H', (0,0,1*r)), ('H', (0,0,2*r)), ('H', (0,0,3*r)), ('H', (0,0,4*r)), ('H', (0,0,5*r)), ('H', (0,0,6*r))]
-    geometry = [('H',  (0, 0, 0)),
-                ('H',  (0, 0, .75))]
     geometry = [('H',  (0, 0,-r)),
                 ('Be', (0, 0, 0)),
                 ('H',  (0, 0, r))]
+    geometry = [('H',  (0, 0, 0)),
+                ('H',  (0, 0, .75))]
+    geometry = [('H', (0,0,1*r)), ('H', (0,0,2*r)), ('H', (0,0,3*r)), ('H', (0,0,4*r)), ('H', (0,0,5*r)), ('H', (0,0,6*r))]
 
 
     charge = 0
@@ -839,7 +824,8 @@ if __name__== "__main__":
 
     sq_ham = pyscf_helper.SQ_Hamiltonian()
     sq_ham.init(h, g, C, S)
-    print(" HF Energy: %12.8f" %(E_nuc + sq_ham.energy_of_determinant(range(n_a),range(n_b))))
+    ehf = E_nuc + sq_ham.energy_of_determinant(range(n_a),range(n_b))
+    print(" HF Energy: %12.8f" %(ehf))
 
     fermi_ham  = sq_ham.export_FermionOperator()
 
@@ -867,7 +853,13 @@ if __name__== "__main__":
     pool = operator_pools.singlet_SD()
     pool.init(n_orb, n_occ_a=n_a, n_occ_b=n_b, n_vir_a=n_orb-n_a, n_vir_b=n_orb-n_b)
 
-    [e,v,params] = vqe_methods.adapt_vqe(fermi_ham, pool, reference_ket, theta_thresh=1e-9, pt2=True)
+    pool.generate_SparseMatrix()
+    hess,grad,ept2 = newton_correction(reference_ket, hamiltonian, pool)
+
+    print(" E(2)    : %20.12f" % (ehf+ept2))
+    exit()
+    [e,v,params] = vqe_methods.ucc(fermi_ham, pool, reference_ket, theta_thresh=1e-9)
+    #[e,v,params] = vqe_methods.adapt_vqe(fermi_ham, pool, reference_ket, theta_thresh=1e-9, pt2=True)
 
     print(" Final ADAPT-VQE energy: %12.8f" %e)
     print(" <S^2> of final state  : %12.8f" %(v.conj().T.dot(s2.dot(v))[0,0].real))
