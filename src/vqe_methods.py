@@ -27,18 +27,20 @@ def newton_correction(state,
                         pool,
                         lin_dep_thresh = 1e-4):
     print(" Compute Gradient")
+    # Ex = 2*R<HX>
     grad = np.zeros((pool.n_ops,1))
-    sig = hamiltonian.dot(state)
+    sig = hamiltonian @ state
     for op_trial in range(pool.n_ops):
-        
+
         opA = pool.spmat_ops[op_trial]
-        com = 2*(state.transpose().conj().dot(opA.dot(sig))).real
+        com = 2*(sig.transpose().conj().dot(opA.dot(state))).real
+        # com = 2*(state.transpose().conj().dot(opA.dot(sig))).real
         assert(com.shape == (1,1))
         com = com[0,0]
         assert(np.isclose(com.imag,0))
         com = com.real
         grad[op_trial] = com
-    
+
 
     print(" Compute Hessian")
     hess = np.zeros((pool.n_ops,pool.n_ops))
@@ -46,40 +48,43 @@ def newton_correction(state,
     # 2*<AHB> + 2*<HAB>
     for ai in range(pool.n_ops):
         opA = pool.spmat_ops[ai]
-        pA = opA.dot(state)
-    
+        HAket = hamiltonian @ opA @ state
+        AHket = opA @ sig
+
         for bi in range(ai,pool.n_ops):
             opB = pool.spmat_ops[bi]
-            pB = opB.dot(state)
-           
-            term1 = 2*pA.transpose().conj().dot(hamiltonian.dot(pB))
-            term2 = 2*sig.transpose().conj().dot(opA.dot(pB))
-         
-            term = term1 + term2
+            Bket = opB @ state
+
+            # term1 = 2*pA.transpose().conj().dot(hamiltonian.dot(pB))
+            # term2 = 2*sig.transpose().conj().dot(opA.dot(pB))
+
+            BHA = 2*Bket.T.conj() @ HAket
+            BAH = 2*Bket.T.conj() @ AHket
+
+            term = BHA - BAH
             assert(term.shape == (1,1))
             term = term[0,0]
             assert(np.isclose(term.imag,0))
             term = term.real
             hess[ai,bi] = term
             hess[bi,ai] = term
-            
+
             #if ai==bi:
             #    print(ai,grad[ai],term)
-  
+
     U,s,V = np.linalg.svd(hess)
     n_vecs = 0
-    print(" Singular Values:")
+    # print(" Singular Values:")
     for si in s:
-        print(" %12.8f" %si)
+        # print(" %12.8f" %si)
         if si > lin_dep_thresh:
             n_vecs += 1
 
-    print(" Hessian: ")
-    print(hess)
-    print(" Grad: ")
-    print(grad)
-    #exit()
-    
+    # print(" Hessian: ")
+    # print(hess)
+    # print(" Grad: ")
+    # print(grad)
+
     U = U[:,0:n_vecs]
     s = s[0:n_vecs]
     V = V[0:n_vecs,:].T
@@ -88,26 +93,26 @@ def newton_correction(state,
 
     gg = g.T @ U
     ggg = V.T @ g
-    
+
     dd  = -gg/s
     ddd = -(ggg.T/s).T
-    
+
     delx  = - np.linalg.pinv(hess).dot(grad)
     #delxt = - grad.T.conj().dot(np.linalg.pinv(hess.T.conj()))
 
     #for i in range(s.shape[0]):
-    #    print(" %12.8f , %12.8f , %12.8f, %12.8f , %12.8f" %(s[i], gg[0,i],ggg[i,0],dd[0,i],ddd[i,0]))    
-    
-    #e_pt2 =  ggg @ ddd.T + .5*dd @ np.diag(s) @ ddd 
-    #e_pt2 =  ggg @ ddd.T + .5*dd @ np.diag(s) @ ddd 
+    #    print(" %12.8f , %12.8f , %12.8f, %12.8f , %12.8f" %(s[i], gg[0,i],ggg[i,0],dd[0,i],ddd[i,0]))
+
+    e_pt2 =  ddd.T @ ggg + .5*dd @ np.diag(s) @ ddd
+    # print(e_pt2)
     #print(" %12.8f vs. %12.8f" %((g.T @ delx)[0,0] , (delx.T @ hess @ delx)[0,0]))
-    e_pt2 =  grad.T @ delx + .5*delx.T @ hess @ delx
-    #print(e_pt2)
+    # e_pt2 =  grad.T @ delx + .5*delx.T @ hess @ delx
+    # print(e_pt2)
     print(" # Variables %5i : # Linearly Independent Variables %5i" %(U.shape[0], U.shape[1]))
     #assert(e_pt2.shape == (1,1))
     e_pt2 = 1*e_pt2[0,0]
     #print(e_pt2)
-    #e_pt2 = grad.T.conj().dot(delx) + .5*delx.T.conj().dot(hess.dot(delx)) 
+    #e_pt2 = grad.T.conj().dot(delx) + .5*delx.T.conj().dot(hess.dot(delx))
     #print(" Correction =  %16.14f " %(e_pt2))
     #print(np.linalg.norm(hess - hess.T))
     return hess, grad, e_pt2
@@ -146,17 +151,18 @@ def adapt_vqe(hamiltonian_op, pool, reference_ket,
         print(" ------------------------------")
         print(" Compute Newton Correction")
         print(" ------------------------------")
-        hess,grad,ept2 = newton_correction(curr_state, hamiltonian, pool) 
+        hess,grad,ept2 = newton_correction(curr_state, hamiltonian, pool)
         print(" E(2)    : %20.12f" % (ref_energy+ept2))
+        # exit()
 
-    
-#    parameters = [0,0]
-#    for pi in range(-10,10):
-#        piv = pi/10000
-#        parameters[1] = piv
-#        trial_model = tUCCSD(hamiltonian, pool.spmat_ops, reference_ket, parameters)
-#        e = trial_model.energy(parameters)
-#        print( " %4i  %12.8f  %12.8f" %(pi, piv, e))
+    # parameters = [0,0]
+    # for pi in range(-10,10):
+    #     piv = pi/10000
+    #     parameters[1] = piv
+    #     trial_model = tUCCSD(hamiltonian, pool.spmat_ops, reference_ket, parameters)
+    #     e = trial_model.energy(parameters)
+    #     print( " %4i  %12.8f  %12.8f" %(pi, piv, e))
+    # exit()
 
     print(" Now start to grow the ansatz")
     for n_iter in range(0,adapt_maxiter):
@@ -226,21 +232,23 @@ def adapt_vqe(hamiltonian_op, pool, reference_ket,
 
         trial_model = tUCCSD(hamiltonian, ansatz_mat, reference_ket, parameters)
 
-
         opt_result = scipy.optimize.minimize(trial_model.energy, parameters, jac=trial_model.gradient,
                 options = min_options, method = 'BFGS', callback=trial_model.callback)
-#        curr_state = trial_model.prepare_state(parameters)
-#        trial_model.curr_params = parameters
-#        if pt2:
-#            print()
-#            print(" ------------------------------")
-#            print(" Compute Newton Correction")
-#            print(" ------------------------------")
-#            hess,grad,ept2 = newton_correction(curr_state, hamiltonian, pool) 
-#            print(" E(2)    : %20.12f" % (trial_model.curr_energy+ept2))
-        
+
         parameters = list(opt_result['x'])
         curr_state = trial_model.prepare_state(parameters)
+        trial_model.curr_params = parameters
+
+        if pt2:
+            print()
+            print(" ------------------------------")
+            print(" Compute Newton Correction")
+            print(" ------------------------------")
+            hess,grad,ept2 = newton_correction(curr_state, hamiltonian, pool)
+            print(" Newton  : %20.12f" % (ept2))
+            print(" E(0)    : %20.12f" % (trial_model.curr_energy))
+            print(" E(2)    : %20.12f" % (trial_model.curr_energy+ept2))
+
         print(" Finished: %20.12f" % trial_model.curr_energy)
         print(" -----------New ansatz----------- ")
         print(" %4s %12s %18s" %("#","Coeff","Term"))
@@ -797,7 +805,7 @@ def Make_S2(n_orb):
 
 if __name__== "__main__":
     r = 1.5
-    r=1
+    r=1.5
     #geometry = [('H', (0,0,1*r)), ('H', (0,0,2*r)), ('H', (0,0,3*r)), ('H', (0,0,4*r))]
     geometry = [('H',  (0, 0, 0)),
                 ('Li', (0, 0, r*2.39))]
@@ -838,7 +846,7 @@ if __name__== "__main__":
     hamiltonian = openfermion.transforms.get_sparse_operator(fermi_ham)
 
     s2 = Make_S2(n_orb)
-    
+
     #build reference configuration
     occupied_list = []
     for i in range(n_a):
