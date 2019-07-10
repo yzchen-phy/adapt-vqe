@@ -405,6 +405,106 @@ class singlet_GSD(OperatorPool):
 # }}}
 
 
+class singlet_GD(OperatorPool):
+# {{{
+    def generate_SQ_Operators(self):
+        """
+        n_orb is number of spatial orbitals assuming that spin orbitals are labelled
+        0a,0b,1a,1b,2a,2b,3a,3b,....  -> 0,1,2,3,...
+        """
+
+        print(" Form singlet GSD operators")
+
+        self.fermi_ops = []
+
+
+        pq = -1
+        for p in range(0,self.n_orb):
+            pa = 2*p
+            pb = 2*p+1
+
+            for q in range(p,self.n_orb):
+                qa = 2*q
+                qb = 2*q+1
+
+                pq += 1
+
+                rs = -1
+                for r in range(0,self.n_orb):
+                    ra = 2*r
+                    rb = 2*r+1
+
+                    for s in range(r,self.n_orb):
+                        sa = 2*s
+                        sb = 2*s+1
+
+                        rs += 1
+
+                        if(pq > rs):
+                            continue
+
+#                        oplist = []
+#                        oplist.append(FermionOperator(((ra,1),(pa,0),(sa,1),(qa,0)), 2/np.sqrt(12)))
+#                        oplist.append(FermionOperator(((rb,1),(pb,0),(sb,1),(qb,0)), 2/np.sqrt(12)))
+#                        oplist.append(FermionOperator(((ra,1),(pa,0),(sb,1),(qb,0)), 1/np.sqrt(12)))
+#                        oplist.append(FermionOperator(((rb,1),(pb,0),(sa,1),(qa,0)), 1/np.sqrt(12)))
+#                        oplist.append(FermionOperator(((ra,1),(pb,0),(sb,1),(qa,0)), 1/np.sqrt(12)))
+#                        oplist.append(FermionOperator(((rb,1),(pa,0),(sa,1),(qb,0)), 1/np.sqrt(12)))
+#
+#                        print(p,q,r,s)
+#                        for i in range(len(oplist)):
+#                            oplist[i] -= hermitian_conjugated(oplist[i])
+#                        for i in range(len(oplist)):
+#                            for j in range(i+1,len(oplist)):
+#                                opi = oplist[i]
+#                                opj = oplist[i]
+#                                opij = opi*opj - opj*opi
+#                                opij = normal_ordered(opij)
+#                                print(opij, end='')
+#                        print()
+                        termA =  FermionOperator(((ra,1),(pa,0),(sa,1),(qa,0)), 2/np.sqrt(12))
+                        termA += FermionOperator(((rb,1),(pb,0),(sb,1),(qb,0)), 2/np.sqrt(12))
+                        termA += FermionOperator(((ra,1),(pa,0),(sb,1),(qb,0)), 1/np.sqrt(12))
+                        termA += FermionOperator(((rb,1),(pb,0),(sa,1),(qa,0)), 1/np.sqrt(12))
+                        termA += FermionOperator(((ra,1),(pb,0),(sb,1),(qa,0)), 1/np.sqrt(12))
+                        termA += FermionOperator(((rb,1),(pa,0),(sa,1),(qb,0)), 1/np.sqrt(12))
+
+                        termB =  FermionOperator(((ra,1),(pa,0),(sb,1),(qb,0)),  1/2.0)
+                        termB += FermionOperator(((rb,1),(pb,0),(sa,1),(qa,0)),  1/2.0)
+                        termB += FermionOperator(((ra,1),(pb,0),(sb,1),(qa,0)), -1/2.0)
+                        termB += FermionOperator(((rb,1),(pa,0),(sa,1),(qb,0)), -1/2.0)
+
+                        termA -= hermitian_conjugated(termA)
+                        termB -= hermitian_conjugated(termB)
+
+                        termA = normal_ordered(termA)
+                        termB = normal_ordered(termB)
+
+                        #Normalize
+                        coeffA = 0
+                        coeffB = 0
+                        for t in termA.terms:
+                            coeff_t = termA.terms[t]
+                            coeffA += coeff_t * coeff_t
+                        for t in termB.terms:
+                            coeff_t = termB.terms[t]
+                            coeffB += coeff_t * coeff_t
+
+
+                        if termA.many_body_order() > 0:
+                            termA = termA/np.sqrt(coeffA)
+                            self.fermi_ops.append(termA)
+
+                        if termB.many_body_order() > 0:
+                            termB = termB/np.sqrt(coeffB)
+                            self.fermi_ops.append(termB)
+
+        self.n_ops = len(self.fermi_ops)
+        print(" Number of operators: ", self.n_ops)
+        return
+# }}}
+
+
 
 
 class singlet_SD(OperatorPool):
@@ -445,6 +545,82 @@ class singlet_SD(OperatorPool):
                 if termA.many_body_order() > 0:
                     termA = termA/np.sqrt(coeffA)
                     self.fermi_ops.append(termA)
+
+
+        for i in range(0,n_occ):
+            ia = 2*i
+            ib = 2*i+1
+
+            for j in range(i,n_occ):
+                ja = 2*j
+                jb = 2*j+1
+
+                for a in range(0,n_vir):
+                    aa = 2*n_occ + 2*a
+                    ab = 2*n_occ + 2*a+1
+
+                    for b in range(a,n_vir):
+                        ba = 2*n_occ + 2*b
+                        bb = 2*n_occ + 2*b+1
+
+                        termA =  FermionOperator(((aa,1),(ba,1),(ia,0),(ja,0)), 2/np.sqrt(12))
+                        termA += FermionOperator(((ab,1),(bb,1),(ib,0),(jb,0)), 2/np.sqrt(12))
+                        termA += FermionOperator(((aa,1),(bb,1),(ia,0),(jb,0)), 1/np.sqrt(12))
+                        termA += FermionOperator(((ab,1),(ba,1),(ib,0),(ja,0)), 1/np.sqrt(12))
+                        termA += FermionOperator(((aa,1),(bb,1),(ib,0),(ja,0)), 1/np.sqrt(12))
+                        termA += FermionOperator(((ab,1),(ba,1),(ia,0),(jb,0)), 1/np.sqrt(12))
+
+                        termB  = FermionOperator(((aa,1),(bb,1),(ia,0),(jb,0)), 1/2)
+                        termB += FermionOperator(((ab,1),(ba,1),(ib,0),(ja,0)), 1/2)
+                        termB += FermionOperator(((aa,1),(bb,1),(ib,0),(ja,0)), -1/2)
+                        termB += FermionOperator(((ab,1),(ba,1),(ia,0),(jb,0)), -1/2)
+
+                        termA -= hermitian_conjugated(termA)
+                        termB -= hermitian_conjugated(termB)
+
+                        termA = normal_ordered(termA)
+                        termB = normal_ordered(termB)
+
+                        #Normalize
+                        coeffA = 0
+                        coeffB = 0
+                        for t in termA.terms:
+                            coeff_t = termA.terms[t]
+                            coeffA += coeff_t * coeff_t
+                        for t in termB.terms:
+                            coeff_t = termB.terms[t]
+                            coeffB += coeff_t * coeff_t
+
+
+                        if termA.many_body_order() > 0:
+                            termA = termA/np.sqrt(coeffA)
+                            self.fermi_ops.append(termA)
+
+                        if termB.many_body_order() > 0:
+                            termB = termB/np.sqrt(coeffB)
+                            self.fermi_ops.append(termB)
+
+        #self.fermi_ops.append(self.fermi_ops[0])
+        self.n_ops = len(self.fermi_ops)
+        print(" Number of operators: ", self.n_ops)
+        return
+    # }}}
+
+
+
+class singlet_D(OperatorPool):
+# {{{
+    def generate_SQ_Operators(self):
+        """
+        0a,0b,1a,1b,2a,2b,3a,3b,....  -> 0,1,2,3,...
+        """
+
+        print(" Form singlet SD operators")
+        self.fermi_ops = []
+
+        assert(self.n_occ_a == self.n_occ_b)
+        n_occ = self.n_occ
+        n_vir = self.n_vir
 
 
         for i in range(0,n_occ):

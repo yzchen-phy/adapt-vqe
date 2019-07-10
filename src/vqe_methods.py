@@ -71,7 +71,20 @@ def newton_correction(state,
 
             #if ai==bi:
             #    print(ai,grad[ai],term)
-
+    hess2 = hess*0.0
+    print(" Hessian Eigenvalues:")
+    ss,UU = np.linalg.eigh(hess)
+    n_removed = 0
+    for i,si in enumerate(ss):
+        #print(" %12.8f " %si)
+        if si < 1e-8:
+            n_removed += 1
+            ss[i] = 0
+    print(" # Removed modes: ", n_removed)
+    hess = UU @ np.diag(ss) @ UU.T
+    
+    
+    
     U,s,V = np.linalg.svd(hess)
     n_vecs = 0
     # print(" Singular Values:")
@@ -790,16 +803,22 @@ def Make_S2(n_orb):
 
 if __name__== "__main__":
     r = 1.5
-    r=1.5
+    r=1
     #geometry = [('H', (0,0,1*r)), ('H', (0,0,2*r)), ('H', (0,0,3*r)), ('H', (0,0,4*r))]
     geometry = [('H',  (0, 0, 0)),
                 ('Li', (0, 0, r*2.39))]
+    geometry = [('H',  (0, 0, 0)),
+                ('H',  (0, 0, .75)),
+                ('H',  (0, 100, 0)),
+                ('H',  (0, 100, .75))]
+    
+    geometry = [('H',  (0, 0, 0)),
+                ('H',  (0, 0, .75))]
+    
+    geometry = [('H', (0,0,1*r)), ('H', (0,0,2*r)), ('H', (0,0,3*r)), ('H', (0,0,4*r)), ('H', (0,0,5*r)), ('H', (0,0,6*r))]
     geometry = [('H',  (0, 0,-r)),
                 ('Be', (0, 0, 0)),
                 ('H',  (0, 0, r))]
-    geometry = [('H',  (0, 0, 0)),
-                ('H',  (0, 0, .75))]
-    geometry = [('H', (0,0,1*r)), ('H', (0,0,2*r)), ('H', (0,0,3*r)), ('H', (0,0,4*r)), ('H', (0,0,5*r)), ('H', (0,0,6*r))]
 
 
     charge = 0
@@ -850,7 +869,7 @@ if __name__== "__main__":
     fermi_ham += FermionOperator((),E_nuc)
     pyscf.molden.from_mo(mol, "full.molden", sq_ham.C)
 
-    pool = operator_pools.singlet_SD()
+    pool = operator_pools.singlet_D()
     pool.init(n_orb, n_occ_a=n_a, n_occ_b=n_b, n_vir_a=n_orb-n_a, n_vir_b=n_orb-n_b)
 
     pool.generate_SparseMatrix()
