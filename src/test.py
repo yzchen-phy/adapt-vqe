@@ -30,13 +30,13 @@ if __name__== "__main__":
     geometry = [('H',  (0, 0, 0)),
                 ('Li', (0, 0, r*2.39))]
     
-    geometry = [('H',  (0, 0,-r)),
-                ('Be', (0, 0, 0)),
-                ('H',  (0, 0, r))]
     geometry = [('H',  (0, 0, 0)),
                 ('H',  (0, 0, 1)),
                 ('H',  (0, 2, 0)),
                 ('H',  (0, 2, 1))]
+    geometry = [('H',  (0, 0,-r)),
+                ('Be', (0, 0, 0)),
+                ('H',  (0, 0, r))]
 
 
     charge = 0
@@ -87,7 +87,7 @@ if __name__== "__main__":
     fermi_ham += FermionOperator((),E_nuc)
     pyscf.molden.from_mo(mol, "full.molden", sq_ham.C)
 
-    pool = operator_pools.singlet_SD()
+    pool = operator_pools.singlet_GSD()
     pool.init(n_orb, n_occ_a=n_a, n_occ_b=n_b, n_vir_a=n_orb-n_a, n_vir_b=n_orb-n_b)
 
     pool.generate_SparseMatrix()

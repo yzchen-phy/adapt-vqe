@@ -26,11 +26,11 @@ def variational_correction(hamiltonian_op, pool, reference_ket):
     """
     Compute a variational correction similar to QSE defined by the input pool
     """
-    print(" Do Variational correction with pool:", pool.label)
+    print(" Do Variational correction with pool:", pool.label, flush=True)
     hamiltonian = openfermion.transforms.get_sparse_operator(hamiltonian_op)
     ref_energy = reference_ket.T.conj().dot(hamiltonian.dot(reference_ket))[0,0].real
     
-    print(" Reference Energy: %12.8f" %ref_energy)
+    print(" Reference Energy: %12.8f" %ref_energy, flush=True)
 
     H = np.zeros((pool.n_ops+1,pool.n_ops+1))
     S = np.zeros((pool.n_ops+1,pool.n_ops+1))
