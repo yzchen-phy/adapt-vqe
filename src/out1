@@ -1,0 +1,298 @@
+ ---------------------------------------------------------
+                                                          
+                      Using Pyscf:
+                                                          
+ ---------------------------------------------------------
+                                                          
+converged SCF energy = -2.11378509706789
+
+System and Method:
+[('H', (0, 0, 0)), ('H', (0, 0, 1)), ('H', (0, 2, 0)), ('H', (0, 2, 1))]
+Basis set                                      :      sto-3g
+Number of Orbitals                             :         4
+Number of electrons                            :         4
+Nuclear Repulsion                              :    2.0608421191 
+Electronic SCF energy                          :   -4.1746272161 
+SCF Energy                                     :   -2.1137850971
+ AO->MO
+ NElectrons:    2    2
+ ecore:   0.00000000
+ ERIs in the active-space:
+(4, 4, 4, 4)    0.00204800 Mb
+ n_orb:    4
+ n_a  :    2
+ n_b  :    2
+ HF Energy:  -2.11378510
+ Build reference state with    2 alpha and    2 beta electrons [0, 2, 1, 3]
+ State    0:  -2.18619854 au  <S2>:   0.00000000
+ Form singlet SD operators
+ Number of operators:  14
+ Generate Sparse Matrices for operators in pool
+ Compute Gradient
+ Compute Hessian
+ Hessian Eigenvalues:
+ # Removed modes:  0
+ # Variables    14 : # Linearly Independent Variables    14
+ Correction =  -0.07494315 (tCEPA)
+ Compute Coupling: <HA> and Diagonal <AHA>
+ Correction =  -0.01432556 (EN-PT2)
+ E(NS)    :      -2.128110652843
+ Reference Energy:  -2.11378510
+ Generate Sparse Matrices for operators in pool
+ Start ADAPT-VQE algorithm
+
+ ------------------------------
+ Compute PT2 Correction
+ ------------------------------
+ Compute Coupling: <HA> and Diagonal <AHA>
+ Correction =  -0.02272093 (EN-PT2)
+ E(Correction)    :      -2.136506027591
+ Now start to grow the ansatz
+
+
+
+
+ --------------------------------------------------------------------------
+                         ADAPT-VQE iteration:  0
+ --------------------------------------------------------------------------
+ Check each new operator for coupling
+ Measure Operator Pool Gradients:
+ Variance:      0.08011142
+ Uncertainty:   0.28303962
+    4  -0.14581031      (0' 0' 2  2  ) : 1010 1010 
+    6  -0.12505367      (0' 0' 3  3  ) : 1010 1010 
+    8  -0.04236505      (1' 0' 3  2  ) : 0000 1111 1010 0101 1001 0110 0000 1111 1010 0101 0110 1001 
+    9  -0.28004041      (1' 0' 3  2  ) : 1010 0101 1001 0110 1010 0101 0110 1001 
+   11  -0.13062216      (1' 1' 2  2  ) : 1010 1010 
+   13  -0.16138217      (1' 1' 3  3  ) : 1010 1010 
+ Norm of <[H,A]> =   0.40027846
+ Max  of <[H,A]> =  -0.28004041
+ Add operator    9
+ Iter:   0 Current Energy =  -2.1281994379230533 Gradient Norm    1.7e-01 Gradient Max    1.7e-01
+ Iter:   1 Current Energy =  -2.1377565142763015 Gradient Norm    2.0e-03 Gradient Max    2.0e-03
+ Iter:   2 Current Energy =  -2.1377577159369374 Gradient Norm    2.7e-05 Gradient Max    2.7e-05
+ Iter:   3 Current Energy =  -2.1377577161539780 Gradient Norm    2.8e-09 Gradient Max    2.8e-09
+
+ ------------------------------
+ Compute PT2 Correction
+ ------------------------------
+ Compute Coupling: <HA> and Diagonal <AHA>
+ Correction =  -0.02057465 (EN-PT2)
+ Correction  :      -0.020574646480
+ E(0)        :      -2.137757716154
+ E(2)        :      -2.158332362634
+
+
+
+
+ --------------------------------------------------------------------------
+                         ADAPT-VQE iteration:  1
+ --------------------------------------------------------------------------
+ Check each new operator for coupling
+ Measure Operator Pool Gradients:
+ Variance:      0.07214481
+ Uncertainty:   0.26859786
+    4  -0.18931625      (0' 0' 2  2  ) : 1010 1010 
+    6  -0.17176680      (0' 0' 3  3  ) : 1010 1010 
+    8  -0.03644920      (1' 0' 3  2  ) : 0000 1111 1010 0101 1001 0110 0000 1111 1010 0101 0110 1001 
+    9   0.00000000      (1' 0' 3  2  ) : 1010 0101 1001 0110 1010 0101 0110 1001 
+   11  -0.17725386      (1' 1' 2  2  ) : 1010 1010 
+   13  -0.20466043      (1' 1' 3  3  ) : 1010 1010 
+ Norm of <[H,A]> =   0.37413612
+ Max  of <[H,A]> =  -0.20466043
+ Add operator   13
+ Iter:   0 Current Energy =  -2.1528475959097912 Gradient Norm    7.5e-02 Gradient Max    5.8e-02
+ Iter:   1 Current Energy =  -2.1544082565757976 Gradient Norm    2.4e-02 Gradient Max    2.4e-02
+ Iter:   2 Current Energy =  -2.1545694874798662 Gradient Norm    4.8e-03 Gradient Max    3.5e-03
+ Iter:   3 Current Energy =  -2.1545791279748476 Gradient Norm    3.5e-04 Gradient Max    3.3e-04
+ Iter:   4 Current Energy =  -2.1545791702310342 Gradient Norm    2.0e-05 Gradient Max    1.6e-05
+ Iter:   5 Current Energy =  -2.1545791703488515 Gradient Norm    2.9e-07 Gradient Max    2.9e-07
+ Iter:   6 Current Energy =  -2.1545791703488795 Gradient Norm    3.1e-09 Gradient Max    2.4e-09
+
+ ------------------------------
+ Compute PT2 Correction
+ ------------------------------
+ Compute Coupling: <HA> and Diagonal <AHA>
+ Correction =  -0.01209628 (EN-PT2)
+ Correction  :      -0.012096277591
+ E(0)        :      -2.154579170349
+ E(2)        :      -2.166675447940
+
+
+
+
+ --------------------------------------------------------------------------
+                         ADAPT-VQE iteration:  2
+ --------------------------------------------------------------------------
+ Check each new operator for coupling
+ Measure Operator Pool Gradients:
+ Variance:      0.04303229
+ Uncertainty:   0.20744224
+    4  -0.19918650      (0' 0' 2  2  ) : 1010 1010 
+    6  -0.14579292      (0' 0' 3  3  ) : 1010 1010 
+    8  -0.00590246      (1' 0' 3  2  ) : 0000 1111 1010 0101 1001 0110 0000 1111 1010 0101 0110 1001 
+    9  -0.00320643      (1' 0' 3  2  ) : 1010 0101 1001 0110 1010 0101 0110 1001 
+   11  -0.14844266      (1' 1' 2  2  ) : 1010 1010 
+   13   0.00000000      (1' 1' 3  3  ) : 1010 1010 
+ Norm of <[H,A]> =   0.28811661
+ Max  of <[H,A]> =  -0.19918650
+ Add operator    4
+ Iter:   0 Current Energy =  -2.1693380845941221 Gradient Norm    7.3e-02 Gradient Max    5.1e-02
+ Iter:   1 Current Energy =  -2.1707319367597302 Gradient Norm    2.7e-02 Gradient Max    2.5e-02
+ Iter:   2 Current Energy =  -2.1709164760247313 Gradient Norm    7.5e-03 Gradient Max    5.1e-03
+ Iter:   3 Current Energy =  -2.1709364077962174 Gradient Norm    7.7e-04 Gradient Max    4.8e-04
+ Iter:   4 Current Energy =  -2.1709366228896592 Gradient Norm    6.8e-05 Gradient Max    6.4e-05
+ Iter:   5 Current Energy =  -2.1709366244841100 Gradient Norm    2.0e-06 Gradient Max    1.5e-06
+ Iter:   6 Current Energy =  -2.1709366244859547 Gradient Norm    1.1e-07 Gradient Max    1.0e-07
+ Iter:   7 Current Energy =  -2.1709366244859605 Gradient Norm    4.4e-09 Gradient Max    3.2e-09
+
+ ------------------------------
+ Compute PT2 Correction
+ ------------------------------
+ Compute Coupling: <HA> and Diagonal <AHA>
+ Correction =  -0.00422473 (EN-PT2)
+ Correction  :      -0.004224729542
+ E(0)        :      -2.170936624486
+ E(2)        :      -2.175161354028
+
+
+
+
+ --------------------------------------------------------------------------
+                         ADAPT-VQE iteration:  3
+ --------------------------------------------------------------------------
+ Check each new operator for coupling
+ Measure Operator Pool Gradients:
+ Variance:      0.01631070
+ Uncertainty:   0.12771334
+    4  -0.00000000      (0' 0' 2  2  ) : 1010 1010 
+    6  -0.11732400      (0' 0' 3  3  ) : 1010 1010 
+    8   0.02393175      (1' 0' 3  2  ) : 0000 1111 1010 0101 1001 0110 0000 1111 1010 0101 0110 1001 
+    9   0.00000000      (1' 0' 3  2  ) : 1010 0101 1001 0110 1010 0101 0110 1001 
+   11  -0.12245437      (1' 1' 2  2  ) : 1010 1010 
+   13  -0.00000000      (1' 1' 3  3  ) : 1010 1010 
+ Norm of <[H,A]> =   0.17126799
+ Max  of <[H,A]> =  -0.12245437
+ Add operator   11
+ Iter:   0 Current Energy =  -2.1783877368934408 Gradient Norm    4.6e-02 Gradient Max    3.2e-02
+ Iter:   1 Current Energy =  -2.1787178884358549 Gradient Norm    3.3e-02 Gradient Max    3.0e-02
+ Iter:   2 Current Energy =  -2.1790330785346468 Gradient Norm    6.2e-04 Gradient Max    4.6e-04
+ Iter:   3 Current Energy =  -2.1790332529905942 Gradient Norm    8.5e-05 Gradient Max    8.0e-05
+ Iter:   4 Current Energy =  -2.1790332558915697 Gradient Norm    1.3e-05 Gradient Max    1.2e-05
+ Iter:   5 Current Energy =  -2.1790332559613836 Gradient Norm    1.4e-06 Gradient Max    1.3e-06
+ Iter:   6 Current Energy =  -2.1790332559623211 Gradient Norm    4.8e-08 Gradient Max    4.3e-08
+ Iter:   7 Current Energy =  -2.1790332559623220 Gradient Norm    1.4e-09 Gradient Max    1.3e-09
+ Iter:   8 Current Energy =  -2.1790332559623220 Gradient Norm    1.1e-11 Gradient Max    9.7e-12
+
+ ------------------------------
+ Compute PT2 Correction
+ ------------------------------
+ Compute Coupling: <HA> and Diagonal <AHA>
+ Correction =  -0.00249923 (EN-PT2)
+ Correction  :      -0.002499227421
+ E(0)        :      -2.179033255962
+ E(2)        :      -2.181532483383
+
+
+
+
+ --------------------------------------------------------------------------
+                         ADAPT-VQE iteration:  4
+ --------------------------------------------------------------------------
+ Check each new operator for coupling
+ Measure Operator Pool Gradients:
+ Variance:      0.00976167
+ Uncertainty:   0.09880118
+    4  -0.00140244      (0' 0' 2  2  ) : 1010 1010 
+    6  -0.13613707      (0' 0' 3  3  ) : 1010 1010 
+    8  -0.00017917      (1' 0' 3  2  ) : 0000 1111 1010 0101 1001 0110 0000 1111 1010 0101 0110 1001 
+    9  -0.00219101      (1' 0' 3  2  ) : 1010 0101 1001 0110 1010 0101 0110 1001 
+   13  -0.00133633      (1' 1' 3  3  ) : 1010 1010 
+ Norm of <[H,A]> =   0.13616860
+ Max  of <[H,A]> =  -0.13613707
+ Add operator    6
+ Iter:   0 Current Energy =  -2.1842933978869801 Gradient Norm    7.9e-02 Gradient Max    5.9e-02
+ Iter:   1 Current Energy =  -2.1857552587476370 Gradient Norm    3.0e-02 Gradient Max    2.4e-02
+ Iter:   2 Current Energy =  -2.1859354671925706 Gradient Norm    1.2e-02 Gradient Max    7.6e-03
+ Iter:   3 Current Energy =  -2.1859848097792032 Gradient Norm    6.3e-04 Gradient Max    4.3e-04
+ Iter:   4 Current Energy =  -2.1859849355583392 Gradient Norm    6.5e-05 Gradient Max    3.4e-05
+ Iter:   5 Current Energy =  -2.1859849370950211 Gradient Norm    9.4e-06 Gradient Max    5.5e-06
+ Iter:   6 Current Energy =  -2.1859849371297768 Gradient Norm    2.0e-06 Gradient Max    1.3e-06
+ Iter:   7 Current Energy =  -2.1859849371310776 Gradient Norm    8.1e-09 Gradient Max    5.3e-09
+
+ ------------------------------
+ Compute PT2 Correction
+ ------------------------------
+ Compute Coupling: <HA> and Diagonal <AHA>
+ Correction =  -0.00006097 (EN-PT2)
+ Correction  :      -0.000060965153
+ E(0)        :      -2.185984937131
+ E(2)        :      -2.186045902284
+
+
+
+
+ --------------------------------------------------------------------------
+                         ADAPT-VQE iteration:  5
+ --------------------------------------------------------------------------
+ Check each new operator for coupling
+ Measure Operator Pool Gradients:
+ Variance:      0.00025023
+ Uncertainty:   0.01581857
+    4   0.00000000      (0' 0' 2  2  ) : 1010 1010 
+    6   0.00000001      (0' 0' 3  3  ) : 1010 1010 
+    8  -0.02094765      (1' 0' 3  2  ) : 0000 1111 1010 0101 1001 0110 0000 1111 1010 0101 0110 1001 
+    9   0.00000000      (1' 0' 3  2  ) : 1010 0101 1001 0110 1010 0101 0110 1001 
+   11  -0.00000000      (1' 1' 2  2  ) : 1010 1010 
+   13  -0.00000000      (1' 1' 3  3  ) : 1010 1010 
+ Norm of <[H,A]> =   0.02094765
+ Max  of <[H,A]> =  -0.02094765
+ Add operator    8
+ Iter:   0 Current Energy =  -2.1861727866034899 Gradient Norm    7.2e-03 Gradient Max    3.6e-03
+ Iter:   1 Current Energy =  -2.1861967992753555 Gradient Norm    1.6e-03 Gradient Max    1.3e-03
+ Iter:   2 Current Energy =  -2.1861984931937255 Gradient Norm    2.4e-04 Gradient Max    1.9e-04
+ Iter:   3 Current Energy =  -2.1861985137373554 Gradient Norm    1.0e-04 Gradient Max    8.6e-05
+ Iter:   4 Current Energy =  -2.1861985160016242 Gradient Norm    5.0e-05 Gradient Max    4.2e-05
+ Iter:   5 Current Energy =  -2.1861985165307845 Gradient Norm    1.6e-05 Gradient Max    1.1e-05
+ Iter:   6 Current Energy =  -2.1861985166188553 Gradient Norm    1.4e-06 Gradient Max    1.3e-06
+ Iter:   7 Current Energy =  -2.1861985166195073 Gradient Norm    1.4e-07 Gradient Max    8.8e-08
+ Iter:   8 Current Energy =  -2.1861985166195130 Gradient Norm    9.1e-09 Gradient Max    6.1e-09
+ Iter:   9 Current Energy =  -2.1861985166195130 Gradient Norm    2.4e-09 Gradient Max    1.7e-09
+
+ ------------------------------
+ Compute PT2 Correction
+ ------------------------------
+ Compute Coupling: <HA> and Diagonal <AHA>
+ Correction =  -0.00000000 (EN-PT2)
+ Correction  :      -0.000000000000
+ E(0)        :      -2.186198516620
+ E(2)        :      -2.186198516620
+
+
+
+
+ --------------------------------------------------------------------------
+                         ADAPT-VQE iteration:  6
+ --------------------------------------------------------------------------
+ Check each new operator for coupling
+ Measure Operator Pool Gradients:
+ Variance:      0.00000004
+ Uncertainty:   0.00020870
+    4  -0.00000000      (0' 0' 2  2  ) : 1010 1010 
+    6   0.00000000      (0' 0' 3  3  ) : 1010 1010 
+   13   0.00000000      (1' 1' 3  3  ) : 1010 1010 
+ Norm of <[H,A]> =   0.00000000
+ Max  of <[H,A]> =   0.00000000
+ Ansatz Growth Converged!
+ Number of operators in ansatz:  6
+ *Finished:      -2.186198516620
+ -----------Final ansatz----------- 
+    #        Coeff               Term
+    0   0.02038859      (1' 0' 3  2  ) : 0000 1111 1010 0101 1001 0110 0000 1111 1010 0101 0110 1001 
+    1   0.10492985      (0' 0' 3  3  ) : 1010 1010 
+    2   0.15106443      (1' 1' 2  2  ) : 1010 1010 
+    3   0.12820571      (0' 0' 2  2  ) : 1010 1010 
+    4   0.13677492      (1' 1' 3  3  ) : 1010 1010 
+    5   0.24891168      (1' 0' 3  2  ) : 1010 0101 1001 0110 1010 0101 0110 1001 
+ Final ADAPT-VQE energy:  -2.18619852
+ <S^2> of final state  :  -0.00000000

@@ -22,12 +22,88 @@ from openfermion import *
 
 import pyscf_helper
 
+def variational_correction(hamiltonian_op, pool, reference_ket):
+    """
+    Compute a variational correction similar to QSE defined by the input pool
+    """
+    print(" Do Variational correction with pool:", pool.label)
+    hamiltonian = openfermion.transforms.get_sparse_operator(hamiltonian_op)
+    ref_energy = reference_ket.T.conj().dot(hamiltonian.dot(reference_ket))[0,0].real
+    
+    print(" Reference Energy: %12.8f" %ref_energy)
+
+    H = np.zeros((pool.n_ops+1,pool.n_ops+1))
+    S = np.zeros((pool.n_ops+1,pool.n_ops+1))
+    
+    state = reference_ket
+    H[0,0] = ref_energy
+    S[0,0] = 1.0 
+    
+    #H = <HB> 
+    for ai in range(pool.n_ops):
+        opA = pool.spmat_ops[ai]
+        Aket = opA @ state
+        term = state.conj().T @ hamiltonian @ Aket 
+        
+        assert(term.shape == (1,1))
+        term = term[0,0]
+        assert(np.isclose(term.imag,0))
+        term = term.real
+        
+        H[ai+1,0] = term
+        H[0,ai+1] = term
+
+    #H = <AHB> 
+    for ai in range(pool.n_ops):
+        opA = pool.spmat_ops[ai]
+        Aket = opA @ state
+        HAket = hamiltonian @ Aket 
+
+        for bi in range(ai,pool.n_ops):
+            opB = pool.spmat_ops[bi]
+            Bket = opB @ state
+
+            term = Bket.T.conj() @ HAket
+           
+            assert(term.shape == (1,1))
+            term = term[0,0]
+            assert(np.isclose(term.imag,0))
+            term = term.real
+            H[ai+1,bi+1] = term
+            H[bi+1,ai+1] = term
+            
+            
+            term = Bket.T.conj() @ Aket
+           
+            assert(term.shape == (1,1))
+            term = term[0,0]
+            assert(np.isclose(term.imag,0))
+            term = term.real
+            S[ai+1,bi+1] = term
+            S[bi+1,ai+1] = term
+
+    
+    invSqrtS = np.linalg.inv(scipy.linalg.sqrtm(S))
+    Horth = invSqrtS.conj().T @ H @ invSqrtS
+
+    
+    [e,v] = np.linalg.eigh(Horth)
+    
+    idx = e.argsort()
+    e = e[idx]
+    v = v[:,idx]
+    
+    e = e[0]
+    return  e-ref_energy
+    
+
 def adapt_vqe(hamiltonian_op, pool, reference_ket,
         adapt_conver    = 'norm',
         adapt_thresh    = 1e-3,
         theta_thresh    = 1e-7,
         adapt_maxiter   = 200,
-        psi4_filename   = "psi4_%12.12f"%random.random()
+        psi4_filename   = "psi4_%12.12f"%random.random(),
+        correction      = "cisd"
         ):
 # {{{
 
@@ -38,7 +114,6 @@ def adapt_vqe(hamiltonian_op, pool, reference_ket,
     #Thetas
     parameters = []
 
-    pool.generate_SparseMatrix()
     pool.gradient_print_thresh = theta_thresh
 
     ansatz_ops = []     #SQ operator strings in the ansatz
@@ -129,6 +204,9 @@ def adapt_vqe(hamiltonian_op, pool, reference_ket,
         for si in range(len(ansatz_ops)):
             opstring = pool.get_string_for_term(ansatz_ops[si])
             print(" %4i %12.8f %s" %(si, parameters[si], opstring) )
+        if correction == "cisd":
+            ecorr = variational_correction(hamiltonian_op, pool, curr_state)
+            print(" E(corr)     : %20.12f" % (trial_model.curr_energy+ecorr))
     return trial_model.curr_energy, curr_state, parameters
 
 # }}}

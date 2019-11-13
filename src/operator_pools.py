@@ -109,6 +109,7 @@ class OperatorPool:
 class spin_complement_GSD(OperatorPool):
 # {{{
     def generate_SQ_Operators(self):
+        self.label = "sc_GSD"
         alpha_orbs = [2*i for i in range(self.n_orb)]
         beta_orbs = [2*i+1 for i in range(self.n_orb)]
 
@@ -182,6 +183,7 @@ class spin_complement_GSD2(OperatorPool):
         """
 
         print(" Form spin-complemented GSD operators")
+        self.label = "sc_GSD"
 
         self.fermi_ops = []
         for p in range(0,self.n_orb):
@@ -285,6 +287,7 @@ class singlet_GSD(OperatorPool):
         """
 
         print(" Form singlet GSD operators")
+        self.label = "singlet_GSD"
 
         self.fermi_ops = []
         for p in range(0,self.n_orb):
@@ -410,6 +413,7 @@ class singlet_SD(OperatorPool):
         """
 
         print(" Form singlet SD operators")
+        self.label = "singlet_SD"
         self.fermi_ops = []
 
         assert(self.n_occ_a == self.n_occ_b)
