@@ -30,13 +30,13 @@ if __name__== "__main__":
     geometry = [('H',  (0, 0, 0)),
                 ('Li', (0, 0, r*2.39))]
     
+    geometry = [('H',  (0, 0,-r)),
+                ('Be', (0, 0, 0)),
+                ('H',  (0, 0, r))]
     geometry = [('H',  (0, 0, 0)),
                 ('H',  (0, 0, 1)),
                 ('H',  (0, 2, 0)),
                 ('H',  (0, 2, 1))]
-    geometry = [('H',  (0, 0,-r)),
-                ('Be', (0, 0, 0)),
-                ('H',  (0, 0, r))]
 
 
     charge = 0
@@ -87,17 +87,22 @@ if __name__== "__main__":
     fermi_ham += FermionOperator((),E_nuc)
     pyscf.molden.from_mo(mol, "full.molden", sq_ham.C)
 
-    pool = operator_pools.singlet_GSD()
+    pool = operator_pools.singlet_SD()
     pool.init(n_orb, n_occ_a=n_a, n_occ_b=n_b, n_vir_a=n_orb-n_a, n_vir_b=n_orb-n_b)
-
     pool.generate_SparseMatrix()
+
     #hess,grad,ens = vqe_methods.newton_correction(reference_ket, hamiltonian, pool)
-    ecorr = vqe_methods.variational_correction(fermi_ham, pool, reference_ket)
+    
+    pool_corr = operator_pools.singlet_GSD()
+    pool_corr.init(n_orb, n_occ_a=n_a, n_occ_b=n_b, n_vir_a=n_orb-n_a, n_vir_b=n_orb-n_b)
+    pool_corr.generate_SparseMatrix()
+    ecorr = vqe_methods.variational_correction(fermi_ham, pool_corr, reference_ket)
 
     print(" E(corr)     : %20.12f" % (ehf+ecorr))
     #[e,v,params] = vqe_methods.ucc(fermi_ham, pool, reference_ket, theta_thresh=1e-9)
     [e,v,params] = vqe_methods.adapt_vqe(fermi_ham, pool, reference_ket, 
-            theta_thresh=1e-9, adapt_thresh=1e-8)
+            theta_thresh=1e-9, adapt_thresh=1e-8,
+            pool_corr=pool_corr)
 
     print(" Final ADAPT-VQE energy: %12.8f" %e)
     print(" <S^2> of final state  : %12.8f" %(v.conj().T.dot(s2.dot(v))[0,0].real))

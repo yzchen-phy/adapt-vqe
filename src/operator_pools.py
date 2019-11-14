@@ -278,6 +278,51 @@ class spin_complement_GSD2(OperatorPool):
 
 
 
+class singlet_GS(OperatorPool):
+# {{{
+    def generate_SQ_Operators(self):
+        """
+        n_orb is number of spatial orbitals assuming that spin orbitals are labelled
+        0a,0b,1a,1b,2a,2b,3a,3b,....  -> 0,1,2,3,...
+        """
+
+        print(" Form singlet GSD operators")
+        self.label = "singlet_GS"
+
+        self.fermi_ops = []
+        for p in range(0,self.n_orb):
+            pa = 2*p
+            pb = 2*p+1
+
+            for q in range(p,self.n_orb):
+                qa = 2*q
+                qb = 2*q+1
+
+                termA =  FermionOperator(((pa,1),(qa,0)))
+                termA += FermionOperator(((pb,1),(qb,0)))
+
+                termA -= hermitian_conjugated(termA)
+
+                termA = normal_ordered(termA)
+
+                #Normalize
+                coeffA = 0
+                for t in termA.terms:
+                    coeff_t = termA.terms[t]
+                    coeffA += coeff_t * coeff_t
+
+                if termA.many_body_order() > 0:
+                    termA = termA/np.sqrt(coeffA)
+                    self.fermi_ops.append(termA)
+
+        self.n_ops = len(self.fermi_ops)
+        print(" Number of operators: ", self.n_ops)
+        return
+# }}}
+
+
+
+
 class singlet_GSD(OperatorPool):
 # {{{
     def generate_SQ_Operators(self):

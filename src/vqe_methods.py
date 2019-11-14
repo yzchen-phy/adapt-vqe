@@ -26,6 +26,7 @@ def variational_correction(hamiltonian_op, pool, reference_ket):
     """
     Compute a variational correction similar to QSE defined by the input pool
     """
+    # {{{
     print(" Do Variational correction with pool:", pool.label, flush=True)
     hamiltonian = openfermion.transforms.get_sparse_operator(hamiltonian_op)
     ref_energy = reference_ket.T.conj().dot(hamiltonian.dot(reference_ket))[0,0].real
@@ -82,7 +83,25 @@ def variational_correction(hamiltonian_op, pool, reference_ket):
             S[ai+1,bi+1] = term
             S[bi+1,ai+1] = term
 
+   
     
+    [e,v] = np.linalg.eigh(S)
+    idx = e.argsort()
+    e = e[idx]
+    v = v[:,idx]
+   
+#    keep = []
+#    for eidx,ei in enumerate(e):
+#        if abs(ei) > 1e-8:
+#            keep.append(idx[eidx])
+   
+    idx = np.where(abs(e) > 1e-8)[0]
+    e = e[idx]
+    v = v[:,idx]
+
+    S = v.conj().T @ S @ v
+    H = v.conj().T @ H @ v
+
     invSqrtS = np.linalg.inv(scipy.linalg.sqrtm(S))
     Horth = invSqrtS.conj().T @ H @ invSqrtS
 
@@ -94,8 +113,9 @@ def variational_correction(hamiltonian_op, pool, reference_ket):
     v = v[:,idx]
     
     e = e[0]
+
     return  e-ref_energy
-    
+    # }}}
 
 def adapt_vqe(hamiltonian_op, pool, reference_ket,
         adapt_conver    = 'norm',
@@ -103,7 +123,7 @@ def adapt_vqe(hamiltonian_op, pool, reference_ket,
         theta_thresh    = 1e-7,
         adapt_maxiter   = 200,
         psi4_filename   = "psi4_%12.12f"%random.random(),
-        correction      = "cisd"
+        pool_corr       = None
         ):
 # {{{
 
@@ -204,8 +224,8 @@ def adapt_vqe(hamiltonian_op, pool, reference_ket,
         for si in range(len(ansatz_ops)):
             opstring = pool.get_string_for_term(ansatz_ops[si])
             print(" %4i %12.8f %s" %(si, parameters[si], opstring) )
-        if correction == "cisd":
-            ecorr = variational_correction(hamiltonian_op, pool, curr_state)
+        if pool_corr != None:
+            ecorr = variational_correction(hamiltonian_op, pool_corr, curr_state)
             print(" E(corr)     : %20.12f" % (trial_model.curr_energy+ecorr))
     return trial_model.curr_energy, curr_state, parameters
 
