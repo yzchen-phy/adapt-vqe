@@ -1,6 +1,6 @@
 
-# adapt-vqe
-ADAPT-VQE
+# ADAPT-VQE
+This is the simulation code for performing ADAPT-VQE calculations. 
 
 ### Installation
 1. Download
