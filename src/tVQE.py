@@ -109,7 +109,64 @@ class tUCCSD(Variational_Ansatz):
             self.Recurse(parameters, grad, hbra, ket, term)
         return np.asarray(grad)
 
+    def hessian(self,parameters):
+        """
+        Analytic hessian for VQE optimization
+        """
+        hess = np.zeros((self.n_params, self.n_params))
+        
+        new_ket = self.prepare_state(parameters)
+        bra_j = new_ket.transpose().conj()
+        bra_sigma_j = bra_j.dot(self.H)
+        op_j_h_j = self.H
 
+        for j in reversed(range(0,len(parameters))):
+            op_j_h_i = cp.deepcopy(op_j_h_j)
+            ket_i = cp.deepcopy(bra_j).transpose().conj()
+            op_j_d_i = scipy.sparse.eye(self.hilb_dim)
+
+            for i in reversed(range(0,j+1)):
+                hess[i,j] = 2.0 * (bra_sigma_j.dot(self.G[j]).dot(op_j_d_i).dot(self.G[i]).dot(ket_i).toarray()[0][0].real 
+                                             - bra_j.dot(self.G[j]).dot(op_j_h_i).dot(self.G[i]).dot(ket_i).toarray()[0][0].real)
+                hess[j,i] = hess[i,j]
+                if(i):
+                    op_j_h_i = (scipy.sparse.linalg.expm_multiply(-self.G[i]*parameters[i],op_j_h_i.transpose().conj())).transpose().conj()
+                    ket_i = scipy.sparse.linalg.expm_multiply(-self.G[i]*parameters[i],ket_i)
+                    op_j_d_i = (scipy.sparse.linalg.expm_multiply(-self.G[i]*parameters[i],op_j_d_i.transpose().conj())).transpose().conj()
+
+            if(j):
+                bra_j = (scipy.sparse.linalg.expm_multiply(-self.G[j]*parameters[j],bra_j.transpose().conj())).transpose().conj()
+                bra_sigma_j = (scipy.sparse.linalg.expm_multiply(-self.G[j]*parameters[j],bra_sigma_j.transpose().conj())).transpose().conj()
+                op_j_h_j = scipy.sparse.linalg.expm_multiply(-self.G[j]*parameters[j],(scipy.sparse.linalg.expm_multiply(-self.G[j]*parameters[j],op_j_h_j)).transpose().conj())
+
+        return hess
+
+    def fd_hessian(self, parameters):
+        """
+        Finite-differences hessian using analytic gradients for VQE optimization
+        """
+        hess = np.zeros((self.n_params,self.n_params))
+        h = 1.0e-6
+        for i in range(0,self.n_params):
+            #take forward step
+            parameters[i] += h
+            gplus = self.gradient(parameters)
+            #take backwards step
+            parameters[i] -= 2.0*h
+            gminus = self.gradient(parameters)
+            #restore parameters and compute hessian
+            parameters[i] += h
+            hess[i] = (gplus - gminus)/(2.0*h)
+        return hess
+
+    #Functions for single parameter optimization
+    def energy_rotosolve(self, theta, index, parameters):
+        parameters[index] = theta[0]
+        return self.energy(parameters)
+
+    def gradient_rotosolve(self, theta, index, parameters):
+        parameters[index] = theta[0]
+        return self.gradient(parameters)[index]
 
 
 

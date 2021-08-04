@@ -27,6 +27,9 @@ def adapt_vqe(hamiltonian_op, pool, reference_ket,
         adapt_thresh    = 1e-3,
         theta_thresh    = 1e-7,
         adapt_maxiter   = 200,
+        #Luke
+        exact_energy = 0.0,
+        #endLuke
         psi4_filename   = "psi4_%12.12f"%random.random()
         ):
 # {{{
@@ -34,7 +37,7 @@ def adapt_vqe(hamiltonian_op, pool, reference_ket,
     hamiltonian = openfermion.transforms.get_sparse_operator(hamiltonian_op)
     ref_energy = reference_ket.T.conj().dot(hamiltonian.dot(reference_ket))[0,0].real
     print(" Reference Energy: %12.8f" %ref_energy)
-
+    energy_old = ref_energy
     #Thetas
     parameters = []
 
@@ -70,6 +73,10 @@ def adapt_vqe(hamiltonian_op, pool, reference_ket,
         assert(np.isclose(var.imag,0))
         print(" Variance:    %12.8f" %var.real)
         print(" Uncertainty: %12.8f" %uncertainty)
+        #Luke
+        if(adapt_conver == "energy"):
+            print("Energy error: %.5e"%(energy_old - exact_energy))
+        #endLuke
         for oi in range(pool.n_ops):
 
             gi = pool.compute_gradient_i(oi, curr_state, sig)
@@ -81,7 +88,7 @@ def adapt_vqe(hamiltonian_op, pool, reference_ket,
 
         curr_norm = np.sqrt(curr_norm)
 
-        min_options = {'gtol': theta_thresh, 'disp':False}
+        min_options = {'gtol': theta_thresh, 'disp':True}
 
         max_of_gi = next_deriv
         print(" Norm of <[H,A]> = %12.8f" %curr_norm)
@@ -95,6 +102,11 @@ def adapt_vqe(hamiltonian_op, pool, reference_ket,
             if abs(var) < adapt_thresh:
                 #variance
                 converged = True
+        #Luke
+        elif adapt_conver == "energy":
+            if abs(energy_old - exact_energy) < 1.0e-15:
+                converged = True
+        #endLuke
         else:
             print(" FAIL: Convergence criterion not defined")
             exit()
@@ -103,6 +115,9 @@ def adapt_vqe(hamiltonian_op, pool, reference_ket,
             print(" Ansatz Growth Converged!")
             print(" Number of operators in ansatz: ", len(ansatz_ops))
             print(" *Finished: %20.12f" % trial_model.curr_energy)
+            #Luke
+            print("Energy error: %.5e"%(trial_model.curr_energy - exact_energy))
+            #endLuke
             print(" -----------Final ansatz----------- ")
             print(" %4s %12s %18s" %("#","Coeff","Term"))
             for si in range(len(ansatz_ops)):
@@ -116,11 +131,47 @@ def adapt_vqe(hamiltonian_op, pool, reference_ket,
         ansatz_mat.insert(0,pool.spmat_ops[next_index])
 
         trial_model = tUCCSD(hamiltonian, ansatz_mat, reference_ket, parameters)
-
-
-        opt_result = scipy.optimize.minimize(trial_model.energy, parameters, jac=trial_model.gradient,
-                options = min_options, method = 'BFGS', callback=trial_model.callback)
-
+        hess = trial_model.hessian(parameters)
+        print("Hessian condition number after adding new parameter: %.5E"%np.linalg.cond(hess))
+        #hess = trial_model.hessian(parameters)
+        #print("Analytic Hessian")
+        #print(hess)
+        #fd_hess = trial_model.fd_hessian(parameters)
+        #print("FD Hessian")
+        #print(fd_hess)
+        #print("Hessian Difference")
+        #print(hess-fd_hess)
+        print("Optimizer: Newton-CG")
+        opt_result = scipy.optimize.minimize(trial_model.energy, parameters, jac=trial_model.gradient, 
+            hess=trial_model.hessian, options = {'xtol': 1e-12, 'disp': True}, method = 'Newton-CG', callback=trial_model.callback)
+        #print('Optimizer: BFGS')
+        #opt_result = scipy.optimize.minimize(trial_model.energy, parameters, jac=trial_model.gradient,
+        #        options = min_options, method = 'BFGS', callback=trial_model.callback)
+        if(not opt_result['success']):
+            comment_rotosolve="""
+            print('Begin rotosolve:')
+            parameters = list(opt_result['x'])
+            print(trial_model.gradient(parameters))
+            print((np.argsort(np.abs(trial_model.gradient(parameters)))))
+            for i in reversed(np.argsort(np.abs(trial_model.gradient(parameters)))):
+                roto_result = scipy.optimize.minimize(trial_model.energy_rotosolve, parameters[i], 
+                    args=(i, parameters), method = 'CG', jac = trial_model.gradient_rotosolve, options = min_options)
+                print(roto_result.x)
+                parameters[i] = roto_result.x[0]
+            print("End rotosolve")
+            """
+            print("Optimizer: Newton-CG")
+            parameters = list(opt_result['x'])
+            opt_result = scipy.optimize.minimize(trial_model.energy, parameters, jac=trial_model.gradient, 
+                    hess=trial_model.hessian, options = {'xtol': 1e-12, 'disp': True}, method = 'Newton-CG', callback=trial_model.callback)
+            comment_bfgs2 ="""
+            print("Resuming BFGS:")
+            opt_result = scipy.optimize.minimize(trial_model.energy, parameters, jac=trial_model.gradient,
+                    options = min_options, method = 'BFGS', callback=trial_model.callback)
+            """
+        print(opt_result['success'])
+        print(opt_result['message'])
+        energy_old = trial_model.curr_energy
         parameters = list(opt_result['x'])
         curr_state = trial_model.prepare_state(parameters)
         print(" Finished: %20.12f" % trial_model.curr_energy)
@@ -285,7 +336,7 @@ def test_random(geometry,
         next_index = random.choice(list(range(pool.n_ops)))
         curr_norm = np.sqrt(curr_norm)
 
-        min_options = {'gtol': theta_thresh, 'disp':False}
+        min_options = {'gtol': theta_thresh, 'disp':True}
 
         max_of_com = next_deriv
         print(" Norm of <[A,H]> = %12.8f" %curr_norm)

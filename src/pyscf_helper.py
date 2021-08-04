@@ -101,6 +101,8 @@ class SQ_Hamiltonian:
         for i in config_a:             
             for j in config_b:         
                 e2 += self.int_V[i,i,j,j]
+        print("E1 = %f"%e1)
+        print("E2 = %f"%e2)
         e = e1+e2
         return e
 
@@ -200,9 +202,48 @@ class SQ_Hamiltonian:
 
         return fermi_op
 
+    def export_FermionOperator_ferromagnetic(self, shift=0):
+        """
+        Modified export operation for all-alpha systems
+        We have spatial orbital integrals, so we need to convert back to spin orbitals
+        """
+        fermi_op = openfermion.FermionOperator()
 
+        #H
+        for p in range(self.int_H.shape[0]):
+            #pa = 2*p + shift
+            #pb = 2*p+1 +  shift
+            for q in range(self.int_H.shape[1]):
+                #qa = 2*q +shift
+                #qb = 2*q+1 +shift
+                #fermi_op += openfermion.FermionOperator(((pa,1),(qa,0)), self.int_H[p,q]) 
+                fermi_op += openfermion.FermionOperator(((p+shift,1),(q+shift,0)), self.int_H[p,q])
+                #fermi_op += openfermion.FermionOperator(((pb,1),(qb,0)), self.int_H[p,q]) 
 
+        #V
+        for p in range(self.int_V.shape[0]):
+            #pa = 2*p +shift
+            #pb = 2*p+1 +shift
+            for q in range(self.int_V.shape[1]):
+                #qa = 2*q +shift
+                #qb = 2*q+1 +shift
+                for r in range(self.int_V.shape[2]):
+                    #ra = 2*r +shift
+                    #rb = 2*r+1 +shift
+                    for s in range(self.int_V.shape[3]):
+                        #sa = 2*s +shift
+                        #sb = 2*s+1 +shift
+                        #aa
+                        #fermi_op += .5* openfermion.FermionOperator(((pa,1),(qa,1),(sa,0),(ra,0)), self.int_V[p,r,q,s]) 
+                        fermi_op += .5* openfermion.FermionOperator(((p+shift,1),(q+shift,1),(s+shift,0),(r+shift,0)), self.int_V[p,r,q,s]) 
+                        #ab
+                        #fermi_op += .5*openfermion.FermionOperator(((pa,1),(qb,1),(sb,0),(ra,0)), self.int_V[p,r,q,s]) 
+                        #ba
+                        #fermi_op += .5*openfermion.FermionOperator(((pb,1),(qa,1),(sa,0),(rb,0)), self.int_V[p,r,q,s]) 
+                        #bb
+                        #fermi_op += .5*openfermion.FermionOperator(((pb,1),(qb,1),(sb,0),(rb,0)), self.int_V[p,r,q,s]) 
 
+        return fermi_op
 
 
 
