@@ -36,6 +36,7 @@ class SQ_Hamiltonian:
         # AO overlap        
         self.S = np.array(())
 
+        #number of spatial orbitals
         self.n_orb = 0
 
     def init(self, h, v, C, S):
@@ -43,7 +44,7 @@ class SQ_Hamiltonian:
         
         self.S = cp.deepcopy(S) 
         self.C = cp.deepcopy(C) 
-        self.n_orb = self.C.shape[1]
+        self.n_orb = self.C.shape[1] // 2
         
         self.int_H = cp.deepcopy(h) 
         self.int_V = cp.deepcopy(v) 
@@ -52,7 +53,7 @@ class SQ_Hamiltonian:
         """
         A(p,q)U(q,s) with s is new basis
         """
-        assert(U.shape[0] == self.n_orb)
+        assert(U.shape[0] == self.C.shape[1])
 
         new_dim = U.shape[1]
 
@@ -75,7 +76,7 @@ class SQ_Hamiltonian:
 
         
         self.C = self.C.dot(U)
-        self.n_orb = self.C.shape[1]
+        self.n_orb = self.C.shape[1] // 2
 
 
     def energy_of_determinant(self, config_a, config_b):
@@ -83,24 +84,26 @@ class SQ_Hamiltonian:
         e1 = 0
         e2 = 0
         for i in config_a:
-            e1 += self.int_H[i,i]
+            e1 += self.int_H[2*i,2*i]
         for i in config_b:
-            e1 += self.int_H[i,i]
+            e1 += self.int_H[2*i+1,2*i+1]
         for i in config_a:
             for j in config_a:
                 if i>=j:
                     continue
-                e2 += self.int_V[i,i,j,j]
-                e2 -= self.int_V[i,j,j,i]
+                e2 += self.int_V[2*i,2*i,2*j,2*j]
+                e2 -= self.int_V[2*i,2*j,2*j,2*i]
         for i in config_b:             
             for j in config_b:         
                 if i>=j:                
                     continue           
-                e2 += self.int_V[i,i,j,j]
-                e2 -= self.int_V[i,j,j,i]
+                e2 += self.int_V[2*i+1,2*i+1,2*j+1,2*j+1]
+                e2 -= self.int_V[2*i+1,2*j+1,2*j+1,2*i+1]
         for i in config_a:             
             for j in config_b:         
-                e2 += self.int_V[i,i,j,j]
+                e2 += self.int_V[2*i,2*i,2*j+1,2*j+1]
+        print("One-body = %16.10f"%e1)
+        print("Two-body = %16.10f"%e2)
         e = e1+e2
         return e
 
@@ -110,20 +113,112 @@ class SQ_Hamiltonian:
         assert(len(orb_subset) <= self.n_orb)
         
         H = SQ_Hamiltonian()
-        H.C = self.C[:,orb_subset]
-        H.n_orb = H.C.shape[1]
-        H.int_H = self.int_H[:,orb_subset][orb_subset]
-        H.int_V = self.int_V[:,:,:,orb_subset][:,:,orb_subset][:,orb_subset][orb_subset]
+        H.C = self.C[:,2*orb_subset]
+        H.n_orb = H.C.shape[1] // 2
+        H.int_H = self.int_H[:,2*orb_subset][2*orb_subset]
+        H.int_V = self.int_V[:,:,:,2*orb_subset][:,:,2*orb_subset][:,2*orb_subset][2*orb_subset]
 
         # Note: this doesn't pass other terms - can't see why it'd need to
 
         return H
 
     def export_FermionOperator(self, shift=0):
+        #Integral objects are already in spin-orbital form (chemist's notation)
+        fermi_op = openfermion.FermionOperator()
 
-        """
-        We have spatial orbital integrals, so we need to convert back to spin orbitals
-        """
+        #H
+        for p in range(0,self.n_orb):
+            p_a = 2*p
+            p_b = 2*p+1
+            for q in range(0,self.n_orb):
+                q_a = 2*q
+                q_b = 2*q+1
+                #aa
+                fermi_op += openfermion.FermionOperator(((p_a+shift,1),(q_a+shift,0)), self.int_H[p_a,q_a])
+                #bb
+                fermi_op += openfermion.FermionOperator(((p_b+shift,1),(q_b+shift,0)), self.int_H[p_b,q_b])
+
+        #V
+        for p in range(0,self.n_orb):
+            p_a = 2*p
+            p_b = 2*p+1
+            for q in range(0,self.n_orb):
+                q_a = 2*q
+                q_b = 2*q+1
+                for r in range(0,self.n_orb):
+                    r_a = 2*r
+                    r_b = 2*r+1
+                    for s in range(0,self.n_orb):
+                        s_a = 2*s
+                        s_b = 2*s+1
+                        #aaaa
+                        fermi_op += 0.5 * openfermion.FermionOperator(((p_a+shift,1),
+                                    (q_a+shift,1),(s_a+shift,0),(r_a+shift,0)),self.int_V[p_a,r_a,q_a,s_a])
+                        #aabb
+                        fermi_op += 0.5 * openfermion.FermionOperator(((p_a+shift,1),
+                                    (q_b+shift,1),(s_b+shift,0),(r_a+shift,0)),self.int_V[p_a,r_a,q_b,s_b])
+                        #bbaa
+                        fermi_op += 0.5 * openfermion.FermionOperator(((p_b+shift,1),
+                                    (q_a+shift,1),(s_a+shift,0),(r_b+shift,0)),self.int_V[p_b,r_b,q_a,s_a])
+                        #bbbb
+                        fermi_op += 0.5 * openfermion.FermionOperator(((p_b+shift,1),
+                                    (q_b+shift,1),(s_b+shift,0),(r_b+shift,0)),self.int_V[p_b,r_b,q_b,s_b])
+
+        #A
+        if self.int_A.size > 0 :
+            for p in range(0,self.n_orb):
+                p_a = 2*p
+                p_b = 2*p+1
+                fermi_op += openfermion.FermionOperator(((p_a+shift,1)), self.int_A[p_a])
+                fermi_op += openfermion.FermionOperator(((p_b+shift,1)), self.int_A[p_b])
+
+        #B
+        if self.int_B.size > 0 :
+            for p in range(0,self.n_orb):
+                p_a = 2*p
+                p_b = 2*p+1
+                fermi_op += openfermion.FermionOperator(((p_a+shift,0)), self.int_B[p_a])
+                fermi_op += openfermion.FermionOperator(((p_b+shift,0)), self.int_B[p_b])
+
+        #C
+        if self.int_C.size > 0 :
+            for p in range(0,self.n_orb):
+                p_a = 2*p
+                p_b = 2*p+1
+                for q in range(0,self.n_orb):
+                    q_a = 2*q
+                    q_b = 2*q+1
+                    #aa
+                    fermi_op += openfermion.FermionOperator(((p_a+shift,1),(q_a+shift,1)), self.int_C[p_a,q_a])
+                    #ab
+                    fermi_op += openfermion.FermionOperator(((p_a+shift,1),(q_b+shift,1)), self.int_C[p_a,q_b])
+                    #ba
+                    fermi_op += openfermion.FermionOperator(((p_b+shift,1),(q_a+shift,1)), self.int_C[p_b,q_a])
+                    #bb
+                    fermi_op += openfermion.FermionOperator(((p_b+shift,1),(q_b+shift,1)), self.int_C[p_b,q_b])
+
+        #D
+        if self.int_D.size > 0 :
+            for p in range(0,self.n_orb):
+                p_a = 2*p
+                p_b = 2*p+1
+                for q in range(0,self.n_orb):
+                    q_a = 2*q
+                    q_b = 2*q+1
+                    #aa
+                    fermi_op += openfermion.FermionOperator(((p_a+shift,0),(q_a+shift,0)), self.int_D[p_a,q_a])
+                    #ab
+                    fermi_op += openfermion.FermionOperator(((p_a+shift,0),(q_b+shift,0)), self.int_D[p_a,q_b])
+                    #ba
+                    fermi_op += openfermion.FermionOperator(((p_b+shift,0),(q_a+shift,0)), self.int_D[p_b,q_a])
+                    #bb
+                    fermi_op += openfermion.FermionOperator(((p_b+shift,0),(q_b+shift,0)), self.int_D[p_b,q_b])
+
+        return fermi_op
+
+        comment = """
+        #We have spatial orbital integrals, so we need to convert back to spin orbitals
+        
         fermi_op = openfermion.FermionOperator()
 
         #H
@@ -199,18 +294,10 @@ class SQ_Hamiltonian:
 
 
         return fermi_op
+        """
 
 
-
-
-
-
-
-
-
-
-
-def init(molecule,charge,spin,basis,n_frzn_occ=0, n_act=None, mo_order=None):
+def init(molecule,charge,spin,basis,reference='rhf',n_frzn_occ=0, n_act=None, mo_order=None):
 # {{{
     #PYSCF inputs
     print(" ---------------------------------------------------------")
@@ -226,61 +313,227 @@ def init(molecule,charge,spin,basis,n_frzn_occ=0, n_act=None, mo_order=None):
     # todo: take out
     lib.num_threads(1)
 
-    mol.max_memory = 1000 # MB
+    mol.max_memory = 8e3 # MB
     mol.charge = charge
     mol.spin = spin
     mol.basis = basis
+    mol.symmetry = False
     mol.build()
 
     #orbitals and electrons
     n_orb = mol.nao_nr()
-    n_b , n_a = mol.nelec 
-    nel = n_a + n_b
+    n_a, n_b = mol.nelec 
+    n_el = n_a + n_b
 
     if n_act == None:
         n_act = n_orb
-    #SCF 
-    mf = scf.RHF(mol).run()
-    #mf = scf.ROHF(mol).run()
-    
-    if mo_order != None:
-        print(len(mo_order) , mf.mo_coeff.shape[1])
-        assert(len(mo_order) == mf.mo_coeff.shape[1])
-        mf.mo_coeff = mf.mo_coeff[:,mo_order]
-    
-    C = mf.mo_coeff #MO coeffs
-    S = mf.get_ovlp()
 
-    
+    #SCF
+    if reference == "rhf": 
+        mf = scf.RHF(mol)
+    elif reference == "rohf":
+        mf = scf.ROHF(mol)
+    elif reference == "uhf":
+        mf = scf.UHF(mol)
+    else:
+        print("Please specify a proper reference (rhf/rohf/uhf).")
+    mf.conv_tol_grad = 1e-14
+    mf.max_cycle = 1000
+    mf.verbose = 4
+    mf.init_guess = 'atom'
+    #mf = scf.newton(mf).set(conv_tol=1e-12)
+
+    hf_energy = mf.kernel()
+    #internal stability check
+    print("Checking the internal stability of the SCF solution.")
+    new_mo = mf.stability()[0]
+    mo_diff = 0
+    j = 0
+    log = lib.logger.new_logger(mf)
+    if reference != "uhf":
+        mo_diff = np.linalg.norm(mf.mo_coeff - new_mo)
+        while (mo_diff > 1e-5) and (j < 3):
+            print("Rotating orbitals to find stable solution: attempt %d."%(j+1))
+            new_dm = mf.make_rdm1(new_mo,mf.mo_occ)
+            mf.run(new_dm)
+            new_mo = mf.stability()[0]
+            mo_diff = np.linalg.norm(mf.mo_coeff - new_mo)
+            j += 1
+        if mo_diff > 1e-5:
+            print("Unable to find a stable SCF solution after %d attempts."%(j+1))
+        else:
+            print("SCF solution is internally stable.")
+    else:
+        mo_diff = np.linalg.norm(mf.mo_coeff[0] - new_mo[0]) + np.linalg.norm(mf.mo_coeff[1] - new_mo[1])
+        while (mo_diff > 1e-5) and (j < 3):
+            print("Rotating orbitals to find stable solution: attempt %d."%(j+1))
+            new_dm = mf.make_rdm1(new_mo,mf.mo_occ)
+            mf.run(new_dm)
+            new_mo = mf.stability()[0]
+            mo_diff = np.linalg.norm(mf.mo_coeff[0] - new_mo[0]) + np.linalg.norm(mf.mo_coeff[1] - new_mo[1])
+            j += 1
+        if mo_diff > 1e-5:
+            print("Unable to find a stable SCF solution after %d attempts."%(j+1))
+        else:
+            print("SCF solution is internally stable.")
+
+    hf_energy = mf.e_tot
+
+    assert mf.converged == True
+    mo_occ = mf.mo_occ
+    C = mf.mo_coeff
+    occ_a = 0
+    occ_b = 0
+    virt_a = 0
+    virt_b = 0
+
     # dump orbitals for viewing 
-    molden.from_mo(mol, 'orbitals_canon.molden', C)
+    #molden.from_mo(mol, 'orbitals_canon.molden', C)
+
+    if reference != "uhf":
+        C_a = C_b = mf.mo_coeff
+        mo_a = np.zeros(len(mo_occ))
+        mo_b = np.zeros(len(mo_occ))
+        for i in range(0, len(mo_occ)):
+            if mo_occ[i] > 0:
+                mo_a[i] = 1
+                occ_a += 1
+            else:
+                virt_a += 1
+            if mo_occ[i] > 1:
+                mo_b[i] = 1
+                occ_b += 1
+            else:
+                virt_b += 1
+
+    else:
+        C_a = mf.mo_coeff[0]
+        C_b = mf.mo_coeff[1]
+        mo_a = np.zeros(len(mo_occ[0]))
+        mo_b = np.zeros(len(mo_occ[1]))
+        for i in range(0, len(mo_occ[0])):
+            if mo_occ[0][i] == 1:
+                mo_a[i] = 1
+                occ_a += 1
+            else:
+                virt_a += 1
+        for i in range(0, len(mo_occ[1])):
+            if mo_occ[1][i] == 1:
+                mo_b[i] = 1
+                occ_b += 1
+            else:
+                virt_b += 1
+
+    P_a = np.diag(mo_a)
+    P_b = np.diag(mo_b)
+
+    E_nuc = mol.energy_nuc()
+
+    #
+    #if mo_order != None:
+    #    print(len(mo_order) , mf.mo_coeff.shape[1])
+    #    assert(len(mo_order) == mf.mo_coeff.shape[1])
+    #    mf.mo_coeff = mf.mo_coeff[:,mo_order]
+    
+
+
+    #C = mf.mo_coeff #MO coeffs
+    #S = mf.get_ovlp()
 
     ##READING INTEGRALS FROM PYSCF
     E_nuc = gto.Mole.energy_nuc(mol)
     T = mol.intor('int1e_kin_sph')
     V = mol.intor('int1e_nuc_sph') 
-    hcore = T + V
+    H_core = T + V
     S = mol.intor('int1e_ovlp_sph')
-    g = mol.intor('int2e_sph')
+    I = mol.intor('int2e_sph')
 
     print("\nSystem and Method:")
     print(mol.atom)
 
     print("Basis set                                      :%12s" %(mol.basis))
     print("Number of Orbitals                             :%10i" %(n_orb))
-    print("Number of electrons                            :%10i" %(nel))
-    print("Nuclear Repulsion                              :%16.10f " %E_nuc)
-    print("Electronic SCF energy                          :%16.10f " %(mf.e_tot-E_nuc))
-    print("SCF Energy                                     :%16.10f"%(mf.e_tot))
+    print("Number of electrons                            :%10i" %(n_el))
+    print("Number of alpha electrons                      :%10i" %(n_a))
+    print("Number of beta electrons                       :%10i" %(n_b))
+    print("Nuclear Repulsion                              :%18.12f " %E_nuc)
+    print("Electronic SCF energy                          :%18.12f " %(mf.e_tot-E_nuc))
+    print("SCF Energy                                     :%21.15f"%(mf.e_tot))
 
 
     print(" AO->MO")
-    g = np.einsum("pqrs,pl->lqrs",g,C)
-    g = np.einsum("lqrs,qm->lmrs",g,C)
-    g = np.einsum("lmrs,rn->lmns",g,C)
-    g = np.einsum("lmns,so->lmno",g,C)
+    #convert from AO to MO representation
+    H_a = C_a.T.dot(H_core).dot(C_a)
+    H_b = C_b.T.dot(H_core).dot(C_b)
 
+    I_aa = np.einsum("pqrs,pi->iqrs",I,C_a)
+    I_aa = np.einsum("iqrs,qj->ijrs",I_aa,C_a)
+    I_aa = np.einsum("ijrs,rk->ijks",I_aa,C_a)
+    I_aa = np.einsum("ijks,sl->ijkl",I_aa,C_a)
+    
+    I_ab = np.einsum("pqrs,pi->iqrs",I,C_a)
+    I_ab = np.einsum("iqrs,qj->ijrs",I_ab,C_a)
+    I_ab = np.einsum("ijrs,rk->ijks",I_ab,C_b)
+    I_ab = np.einsum("ijks,sl->ijkl",I_ab,C_b)
+    
+    I_ba = np.einsum("pqrs,pi->iqrs",I,C_b)
+    I_ba = np.einsum("iqrs,qj->ijrs",I_ba,C_b)
+    I_ba = np.einsum("ijrs,rk->ijks",I_ba,C_a)
+    I_ba = np.einsum("ijks,sl->ijkl",I_ba,C_a)
 
+    I_bb = np.einsum("pqrs,pi->iqrs",I,C_b)
+    I_bb = np.einsum("iqrs,qj->ijrs",I_bb,C_b)
+    I_bb = np.einsum("ijrs,rk->ijks",I_bb,C_b)
+    I_bb = np.einsum("ijks,sl->ijkl",I_bb,C_b)
+
+    J_a = np.einsum("pqrs,rs->pq",I_aa,P_a) + np.einsum("pqrs,rs->pq",I_ab,P_b)
+    J_b = np.einsum("pqrs,rs->pq",I_bb,P_b) + np.einsum("pqrs,rs->pq",I_ba,P_a)
+    K_a = np.einsum("pqrs,rq->ps",I_aa,P_a)
+    K_b = np.einsum("pqrs,rq->ps",I_bb,P_b)
+
+    F_a = H_a + J_a - K_a
+    F_b = H_b + J_b - K_b
+    manual_energy = E_nuc + 0.5*np.einsum("pq,pq",H_a+F_a,P_a) + 0.5*np.einsum("pq,pq",H_b+F_b,P_b)
+    print("Manual HF energy = %21.15f"%(manual_energy))
+    onebody = np.einsum("pq,pq",H_a,P_a) + np.einsum("pq,pq",H_b,P_b)
+    twobody = 0.5*np.einsum("pq,pq",J_a-K_a,P_a) + 0.5*np.einsum("pq,pq",J_b-K_b,P_b)
+    #print("One-body energy = %16.10f"%onebody)
+    #print("Two-body energy = %16.10f"%twobody)
+
+    #group terms to be exported in {a0,b0,a1,b2,...} MO ordering
+    A = np.array([[1,0],[0,0]])
+    B = np.array([[0,0],[0,1]])
+    AA = np.einsum("pq,rs->pqrs",A,A)
+    AB = np.einsum("pq,rs->pqrs",A,B)
+    BA = np.einsum("pq,rs->pqrs",B,A)
+    BB = np.einsum("pq,rs->pqrs",B,B)
+
+    h = np.kron(H_a,A) + np.kron(H_b,B)
+    p = np.kron(P_a,A) + np.kron(P_b,B)
+    #f = np.kron(F_a,A) + np.kron(F_b,B)
+    C = np.kron(C_a,A) + np.kron(C_b,B)
+    S = np.kron(S,A) + np.kron(S,B)
+    g = np.kron(I_aa,AA) + np.kron(I_ab,AB) + np.kron(I_ba,BA) + np.kron(I_bb,BB)
+
+    #print("(1a 1a | 1b 1b) = %16.10f"%(I_ab[1,1,1,1]))
+    #print("(1a 1a | 1b 1b) = %16.10f"%(g[2,2,3,3]))
+    #g -= np.einsum("pqrs->prsq",g)
+    #g *= -0.25
+
+    #FCI
+    if False:
+        cisolver = fci.FCI(mf)
+        print("FCI energy = %21.15f"%cisolver.kernel()[0])
+
+    return(n_orb, n_a, n_b, h, g, mol, E_nuc, mf.e_tot, C, S)
+
+    #g = np.einsum("pqrs,pl->lqrs",g,C)
+    #g = np.einsum("lqrs,qm->lmrs",g,C)
+    #g = np.einsum("lmrs,rn->lmns",g,C)
+    #g = np.einsum("lmns,so->lmno",g,C)
+
+    #TODO:Implement frozen core
+    comment="""
     assert(n_frzn_occ <= n_b)
     n_frzn_vir = n_orb - n_act - n_frzn_occ
     assert(n_frzn_vir >= 0)
@@ -313,7 +566,7 @@ def init(molecule,charge,spin,basis,n_frzn_occ=0, n_act=None, mo_order=None):
     eri_act = ao2mo.restore('s1', eri_act, Cact.shape[1])
     print(" ERIs in the active-space:")
     print(eri_act.shape, " %12.8f Mb" %(eri_act.nbytes*1e-6))
-
+    
     if False:
         #compute slater determinant energy
         e1 = 0
@@ -357,7 +610,9 @@ def init(molecule,charge,spin,basis,n_frzn_occ=0, n_act=None, mo_order=None):
         print()
     
     Cact = C[:,n_frzn_occ:n_frzn_occ+n_act]
+    
     return(n_act, n_a, n_b, h, eri_act, mol, E_nuc ,mf.e_tot,Cact,S)
+    """
 # }}}
 
 

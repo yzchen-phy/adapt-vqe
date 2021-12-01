@@ -26,7 +26,7 @@ class OperatorPool:
         self.n_spin_orb = 2*self.n_orb
 
         if n_occ_a!=None and n_occ_b!=None:
-            assert(n_occ_a == n_occ_b)
+            #assert(n_occ_a == n_occ_b)
             self.n_occ = n_occ_a
             self.n_occ_a = n_occ_a
             self.n_occ_b = n_occ_b
@@ -502,6 +502,282 @@ class singlet_SD(OperatorPool):
 
 
 
-def unrestricted_SD(n_occ_a, n_occ_b, n_vir_a, n_vir_b):
-    print("NYI")
-    exit()
+class unrestricted_SD(OperatorPool):
+    def generate_SQ_operators(self):
+        print("Forming unrestricted SD operators.")
+        self.fermi_ops=[]
+        n_occ_a = self.n_occ_a
+        n_occ_b = self.n_occ_b
+        n_vir_a = self.n_vir_a
+        n_vir_b = self.n_vir_b
+        
+        #singles
+        #aa
+        for a in range(0,n_vir_a):
+            a_a = 2*a + 2*n_occ_a
+            for i in range(0,n_occ_a):
+                i_a = 2*i
+
+                termA = FermionOperator(((a_a,1),(i_a,0)),1)
+                termA -= hermitian_conjugated(termA)
+                termA = normal_ordered(termA)
+                #Normalize
+                coeffA = 0
+                for t in termA.terms:
+                    coeff_t = termA.terms[t]
+                    coeffA += coeff_t*coeff_t
+                if termA.many_body_order() > 0:
+                    termA = termA/np.sqrt(coeffA)
+                    self.fermi_ops.append(termA)
+        #bb
+        for a in range(0,n_vir_b):
+            a_b = 2*a + 2*n_occ_b+1
+            for i in range(0,n_occ_b):
+                i_b = 2*i+1
+
+                termB = FermionOperator(((a_b,1),(i_b,0)),1)
+                termB -= hermitian_conjugated(termB)
+                termB = normal_ordered(termB)
+                #Normalize
+                coeffB = 0
+                for t in termsB.terms:
+                    coeff_t = termB.terms[t]
+                    coeffB += coeff_t * coeff_t
+                if termB.many_body_order() > 0:
+                    termB = termB/np.sqrt(coeffB)
+                    self.fermi_ops.append(termB)
+
+        #doubles
+        #aaaa
+        for a in range(0,n_vir_a):
+            a_a = 2*a + 2*n_occ_a
+            for b in range(a,n_vir_a):
+                b_a = 2*b + 2*n_occ_a
+                for i in range(0,n_vir_a):
+                    i_a = 2*i
+                    for j in range(i,n_vir_a):
+                        j_a = 2*j
+
+                        termAA = FermionOperator(((a_a,1),(b_a,1),(i_a,0),(j_a,0)),1)
+                        termAA -= hermitian_conjugated(termAA)
+                        termAA = normal_ordered(termAA)
+                        #Normalize
+                        coeffAA = 0
+                        for t in termAA.terms:
+                            coeff_t = termAA.terms[t]
+                            coeffAA += coeff_t * coeff_t
+                        if termAA.many_body_order() > 0:
+                            termAA = termAA/np.sqrt(coeffAA)
+                            self.fermi_ops.append(termAA)
+
+        #abab
+        for a in range(0,n_vir_a):
+            a_a = 2*a + 2*n_occ_a
+            for b in range(0,n_vir_b):
+                b_b = 2*b +2*n_occ_b+1
+                for i in range(0,n_occ_a):
+                    i_a = 2*i
+                    for j in range(0,n_occ_b):
+                        j_b = 2*j+1
+
+                        termAB = FermionOperator(((a_a,1),(b_b,1),(i_a,0),(j_b,0)),1)
+                        termAB -= hermitian_conjugated(termAB)
+                        termAB = normal_ordered(termAB)
+                        #Normalize
+                        coeffAB = 0
+                        for t in termAB.terms:
+                            coeff_t = termAB.terms[t]
+                            coeffAB += coeff_t * coeff_t
+                        if termAB.many_body_order() > 0:
+                            termAB = termAB/np.sqrt(coeffAB)
+                            self.fermi_ops.append(termAB)
+
+        #bbbb
+        for a in range(0,n_vir_b):
+            a_b = 2*a + 2*n_occ_b+1
+            for b in range(a,n_vir_b):
+                b_b = 2*b + 2*n_occ_b+1
+                for i in range(0,n_occ_b):
+                    i_b = 2*i+1
+                    for j in range(i,n_occ_b):
+                        j_b = 2*j+1
+
+                        termBB = FermionOperator(((a_b,1),(b_b,1),(i_b,0),(j_b,0)),1)
+                        termBB -= hermitian_conjugated(termBB)
+                        termBB = normal_ordered(termBB)
+                        #Normalize
+                        coeffBB = 0
+                        for t in termBB.terms:
+                            coeff_t = termBB.terms[t]
+                            coeffBB = coeff_t * coeff_t
+                        if termBB.many_body_order() > 0:
+                            termBB = termBB/np.sqrt(coeffBB)
+                            self.fermi_ops.append(termBB)
+
+        self.n_ops = len(self.fermi_ops)
+        print("Number of operators: %d"%self.n_ops)
+        return
+
+    def get_string_for_term(self,op):
+
+        opstring = ""
+        spins = ""
+
+        for t in op.terms:
+            opstring = "("
+            for ti in t:
+                opstring += str(int(ti[0]/2))
+                if ti[0]%2 == 0:
+                    opstring += "a"
+                elif ti[0]%2 == 1:
+                    opstring += "b"
+                else:
+                    print("Problem getting string for term!")
+                    exit()
+                if ti[1] == 0:
+                    opstring += "  "
+                elif ti[1] == 1:
+                    opstring += "' "
+                else:
+                    print("Problem getting string for term!")
+                    exit()
+                spins += str(ti[0]%2)
+
+            opstring += ")"
+            spins += " "
+        opstring = " %18s : %s"%(opstring, spins)
+        return opstring
+
+class unrestricted_GSD(OperatorPool):
+    def generate_SQ_Operators(self):
+        print("Forming unrestricted GSD operators.")
+        
+        self.fermi_ops=[]
+        n_orb = self.n_orb
+        
+        #singles
+        for p in range(0,n_orb):
+            p_a = 2*p
+            p_b = 2*p+1
+            for q in range(p+1,n_orb):
+                q_a = 2*q
+                q_b = 2*q+1
+
+                termA = FermionOperator(((p_a,1),(q_a,0)),1)
+                termA -= hermitian_conjugated(termA)
+                termA = normal_ordered(termA)
+                #Normalize
+                coeffA = 0
+                for t in termA.terms:
+                    coeff_t = termA.terms[t]
+                    coeffA += coeff_t * coeff_t
+                if termA.many_body_order() > 0:
+                    termA = termA/np.sqrt(coeffA)
+                    self.fermi_ops.append(termA)
+
+                termB = FermionOperator(((p_b,1),(q_b,0)),1)
+                termB -= hermitian_conjugated(termB)
+                termB = normal_ordered(termB)
+                #Normalize
+                coeffB = 0
+                for t in termB.terms:
+                    coeff_t = termB.terms[t]
+                    coeffB += coeff_t * coeff_t
+                if termB.many_body_order() > 0:
+                    termB = termB/np.sqrt(coeffB)
+                    self.fermi_ops.append(termB)  
+
+        #doubles
+        pq = -1
+        for p in range(0,n_orb):
+            p_a = 2*p
+            p_b = 2*p+1
+            for q in range(0,n_orb):
+                q_a = 2*q
+                q_b = 2*q+1
+
+                pq += 1
+                rs = -1
+                for r in range(0,n_orb):
+                    r_a = 2*r
+                    r_b = 2*r+1
+                    for s in range(0,n_orb):
+                        s_a = 2*s 
+                        s_b = 2*s+1
+
+                        rs += 1
+                        if (pq < rs):
+                            #abab
+                            termAB = FermionOperator(((p_a,1),(q_b,1),(r_a,0),(s_b,0)),1)
+                            termAB -= hermitian_conjugated(termAB)
+                            termAB = normal_ordered(termAB)
+                            #Normalize
+                            coeffAB = 0
+                            for t in termAB.terms:
+                                coeff_t = termAB.terms[t]
+                                coeffAB += coeff_t * coeff_t
+                            if termAB.many_body_order() > 0:
+                                termAB = termAB/np.sqrt(coeffAB)
+                                self.fermi_ops.append(termAB)
+
+                            if ((q > p) and (s > r)):
+                                #aaaa
+                                termAA = FermionOperator(((p_a,1),(q_a,1),(r_a,0),(s_a,0)),1)
+                                termAA -= hermitian_conjugated(termAA)
+                                termAA = normal_ordered(termAA)
+                                #Normalize
+                                coeffAA = 0
+                                for t in termAA.terms:
+                                    coeff_t = termAA.terms[t]
+                                    coeffAA = coeff_t * coeff_t
+                                if termAA.many_body_order() > 0:
+                                    termAA = termAA/np.sqrt(coeffAA)
+                                    self.fermi_ops.append(termAA)
+                                #bbbb
+                                termBB = FermionOperator(((p_b,1),(q_b,1),(r_b,0),(s_b,0)),1)
+                                termBB -= hermitian_conjugated(termBB)
+                                termBB = normal_ordered(termBB)
+                                #Normalize
+                                coeffBB = 0
+                                for t in termBB.terms:
+                                    coeff_t = termBB.terms[t]
+                                    coeffBB = coeff_t * coeff_t
+                                if termBB.many_body_order() > 0:
+                                    termBB = termBB/np.sqrt(coeffBB)
+                                    self.fermi_ops.append(termBB)
+
+        self.n_ops = len(self.fermi_ops)
+        print(" Number of operators: ", self.n_ops)
+        return
+
+    def get_string_for_term(self,op):
+
+        opstring = ""
+        spins = ""
+
+        for t in op.terms:
+            opstring = "("
+            for ti in t:
+                opstring += str(int(ti[0]/2))
+                if ti[0]%2 == 0:
+                    opstring += "a"
+                elif ti[0]%2 == 1:
+                    opstring += "b"
+                else:
+                    print("Problem getting string for term!")
+                    exit()
+                if ti[1] == 0:
+                    opstring += "  "
+                elif ti[1] == 1:
+                    opstring += "' "
+                else:
+                    print("Problem getting string for term!")
+                    exit()
+                spins += str(ti[0]%2)
+
+            opstring += ")"
+            spins += " "
+        opstring = " %18s : %s"%(opstring, spins)
+        return opstring
+
+
