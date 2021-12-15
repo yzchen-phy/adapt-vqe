@@ -28,7 +28,9 @@ def adapt_vqe(hamiltonian_op, pool, reference_ket,
         theta_thresh    = 1e-7,
         adapt_maxiter   = 200,
         exact_energy    = 0,
-        psi4_filename   = "psi4_%12.12f"%random.random()
+        psi4_filename   = "psi4_%12.12f"%random.random(),
+        init_params = [],
+        init_ops = []
         ):
 # {{{
 
@@ -50,6 +52,32 @@ def adapt_vqe(hamiltonian_op, pool, reference_ket,
     op_indices = []
     parameters = []
     curr_state = 1.0*reference_ket
+
+    if len(init_params) > 0:
+        print(" Restarting an ADAPT-VQE algorithm")
+        op_indices = init_ops
+        parameters = init_params
+        for i in op_indices:
+            ansatz_ops.append(pool.fermi_ops[i])
+            ansatz_mat.append(pool.spmat_ops[i])
+
+        trial_model = tUCCSD(hamiltonian, ansatz_mat, reference_ket, parameters)
+        print("Reoptimizing read in state")
+        print("Optimizer: BFGS")
+        opt_result = scipy.optimize.minimize(trial_model.energy, parameters, 
+                jac=trial_model.gradient,options = {'gtol': theta_thresh, 'disp':True}, 
+                method = 'BFGS', callback=trial_model.callback)
+        print(opt_result['success'])
+        print(opt_result['message'])
+        energy_old = trial_model.curr_energy
+        parameters = list(opt_result['x'])
+        curr_state = trial_model.prepare_state(parameters)
+        print(" Restarting: %20.15f" % trial_model.curr_energy)
+        print(" -----------New ansatz----------- ")
+        print(" %4s %20s %18s" %("#","Coeff","Term"))
+        for si in range(len(ansatz_ops)):
+            opstring = pool.get_string_for_term(ansatz_ops[si])
+            print(" %4i %20.15f %s" %(si, parameters[si], opstring) )
 
     print(" Now start to grow the ansatz")
     for n_iter in range(0,adapt_maxiter):
@@ -142,10 +170,10 @@ def adapt_vqe(hamiltonian_op, pool, reference_ket,
         print(hessvals)
         print(" Finished: %20.15f" % trial_model.curr_energy)
         print(" -----------New ansatz----------- ")
-        print(" %4s %12s %18s" %("#","Coeff","Term"))
+        print(" %4s %20s %18s" %("#","Coeff","Term"))
         for si in range(len(ansatz_ops)):
             opstring = pool.get_string_for_term(ansatz_ops[si])
-            print(" %4i %12.8f %s" %(si, parameters[si], opstring) )
+            print(" %4i %20.15f %s" %(si, parameters[si], opstring) )
     return trial_model.curr_energy, curr_state, parameters
 
 # }}}
