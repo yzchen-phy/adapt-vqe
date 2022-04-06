@@ -13,7 +13,7 @@ from scipy.linalg import norm
 from openfermion import *
 from noisyopt import minimizeSPSA
 
-import operator_pools
+import operator_pools_qaoa
 from tVQE import *
 
 ############################################################
