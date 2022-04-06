@@ -10,7 +10,7 @@ import pickle
 import math
 from scipy.linalg import norm
 
-import operator_pools
+import operator_pools_qaoa
 from tVQE import *
 
 from openfermion import *
