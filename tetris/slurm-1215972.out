@@ -1,0 +1,19 @@
+
+The system default contains no modules
+  (env var: LMOD_SYSTEM_DEFAULT_MODULES is empty)
+  No changes in loaded modules
+
+Lmod has detected the following error: The following module(s) are unknown:
+"Anaconda3/2020.11"
+
+Please check the spelling or version number. Also try "module spider ..."
+
+
+No modules loaded
+
+/var/spool/slurmd/job1215972/slurm_script: line 14: conda: command not found
+../src/vqe_methods.py:72: RuntimeWarning: invalid value encountered in sqrt
+  uncertainty = np.sqrt(var.real)
+../src/vqe_methods.py:72: RuntimeWarning: invalid value encountered in sqrt
+  uncertainty = np.sqrt(var.real)
+slurmstepd: error: *** JOB 1215972 ON dt021 CANCELLED AT 2022-07-31T21:56:52 DUE TO TIME LIMIT ***

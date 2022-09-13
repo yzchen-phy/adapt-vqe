@@ -1,0 +1,2949 @@
+ ---------------------------------------------------------
+                                                          
+                      Using Pyscf:
+                                                          
+ ---------------------------------------------------------
+                                                          
+converged SCF energy = -1.31331178622042
+
+System and Method:
+[('H', (0, 0, 3.0)), ('H', (0, 0, 6.0)), ('H', (0, 0, 9.0)), ('H', (0, 0, 12.0))]
+Basis set                                      :      sto-3g
+Number of Orbitals                             :         4
+Number of electrons                            :         4
+Nuclear Repulsion                              :    0.7643670824 
+Electronic SCF energy                          :   -2.0776788687 
+SCF Energy                                     :   -1.3133117862
+ AO->MO
+ NElectrons:    2    2
+ ecore:   0.00000000
+ ERIs in the active-space:
+(4, 4, 4, 4)    0.00204800 Mb
+ n_orb:    4
+ n_a  :    2
+ n_b  :    2
+ HF Energy:  -1.31331179
+ Build reference state with    2 alpha and    2 beta electrons [0, 2, 1, 3]
+ State    0:  -1.86729137 au  <S2>:   0.00000000
+ Form Pauli operators
+ Number of operators:  90
+ Reference Energy:  -1.31331179
+ Generate Sparse Matrices for operators in pool
+ Start ADAPT-VQE algorithm
+ Now start to grow the ansatz
+
+
+
+
+ --------------------------------------------------------------------------
+                         ADAPT-VQE iteration:  0
+ --------------------------------------------------------------------------
+ Check each new operator for coupling
+ Measure Operator Pool Gradients:
+ Variance:      0.17637448
+ Uncertainty:   0.41996961
+ Norm of <[H,A]> =   0.83993922
+ Max  of <[H,A]> =   0.00000000
+ Add operator   78
+ Iter:   0 Current Energy =  -1.3897467290921521 Gradient Norm    1.7e-01 Gradient Max    1.7e-01
+ Iter:   1 Current Energy =  -1.4075494465629705 Gradient Norm    7.4e-02 Gradient Max    7.4e-02
+ Iter:   2 Current Energy =  -1.4115898778083062 Gradient Norm    1.9e-03 Gradient Max    1.9e-03
+ Iter:   3 Current Energy =  -1.4115924881884030 Gradient Norm    1.5e-05 Gradient Max    1.5e-05
+ Iter:   4 Current Energy =  -1.4115924883447550 Gradient Norm    7.4e-11 Gradient Max    7.4e-11
+ Finished:      -1.411592488345
+ -----------New ansatz----------- 
+    #        Coeff               Term
+    0   0.56520034 0.125j [X2 X3 X6 Y7] +
+0.125j [X2 X3 Y6 X7] +
+-0.125j [X2 Y3 X6 X7] +
+0.125j [X2 Y3 Y6 Y7] +
+(-0-0.125j) [Y2 X3 X6 X7] +
+0.125j [Y2 X3 Y6 Y7] +
+-0.125j [Y2 Y3 X6 Y7] +
+-0.125j [Y2 Y3 Y6 X7]
+
+
+
+
+ --------------------------------------------------------------------------
+                         ADAPT-VQE iteration:  1
+ --------------------------------------------------------------------------
+ Check each new operator for coupling
+ Measure Operator Pool Gradients:
+ Variance:      0.17096906
+ Uncertainty:   0.41348405
+ Norm of <[H,A]> =   0.82344254
+ Max  of <[H,A]> =   0.00000000
+ Add operator   43
+ Iter:   0 Current Energy =  -1.5174559572823623 Gradient Norm    2.0e-01 Gradient Max    2.0e-01
+ Iter:   1 Current Energy =  -1.5440659783910267 Gradient Norm    1.1e-01 Gradient Max    9.2e-02
+ Iter:   2 Current Energy =  -1.5516580212540227 Gradient Norm    8.3e-03 Gradient Max    7.8e-03
+ Iter:   3 Current Energy =  -1.5516909124777478 Gradient Norm    3.1e-04 Gradient Max    3.1e-04
+ Iter:   4 Current Energy =  -1.5516909576448525 Gradient Norm    2.3e-07 Gradient Max    2.3e-07
+ Iter:   5 Current Energy =  -1.5516909576448781 Gradient Norm    2.0e-10 Gradient Max    2.0e-10
+ Finished:      -1.551690957645
+ -----------New ansatz----------- 
+    #        Coeff               Term
+    0   0.69167745 0.125j [X0 X3 X5 Y6] +
+0.125j [X0 X3 Y5 X6] +
+-0.125j [X0 Y3 X5 X6] +
+0.125j [X0 Y3 Y5 Y6] +
+(-0-0.125j) [Y0 X3 X5 X6] +
+0.125j [Y0 X3 Y5 Y6] +
+-0.125j [Y0 Y3 X5 Y6] +
+-0.125j [Y0 Y3 Y5 X6]
+    1   0.55044835 0.125j [X2 X3 X6 Y7] +
+0.125j [X2 X3 Y6 X7] +
+-0.125j [X2 Y3 X6 X7] +
+0.125j [X2 Y3 Y6 Y7] +
+(-0-0.125j) [Y2 X3 X6 X7] +
+0.125j [Y2 X3 Y6 Y7] +
+-0.125j [Y2 Y3 X6 Y7] +
+-0.125j [Y2 Y3 Y6 X7]
+
+
+
+
+ --------------------------------------------------------------------------
+                         ADAPT-VQE iteration:  2
+ --------------------------------------------------------------------------
+ Check each new operator for coupling
+ Measure Operator Pool Gradients:
+ Variance:      0.10679566
+ Uncertainty:   0.32679606
+ Norm of <[H,A]> =   0.73747313
+ Max  of <[H,A]> =   0.00000000
+ Add operator   22
+ Iter:   0 Current Energy =  -1.6927464808677368 Gradient Norm    2.2e-01 Gradient Max    2.1e-01
+ Iter:   1 Current Energy =  -1.7192265150505133 Gradient Norm    1.1e-01 Gradient Max    1.0e-01
+ Iter:   2 Current Energy =  -1.7268315786926729 Gradient Norm    3.9e-03 Gradient Max    2.7e-03
+ Iter:   3 Current Energy =  -1.7268413754702665 Gradient Norm    5.6e-04 Gradient Max    5.4e-04
+ Iter:   4 Current Energy =  -1.7268415530325192 Gradient Norm    7.7e-05 Gradient Max    4.6e-05
+ Iter:   5 Current Energy =  -1.7268415562384620 Gradient Norm    3.9e-06 Gradient Max    3.9e-06
+ Iter:   6 Current Energy =  -1.7268415562456860 Gradient Norm    4.3e-08 Gradient Max    3.3e-08
+ Iter:   7 Current Energy =  -1.7268415562456878 Gradient Norm    2.0e-10 Gradient Max    1.5e-10
+ Iter:   8 Current Energy =  -1.7268415562456880 Gradient Norm    1.7e-10 Gradient Max    1.3e-10
+ Finished:      -1.726841556246
+ -----------New ansatz----------- 
+    #        Coeff               Term
+    0   0.73162007 0.125j [X0 X1 X4 Y5] +
+0.125j [X0 X1 Y4 X5] +
+-0.125j [X0 Y1 X4 X5] +
+0.125j [X0 Y1 Y4 Y5] +
+(-0-0.125j) [Y0 X1 X4 X5] +
+0.125j [Y0 X1 Y4 Y5] +
+-0.125j [Y0 Y1 X4 Y5] +
+-0.125j [Y0 Y1 Y4 X5]
+    1   0.69261213 0.125j [X0 X3 X5 Y6] +
+0.125j [X0 X3 Y5 X6] +
+-0.125j [X0 Y3 X5 X6] +
+0.125j [X0 Y3 Y5 Y6] +
+(-0-0.125j) [Y0 X3 X5 X6] +
+0.125j [Y0 X3 Y5 Y6] +
+-0.125j [Y0 Y3 X5 Y6] +
+-0.125j [Y0 Y3 Y5 X6]
+    2   0.60367643 0.125j [X2 X3 X6 Y7] +
+0.125j [X2 X3 Y6 X7] +
+-0.125j [X2 Y3 X6 X7] +
+0.125j [X2 Y3 Y6 Y7] +
+(-0-0.125j) [Y2 X3 X6 X7] +
+0.125j [Y2 X3 Y6 Y7] +
+-0.125j [Y2 Y3 X6 Y7] +
+-0.125j [Y2 Y3 Y6 X7]
+
+
+
+
+ --------------------------------------------------------------------------
+                         ADAPT-VQE iteration:  3
+ --------------------------------------------------------------------------
+ Check each new operator for coupling
+ Measure Operator Pool Gradients:
+ Variance:      0.09339476
+ Uncertainty:   0.30560556
+ Norm of <[H,A]> =   0.48953722
+ Max  of <[H,A]> =   0.00000000
+ Add operator   57
+ Iter:   0 Current Energy =  -1.7737464982757387 Gradient Norm    2.2e-01 Gradient Max    1.7e-01
+ Iter:   1 Current Energy =  -1.8161295418063148 Gradient Norm    1.3e-01 Gradient Max    8.8e-02
+ Iter:   2 Current Energy =  -1.8244629862450927 Gradient Norm    4.5e-02 Gradient Max    3.9e-02
+ Iter:   3 Current Energy =  -1.8252897207699308 Gradient Norm    1.0e-02 Gradient Max    8.2e-03
+ Iter:   4 Current Energy =  -1.8253412381409495 Gradient Norm    5.5e-04 Gradient Max    4.6e-04
+ Iter:   5 Current Energy =  -1.8253414354715249 Gradient Norm    5.8e-05 Gradient Max    4.8e-05
+ Iter:   6 Current Energy =  -1.8253414371091283 Gradient Norm    1.2e-06 Gradient Max    8.2e-07
+ Iter:   7 Current Energy =  -1.8253414371095871 Gradient Norm    1.6e-08 Gradient Max    1.4e-08
+ Finished:      -1.825341437110
+ -----------New ansatz----------- 
+    #        Coeff               Term
+    0   0.58326018 0.125j [X1 X2 X4 Y7] +
+0.125j [X1 X2 Y4 X7] +
+-0.125j [X1 Y2 X4 X7] +
+0.125j [X1 Y2 Y4 Y7] +
+(-0-0.125j) [Y1 X2 X4 X7] +
+0.125j [Y1 X2 Y4 Y7] +
+-0.125j [Y1 Y2 X4 Y7] +
+-0.125j [Y1 Y2 Y4 X7]
+    1   0.50506146 0.125j [X0 X1 X4 Y5] +
+0.125j [X0 X1 Y4 X5] +
+-0.125j [X0 Y1 X4 X5] +
+0.125j [X0 Y1 Y4 Y5] +
+(-0-0.125j) [Y0 X1 X4 X5] +
+0.125j [Y0 X1 Y4 Y5] +
+-0.125j [Y0 Y1 X4 Y5] +
+-0.125j [Y0 Y1 Y4 X5]
+    2   0.64577010 0.125j [X0 X3 X5 Y6] +
+0.125j [X0 X3 Y5 X6] +
+-0.125j [X0 Y3 X5 X6] +
+0.125j [X0 Y3 Y5 Y6] +
+(-0-0.125j) [Y0 X3 X5 X6] +
+0.125j [Y0 X3 Y5 Y6] +
+-0.125j [Y0 Y3 X5 Y6] +
+-0.125j [Y0 Y3 Y5 X6]
+    3   0.41492442 0.125j [X2 X3 X6 Y7] +
+0.125j [X2 X3 Y6 X7] +
+-0.125j [X2 Y3 X6 X7] +
+0.125j [X2 Y3 Y6 Y7] +
+(-0-0.125j) [Y2 X3 X6 X7] +
+0.125j [Y2 X3 Y6 Y7] +
+-0.125j [Y2 Y3 X6 Y7] +
+-0.125j [Y2 Y3 Y6 X7]
+
+
+
+
+ --------------------------------------------------------------------------
+                         ADAPT-VQE iteration:  4
+ --------------------------------------------------------------------------
+ Check each new operator for coupling
+ Measure Operator Pool Gradients:
+ Variance:      0.03838831
+ Uncertainty:   0.19592936
+ Norm of <[H,A]> =   0.01549684
+ Max  of <[H,A]> =   0.00000000
+ Add operator   72
+ Iter:   0 Current Energy =  -1.8253788612589454 Gradient Norm    3.8e-03 Gradient Max    3.7e-03
+ Iter:   1 Current Energy =  -1.8253944518992444 Gradient Norm    1.3e-03 Gradient Max    1.1e-03
+ Iter:   2 Current Energy =  -1.8253946488891630 Gradient Norm    9.8e-04 Gradient Max    7.8e-04
+ Iter:   3 Current Energy =  -1.8253948918911540 Gradient Norm    2.2e-04 Gradient Max    1.7e-04
+ Iter:   4 Current Energy =  -1.8253949044906632 Gradient Norm    3.3e-06 Gradient Max    3.0e-06
+ Iter:   5 Current Energy =  -1.8253949044982678 Gradient Norm    1.2e-06 Gradient Max    1.0e-06
+ Iter:   6 Current Energy =  -1.8253949044994124 Gradient Norm    4.4e-08 Gradient Max    3.8e-08
+ Iter:   7 Current Energy =  -1.8253949044994138 Gradient Norm    7.6e-09 Gradient Max    5.9e-09
+ Iter:   8 Current Energy =  -1.8253949044994138 Gradient Norm    2.8e-11 Gradient Max    1.9e-11
+ Finished:      -1.825394904499
+ -----------New ansatz----------- 
+    #        Coeff               Term
+    0   0.01526051 0.125j [X2 X3 X4 Y5] +
+0.125j [X2 X3 Y4 X5] +
+-0.125j [X2 Y3 X4 X5] +
+0.125j [X2 Y3 Y4 Y5] +
+(-0-0.125j) [Y2 X3 X4 X5] +
+0.125j [Y2 X3 Y4 Y5] +
+-0.125j [Y2 Y3 X4 Y5] +
+-0.125j [Y2 Y3 Y4 X5]
+    1   0.58235707 0.125j [X1 X2 X4 Y7] +
+0.125j [X1 X2 Y4 X7] +
+-0.125j [X1 Y2 X4 X7] +
+0.125j [X1 Y2 Y4 Y7] +
+(-0-0.125j) [Y1 X2 X4 X7] +
+0.125j [Y1 X2 Y4 Y7] +
+-0.125j [Y1 Y2 X4 Y7] +
+-0.125j [Y1 Y2 Y4 X7]
+    2   0.50429437 0.125j [X0 X1 X4 Y5] +
+0.125j [X0 X1 Y4 X5] +
+-0.125j [X0 Y1 X4 X5] +
+0.125j [X0 Y1 Y4 Y5] +
+(-0-0.125j) [Y0 X1 X4 X5] +
+0.125j [Y0 X1 Y4 Y5] +
+-0.125j [Y0 Y1 X4 Y5] +
+-0.125j [Y0 Y1 Y4 X5]
+    3   0.64458818 0.125j [X0 X3 X5 Y6] +
+0.125j [X0 X3 Y5 X6] +
+-0.125j [X0 Y3 X5 X6] +
+0.125j [X0 Y3 Y5 Y6] +
+(-0-0.125j) [Y0 X3 X5 X6] +
+0.125j [Y0 X3 Y5 Y6] +
+-0.125j [Y0 Y3 X5 Y6] +
+-0.125j [Y0 Y3 Y5 X6]
+    4   0.41446944 0.125j [X2 X3 X6 Y7] +
+0.125j [X2 X3 Y6 X7] +
+-0.125j [X2 Y3 X6 X7] +
+0.125j [X2 Y3 Y6 Y7] +
+(-0-0.125j) [Y2 X3 X6 X7] +
+0.125j [Y2 X3 Y6 Y7] +
+-0.125j [Y2 Y3 X6 Y7] +
+-0.125j [Y2 Y3 Y6 X7]
+
+
+
+
+ --------------------------------------------------------------------------
+                         ADAPT-VQE iteration:  5
+ --------------------------------------------------------------------------
+ Check each new operator for coupling
+ Measure Operator Pool Gradients:
+ Variance:      0.03832432
+ Uncertainty:   0.19576599
+ Norm of <[H,A]> =   0.02451362
+ Max  of <[H,A]> =   0.00000000
+ Add operator   28
+ Iter:   0 Current Energy =  -1.8255292134990273 Gradient Norm    9.5e-03 Gradient Max    6.9e-03
+ Iter:   1 Current Energy =  -1.8257554850852993 Gradient Norm    1.4e-02 Gradient Max    1.3e-02
+ Iter:   2 Current Energy =  -1.8261735190641741 Gradient Norm    2.3e-02 Gradient Max    2.2e-02
+ Iter:   3 Current Energy =  -1.8269578455978379 Gradient Norm    3.7e-02 Gradient Max    3.3e-02
+ Iter:   4 Current Energy =  -1.8282331033004287 Gradient Norm    6.0e-02 Gradient Max    4.8e-02
+ Iter:   5 Current Energy =  -1.8289894826911737 Gradient Norm    8.4e-02 Gradient Max    6.0e-02
+ Iter:   6 Current Energy =  -1.8301640536192783 Gradient Norm    6.4e-02 Gradient Max    4.8e-02
+ Iter:   7 Current Energy =  -1.8318266424829996 Gradient Norm    3.1e-02 Gradient Max    2.1e-02
+ Iter:   8 Current Energy =  -1.8324103456668164 Gradient Norm    6.9e-03 Gradient Max    4.8e-03
+ Iter:   9 Current Energy =  -1.8324332249737858 Gradient Norm    1.8e-03 Gradient Max    1.1e-03
+ Iter:  10 Current Energy =  -1.8324344587282551 Gradient Norm    6.1e-04 Gradient Max    4.4e-04
+ Iter:  11 Current Energy =  -1.8324346109819223 Gradient Norm    6.5e-05 Gradient Max    4.3e-05
+ Iter:  12 Current Energy =  -1.8324346131008751 Gradient Norm    1.3e-05 Gradient Max    1.1e-05
+ Iter:  13 Current Energy =  -1.8324346132289580 Gradient Norm    1.5e-06 Gradient Max    1.2e-06
+ Iter:  14 Current Energy =  -1.8324346132305822 Gradient Norm    8.9e-08 Gradient Max    7.2e-08
+ Iter:  15 Current Energy =  -1.8324346132305860 Gradient Norm    2.7e-09 Gradient Max    1.5e-09
+ Iter:  16 Current Energy =  -1.8324346132305862 Gradient Norm    4.3e-11 Gradient Max    3.6e-11
+ Finished:      -1.832434613231
+ -----------New ansatz----------- 
+    #        Coeff               Term
+    0   0.56496504 0.125j [X0 X1 X6 Y7] +
+0.125j [X0 X1 Y6 X7] +
+-0.125j [X0 Y1 X6 X7] +
+0.125j [X0 Y1 Y6 Y7] +
+(-0-0.125j) [Y0 X1 X6 X7] +
+0.125j [Y0 X1 Y6 Y7] +
+-0.125j [Y0 Y1 X6 Y7] +
+-0.125j [Y0 Y1 Y6 X7]
+    1   0.57273948 0.125j [X2 X3 X4 Y5] +
+0.125j [X2 X3 Y4 X5] +
+-0.125j [X2 Y3 X4 X5] +
+0.125j [X2 Y3 Y4 Y5] +
+(-0-0.125j) [Y2 X3 X4 X5] +
+0.125j [Y2 X3 Y4 Y5] +
+-0.125j [Y2 Y3 X4 Y5] +
+-0.125j [Y2 Y3 Y4 X5]
+    2   0.55644619 0.125j [X1 X2 X4 Y7] +
+0.125j [X1 X2 Y4 X7] +
+-0.125j [X1 Y2 X4 X7] +
+0.125j [X1 Y2 Y4 Y7] +
+(-0-0.125j) [Y1 X2 X4 X7] +
+0.125j [Y1 X2 Y4 Y7] +
+-0.125j [Y1 Y2 X4 Y7] +
+-0.125j [Y1 Y2 Y4 X7]
+    3   0.45213560 0.125j [X0 X1 X4 Y5] +
+0.125j [X0 X1 Y4 X5] +
+-0.125j [X0 Y1 X4 X5] +
+0.125j [X0 Y1 Y4 Y5] +
+(-0-0.125j) [Y0 X1 X4 X5] +
+0.125j [Y0 X1 Y4 Y5] +
+-0.125j [Y0 Y1 X4 Y5] +
+-0.125j [Y0 Y1 Y4 X5]
+    4   0.60478508 0.125j [X0 X3 X5 Y6] +
+0.125j [X0 X3 Y5 X6] +
+-0.125j [X0 Y3 X5 X6] +
+0.125j [X0 Y3 Y5 Y6] +
+(-0-0.125j) [Y0 X3 X5 X6] +
+0.125j [Y0 X3 Y5 Y6] +
+-0.125j [Y0 Y3 X5 Y6] +
+-0.125j [Y0 Y3 Y5 X6]
+    5   0.37930405 0.125j [X2 X3 X6 Y7] +
+0.125j [X2 X3 Y6 X7] +
+-0.125j [X2 Y3 X6 X7] +
+0.125j [X2 Y3 Y6 Y7] +
+(-0-0.125j) [Y2 X3 X6 X7] +
+0.125j [Y2 X3 Y6 Y7] +
+-0.125j [Y2 Y3 X6 Y7] +
+-0.125j [Y2 Y3 Y6 X7]
+
+
+
+
+ --------------------------------------------------------------------------
+                         ADAPT-VQE iteration:  6
+ --------------------------------------------------------------------------
+ Check each new operator for coupling
+ Measure Operator Pool Gradients:
+ Variance:      0.03193328
+ Uncertainty:   0.17869884
+ Norm of <[H,A]> =   0.01782691
+ Max  of <[H,A]> =   0.00000000
+ Add operator   59
+ Iter:   0 Current Energy =  -1.8325019075755664 Gradient Norm    4.6e-03 Gradient Max    4.5e-03
+ Iter:   1 Current Energy =  -1.8325225519154849 Gradient Norm    6.3e-04 Gradient Max    4.0e-04
+ Iter:   2 Current Energy =  -1.8325228189255189 Gradient Norm    5.2e-04 Gradient Max    3.3e-04
+ Iter:   3 Current Energy =  -1.8325232899607176 Gradient Norm    6.1e-04 Gradient Max    3.5e-04
+ Iter:   4 Current Energy =  -1.8325241050785082 Gradient Norm    7.1e-04 Gradient Max    4.1e-04
+ Iter:   5 Current Energy =  -1.8325252472880491 Gradient Norm    6.3e-04 Gradient Max    4.1e-04
+ Iter:   6 Current Energy =  -1.8325255978766573 Gradient Norm    3.1e-04 Gradient Max    2.2e-04
+ Iter:   7 Current Energy =  -1.8325256406955985 Gradient Norm    9.9e-05 Gradient Max    7.3e-05
+ Iter:   8 Current Energy =  -1.8325256468127478 Gradient Norm    3.8e-06 Gradient Max    2.3e-06
+ Iter:   9 Current Energy =  -1.8325256468776083 Gradient Norm    4.9e-07 Gradient Max    3.4e-07
+ Iter:  10 Current Energy =  -1.8325256468781430 Gradient Norm    3.0e-08 Gradient Max    2.1e-08
+ Iter:  11 Current Energy =  -1.8325256468781435 Gradient Norm    2.4e-08 Gradient Max    1.7e-08
+ Iter:  12 Current Energy =  -1.8325256468781441 Gradient Norm    3.4e-10 Gradient Max    2.6e-10
+ Finished:      -1.832525646878
+ -----------New ansatz----------- 
+    #        Coeff               Term
+    0  -0.01899870 0.125j [X1 X2 X5 Y6] +
+0.125j [X1 X2 Y5 X6] +
+-0.125j [X1 Y2 X5 X6] +
+0.125j [X1 Y2 Y5 Y6] +
+(-0-0.125j) [Y1 X2 X5 X6] +
+0.125j [Y1 X2 Y5 Y6] +
+-0.125j [Y1 Y2 X5 Y6] +
+-0.125j [Y1 Y2 Y5 X6]
+    1   0.55557595 0.125j [X0 X1 X6 Y7] +
+0.125j [X0 X1 Y6 X7] +
+-0.125j [X0 Y1 X6 X7] +
+0.125j [X0 Y1 Y6 Y7] +
+(-0-0.125j) [Y0 X1 X6 X7] +
+0.125j [Y0 X1 Y6 Y7] +
+-0.125j [Y0 Y1 X6 Y7] +
+-0.125j [Y0 Y1 Y6 X7]
+    2   0.56343421 0.125j [X2 X3 X4 Y5] +
+0.125j [X2 X3 Y4 X5] +
+-0.125j [X2 Y3 X4 X5] +
+0.125j [X2 Y3 Y4 Y5] +
+(-0-0.125j) [Y2 X3 X4 X5] +
+0.125j [Y2 X3 Y4 Y5] +
+-0.125j [Y2 Y3 X4 Y5] +
+-0.125j [Y2 Y3 Y4 X5]
+    3   0.55522855 0.125j [X1 X2 X4 Y7] +
+0.125j [X1 X2 Y4 X7] +
+-0.125j [X1 Y2 X4 X7] +
+0.125j [X1 Y2 Y4 Y7] +
+(-0-0.125j) [Y1 X2 X4 X7] +
+0.125j [Y1 X2 Y4 Y7] +
+-0.125j [Y1 Y2 X4 Y7] +
+-0.125j [Y1 Y2 Y4 X7]
+    4   0.45154532 0.125j [X0 X1 X4 Y5] +
+0.125j [X0 X1 Y4 X5] +
+-0.125j [X0 Y1 X4 X5] +
+0.125j [X0 Y1 Y4 Y5] +
+(-0-0.125j) [Y0 X1 X4 X5] +
+0.125j [Y0 X1 Y4 Y5] +
+-0.125j [Y0 Y1 X4 Y5] +
+-0.125j [Y0 Y1 Y4 X5]
+    5   0.60353992 0.125j [X0 X3 X5 Y6] +
+0.125j [X0 X3 Y5 X6] +
+-0.125j [X0 Y3 X5 X6] +
+0.125j [X0 Y3 Y5 Y6] +
+(-0-0.125j) [Y0 X3 X5 X6] +
+0.125j [Y0 X3 Y5 Y6] +
+-0.125j [Y0 Y3 X5 Y6] +
+-0.125j [Y0 Y3 Y5 X6]
+    6   0.37909669 0.125j [X2 X3 X6 Y7] +
+0.125j [X2 X3 Y6 X7] +
+-0.125j [X2 Y3 X6 X7] +
+0.125j [X2 Y3 Y6 Y7] +
+(-0-0.125j) [Y2 X3 X6 X7] +
+0.125j [Y2 X3 Y6 Y7] +
+-0.125j [Y2 Y3 X6 Y7] +
+-0.125j [Y2 Y3 Y6 X7]
+
+
+
+
+ --------------------------------------------------------------------------
+                         ADAPT-VQE iteration:  7
+ --------------------------------------------------------------------------
+ Check each new operator for coupling
+ Measure Operator Pool Gradients:
+ Variance:      0.03175916
+ Uncertainty:   0.17821100
+ Norm of <[H,A]> =   0.03171732
+ Max  of <[H,A]> =   0.00000000
+ Add operator   41
+ Iter:   0 Current Energy =  -1.8328219633827616 Gradient Norm    1.4e-02 Gradient Max    1.1e-02
+ Iter:   1 Current Energy =  -1.8333204589655365 Gradient Norm    2.1e-02 Gradient Max    2.0e-02
+ Iter:   2 Current Energy =  -1.8342676613495401 Gradient Norm    3.5e-02 Gradient Max    3.2e-02
+ Iter:   3 Current Energy =  -1.8385749756931917 Gradient Norm    1.0e-01 Gradient Max    7.7e-02
+ Iter:   4 Current Energy =  -1.8402629309531393 Gradient Norm    1.3e-01 Gradient Max    9.3e-02
+ Iter:   5 Current Energy =  -1.8432659195140637 Gradient Norm    1.3e-01 Gradient Max    8.6e-02
+ Iter:   6 Current Energy =  -1.8484166633997272 Gradient Norm    9.6e-02 Gradient Max    6.7e-02
+ Iter:   7 Current Energy =  -1.8550192635358767 Gradient Norm    3.6e-02 Gradient Max    2.0e-02
+ Iter:   8 Current Energy =  -1.8568136002276998 Gradient Norm    4.4e-02 Gradient Max    3.0e-02
+ Iter:   9 Current Energy =  -1.8585091122479453 Gradient Norm    4.6e-02 Gradient Max    2.7e-02
+ Iter:  10 Current Energy =  -1.8599852977116815 Gradient Norm    3.8e-02 Gradient Max    2.0e-02
+ Iter:  11 Current Energy =  -1.8617877387867083 Gradient Norm    5.3e-02 Gradient Max    2.4e-02
+ Iter:  12 Current Energy =  -1.8629520590440809 Gradient Norm    4.2e-02 Gradient Max    3.1e-02
+ Iter:  13 Current Energy =  -1.8634624491421117 Gradient Norm    1.9e-02 Gradient Max    1.0e-02
+ Iter:  14 Current Energy =  -1.8636051049051940 Gradient Norm    1.2e-02 Gradient Max    6.3e-03
+ Iter:  15 Current Energy =  -1.8636621881102096 Gradient Norm    1.7e-03 Gradient Max    8.4e-04
+ Iter:  16 Current Energy =  -1.8636628088669922 Gradient Norm    1.2e-03 Gradient Max    6.9e-04
+ Iter:  17 Current Energy =  -1.8636634414839672 Gradient Norm    1.7e-04 Gradient Max    1.2e-04
+ Iter:  18 Current Energy =  -1.8636634507434990 Gradient Norm    1.2e-04 Gradient Max    7.5e-05
+ Iter:  19 Current Energy =  -1.8636634583175558 Gradient Norm    2.9e-06 Gradient Max    1.8e-06
+ Iter:  20 Current Energy =  -1.8636634583216232 Gradient Norm    5.8e-07 Gradient Max    3.9e-07
+ Iter:  21 Current Energy =  -1.8636634583218190 Gradient Norm    2.4e-08 Gradient Max    1.9e-08
+ Finished:      -1.863663458322
+ -----------New ansatz----------- 
+    #        Coeff               Term
+    0  -0.72495190 0.125j [X0 X3 X4 Y7] +
+0.125j [X0 X3 Y4 X7] +
+-0.125j [X0 Y3 X4 X7] +
+0.125j [X0 Y3 Y4 Y7] +
+(-0-0.125j) [Y0 X3 X4 X7] +
+0.125j [Y0 X3 Y4 Y7] +
+-0.125j [Y0 Y3 X4 Y7] +
+-0.125j [Y0 Y3 Y4 X7]
+    1  -0.72495190 0.125j [X1 X2 X5 Y6] +
+0.125j [X1 X2 Y5 X6] +
+-0.125j [X1 Y2 X5 X6] +
+0.125j [X1 Y2 Y5 Y6] +
+(-0-0.125j) [Y1 X2 X5 X6] +
+0.125j [Y1 X2 Y5 Y6] +
+-0.125j [Y1 Y2 X5 Y6] +
+-0.125j [Y1 Y2 Y5 X6]
+    2   0.38116538 0.125j [X0 X1 X6 Y7] +
+0.125j [X0 X1 Y6 X7] +
+-0.125j [X0 Y1 X6 X7] +
+0.125j [X0 Y1 Y6 Y7] +
+(-0-0.125j) [Y0 X1 X6 X7] +
+0.125j [Y0 X1 Y6 Y7] +
+-0.125j [Y0 Y1 X6 Y7] +
+-0.125j [Y0 Y1 Y6 X7]
+    3   0.40486466 0.125j [X2 X3 X4 Y5] +
+0.125j [X2 X3 Y4 X5] +
+-0.125j [X2 Y3 X4 X5] +
+0.125j [X2 Y3 Y4 Y5] +
+(-0-0.125j) [Y2 X3 X4 X5] +
+0.125j [Y2 X3 Y4 Y5] +
+-0.125j [Y2 Y3 X4 Y5] +
+-0.125j [Y2 Y3 Y4 X5]
+    4   0.16794301 0.125j [X1 X2 X4 Y7] +
+0.125j [X1 X2 Y4 X7] +
+-0.125j [X1 Y2 X4 X7] +
+0.125j [X1 Y2 Y4 Y7] +
+(-0-0.125j) [Y1 X2 X4 X7] +
+0.125j [Y1 X2 Y4 Y7] +
+-0.125j [Y1 Y2 X4 Y7] +
+-0.125j [Y1 Y2 Y4 X7]
+    5   0.16396989 0.125j [X0 X1 X4 Y5] +
+0.125j [X0 X1 Y4 X5] +
+-0.125j [X0 Y1 X4 X5] +
+0.125j [X0 Y1 Y4 Y5] +
+(-0-0.125j) [Y0 X1 X4 X5] +
+0.125j [Y0 X1 Y4 Y5] +
+-0.125j [Y0 Y1 X4 Y5] +
+-0.125j [Y0 Y1 Y4 X5]
+    6   0.17017409 0.125j [X0 X3 X5 Y6] +
+0.125j [X0 X3 Y5 X6] +
+-0.125j [X0 Y3 X5 X6] +
+0.125j [X0 Y3 Y5 Y6] +
+(-0-0.125j) [Y0 X3 X5 X6] +
+0.125j [Y0 X3 Y5 Y6] +
+-0.125j [Y0 Y3 X5 Y6] +
+-0.125j [Y0 Y3 Y5 X6]
+    7   0.16133556 0.125j [X2 X3 X6 Y7] +
+0.125j [X2 X3 Y6 X7] +
+-0.125j [X2 Y3 X6 X7] +
+0.125j [X2 Y3 Y6 Y7] +
+(-0-0.125j) [Y2 X3 X6 X7] +
+0.125j [Y2 X3 Y6 Y7] +
+-0.125j [Y2 Y3 X6 Y7] +
+-0.125j [Y2 Y3 Y6 X7]
+
+
+
+
+ --------------------------------------------------------------------------
+                         ADAPT-VQE iteration:  8
+ --------------------------------------------------------------------------
+ Check each new operator for coupling
+ Measure Operator Pool Gradients:
+ Variance:      0.00278067
+ Uncertainty:   0.05273205
+ Norm of <[H,A]> =   0.01550218
+ Max  of <[H,A]> =   0.00000000
+ Add operator    8
+ Iter:   0 Current Energy =  -1.8636852761025762 Gradient Norm    3.5e-03 Gradient Max    3.3e-03
+ Iter:   1 Current Energy =  -1.8637040112577770 Gradient Norm    6.3e-04 Gradient Max    5.1e-04
+ Iter:   2 Current Energy =  -1.8637042172312428 Gradient Norm    3.6e-04 Gradient Max    2.1e-04
+ Iter:   3 Current Energy =  -1.8637042828880739 Gradient Norm    3.9e-04 Gradient Max    2.1e-04
+ Iter:   4 Current Energy =  -1.8637043552771870 Gradient Norm    1.3e-04 Gradient Max    9.0e-05
+ Iter:   5 Current Energy =  -1.8637043744835360 Gradient Norm    7.2e-05 Gradient Max    4.6e-05
+ Iter:   6 Current Energy =  -1.8637043798704038 Gradient Norm    3.5e-05 Gradient Max    3.0e-05
+ Iter:   7 Current Energy =  -1.8637043807450651 Gradient Norm    7.0e-06 Gradient Max    5.8e-06
+ Iter:   8 Current Energy =  -1.8637043807731468 Gradient Norm    7.2e-07 Gradient Max    4.0e-07
+ Iter:   9 Current Energy =  -1.8637043807735281 Gradient Norm    1.3e-07 Gradient Max    9.1e-08
+ Iter:  10 Current Energy =  -1.8637043807735347 Gradient Norm    1.9e-08 Gradient Max    1.2e-08
+ Iter:  11 Current Energy =  -1.8637043807735356 Gradient Norm    1.2e-09 Gradient Max    6.5e-10
+ Finished:      -1.863704380774
+ -----------New ansatz----------- 
+    #        Coeff               Term
+    0   0.01588149 (-0-0.5j) [X2 Y6] +
+0.5j [Y2 X6]
+    1  -0.72723190 0.125j [X0 X3 X4 Y7] +
+0.125j [X0 X3 Y4 X7] +
+-0.125j [X0 Y3 X4 X7] +
+0.125j [X0 Y3 Y4 Y7] +
+(-0-0.125j) [Y0 X3 X4 X7] +
+0.125j [Y0 X3 Y4 Y7] +
+-0.125j [Y0 Y3 X4 Y7] +
+-0.125j [Y0 Y3 Y4 X7]
+    2  -0.72425121 0.125j [X1 X2 X5 Y6] +
+0.125j [X1 X2 Y5 X6] +
+-0.125j [X1 Y2 X5 X6] +
+0.125j [X1 Y2 Y5 Y6] +
+(-0-0.125j) [Y1 X2 X5 X6] +
+0.125j [Y1 X2 Y5 Y6] +
+-0.125j [Y1 Y2 X5 Y6] +
+-0.125j [Y1 Y2 Y5 X6]
+    3   0.38068036 0.125j [X0 X1 X6 Y7] +
+0.125j [X0 X1 Y6 X7] +
+-0.125j [X0 Y1 X6 X7] +
+0.125j [X0 Y1 Y6 Y7] +
+(-0-0.125j) [Y0 X1 X6 X7] +
+0.125j [Y0 X1 Y6 Y7] +
+-0.125j [Y0 Y1 X6 Y7] +
+-0.125j [Y0 Y1 Y6 X7]
+    4   0.40537115 0.125j [X2 X3 X4 Y5] +
+0.125j [X2 X3 Y4 X5] +
+-0.125j [X2 Y3 X4 X5] +
+0.125j [X2 Y3 Y4 Y5] +
+(-0-0.125j) [Y2 X3 X4 X5] +
+0.125j [Y2 X3 Y4 Y5] +
+-0.125j [Y2 Y3 X4 Y5] +
+-0.125j [Y2 Y3 Y4 X5]
+    5   0.16737904 0.125j [X1 X2 X4 Y7] +
+0.125j [X1 X2 Y4 X7] +
+-0.125j [X1 Y2 X4 X7] +
+0.125j [X1 Y2 Y4 Y7] +
+(-0-0.125j) [Y1 X2 X4 X7] +
+0.125j [Y1 X2 Y4 Y7] +
+-0.125j [Y1 Y2 X4 Y7] +
+-0.125j [Y1 Y2 Y4 X7]
+    6   0.16282475 0.125j [X0 X1 X4 Y5] +
+0.125j [X0 X1 Y4 X5] +
+-0.125j [X0 Y1 X4 X5] +
+0.125j [X0 Y1 Y4 Y5] +
+(-0-0.125j) [Y0 X1 X4 X5] +
+0.125j [Y0 X1 Y4 Y5] +
+-0.125j [Y0 Y1 X4 Y5] +
+-0.125j [Y0 Y1 Y4 X5]
+    7   0.16906799 0.125j [X0 X3 X5 Y6] +
+0.125j [X0 X3 Y5 X6] +
+-0.125j [X0 Y3 X5 X6] +
+0.125j [X0 Y3 Y5 Y6] +
+(-0-0.125j) [Y0 X3 X5 X6] +
+0.125j [Y0 X3 Y5 Y6] +
+-0.125j [Y0 Y3 X5 Y6] +
+-0.125j [Y0 Y3 Y5 X6]
+    8   0.16086455 0.125j [X2 X3 X6 Y7] +
+0.125j [X2 X3 Y6 X7] +
+-0.125j [X2 Y3 X6 X7] +
+0.125j [X2 Y3 Y6 Y7] +
+(-0-0.125j) [Y2 X3 X6 X7] +
+0.125j [Y2 X3 Y6 Y7] +
+-0.125j [Y2 Y3 X6 Y7] +
+-0.125j [Y2 Y3 Y6 X7]
+
+
+
+
+ --------------------------------------------------------------------------
+                         ADAPT-VQE iteration:  9
+ --------------------------------------------------------------------------
+ Check each new operator for coupling
+ Measure Operator Pool Gradients:
+ Variance:      0.00274836
+ Uncertainty:   0.05242485
+ Norm of <[H,A]> =   0.00722669
+ Max  of <[H,A]> =   0.00000000
+ Add operator   49
+ Iter:   0 Current Energy =  -1.8637138587140645 Gradient Norm    2.4e-03 Gradient Max    2.4e-03
+ Iter:   1 Current Energy =  -1.8637252433044367 Gradient Norm    6.8e-04 Gradient Max    4.6e-04
+ Iter:   2 Current Energy =  -1.8637259073832093 Gradient Norm    4.7e-04 Gradient Max    3.6e-04
+ Iter:   3 Current Energy =  -1.8637260047736732 Gradient Norm    5.2e-04 Gradient Max    2.1e-04
+ Iter:   4 Current Energy =  -1.8637261156778087 Gradient Norm    1.1e-04 Gradient Max    6.1e-05
+ Iter:   5 Current Energy =  -1.8637261309404431 Gradient Norm    3.8e-05 Gradient Max    2.7e-05
+ Iter:   6 Current Energy =  -1.8637261319085634 Gradient Norm    2.3e-05 Gradient Max    1.2e-05
+ Iter:   7 Current Energy =  -1.8637261327646868 Gradient Norm    1.7e-05 Gradient Max    8.5e-06
+ Iter:   8 Current Energy =  -1.8637261330444190 Gradient Norm    8.2e-06 Gradient Max    4.6e-06
+ Iter:   9 Current Energy =  -1.8637261330816923 Gradient Norm    2.4e-06 Gradient Max    1.8e-06
+ Iter:  10 Current Energy =  -1.8637261330860100 Gradient Norm    7.6e-07 Gradient Max    5.3e-07
+ Iter:  11 Current Energy =  -1.8637261330864692 Gradient Norm    2.5e-07 Gradient Max    1.4e-07
+ Iter:  12 Current Energy =  -1.8637261330864960 Gradient Norm    3.7e-08 Gradient Max    2.0e-08
+ Iter:  13 Current Energy =  -1.8637261330864963 Gradient Norm    2.9e-09 Gradient Max    1.9e-09
+ Iter:  14 Current Energy =  -1.8637261330864971 Gradient Norm    5.4e-10 Gradient Max    3.1e-10
+ Iter:  15 Current Energy =  -1.8637261330864976 Gradient Norm    2.6e-10 Gradient Max    1.5e-10
+ Finished:      -1.863726133086
+ -----------New ansatz----------- 
+    #        Coeff               Term
+    0   0.01314532 0.125j [X0 X5 X6 Y7] +
+0.125j [X0 X5 Y6 X7] +
+-0.125j [X0 Y5 X6 X7] +
+0.125j [X0 Y5 Y6 Y7] +
+(-0-0.125j) [Y0 X5 X6 X7] +
+0.125j [Y0 X5 Y6 Y7] +
+-0.125j [Y0 Y5 X6 Y7] +
+-0.125j [Y0 Y5 Y6 X7]
+    1   0.01342943 (-0-0.5j) [X2 Y6] +
+0.5j [Y2 X6]
+    2  -0.72719817 0.125j [X0 X3 X4 Y7] +
+0.125j [X0 X3 Y4 X7] +
+-0.125j [X0 Y3 X4 X7] +
+0.125j [X0 Y3 Y4 Y7] +
+(-0-0.125j) [Y0 X3 X4 X7] +
+0.125j [Y0 X3 Y4 Y7] +
+-0.125j [Y0 Y3 X4 Y7] +
+-0.125j [Y0 Y3 Y4 X7]
+    3  -0.72407500 0.125j [X1 X2 X5 Y6] +
+0.125j [X1 X2 Y5 X6] +
+-0.125j [X1 Y2 X5 X6] +
+0.125j [X1 Y2 Y5 Y6] +
+(-0-0.125j) [Y1 X2 X5 X6] +
+0.125j [Y1 X2 Y5 Y6] +
+-0.125j [Y1 Y2 X5 Y6] +
+-0.125j [Y1 Y2 Y5 X6]
+    4   0.38034412 0.125j [X0 X1 X6 Y7] +
+0.125j [X0 X1 Y6 X7] +
+-0.125j [X0 Y1 X6 X7] +
+0.125j [X0 Y1 Y6 Y7] +
+(-0-0.125j) [Y0 X1 X6 X7] +
+0.125j [Y0 X1 Y6 Y7] +
+-0.125j [Y0 Y1 X6 Y7] +
+-0.125j [Y0 Y1 Y6 X7]
+    5   0.40587127 0.125j [X2 X3 X4 Y5] +
+0.125j [X2 X3 Y4 X5] +
+-0.125j [X2 Y3 X4 X5] +
+0.125j [X2 Y3 Y4 Y5] +
+(-0-0.125j) [Y2 X3 X4 X5] +
+0.125j [Y2 X3 Y4 Y5] +
+-0.125j [Y2 Y3 X4 Y5] +
+-0.125j [Y2 Y3 Y4 X5]
+    6   0.16734327 0.125j [X1 X2 X4 Y7] +
+0.125j [X1 X2 Y4 X7] +
+-0.125j [X1 Y2 X4 X7] +
+0.125j [X1 Y2 Y4 Y7] +
+(-0-0.125j) [Y1 X2 X4 X7] +
+0.125j [Y1 X2 Y4 Y7] +
+-0.125j [Y1 Y2 X4 Y7] +
+-0.125j [Y1 Y2 Y4 X7]
+    7   0.16280953 0.125j [X0 X1 X4 Y5] +
+0.125j [X0 X1 Y4 X5] +
+-0.125j [X0 Y1 X4 X5] +
+0.125j [X0 Y1 Y4 Y5] +
+(-0-0.125j) [Y0 X1 X4 X5] +
+0.125j [Y0 X1 Y4 Y5] +
+-0.125j [Y0 Y1 X4 Y5] +
+-0.125j [Y0 Y1 Y4 X5]
+    8   0.16951349 0.125j [X0 X3 X5 Y6] +
+0.125j [X0 X3 Y5 X6] +
+-0.125j [X0 Y3 X5 X6] +
+0.125j [X0 Y3 Y5 Y6] +
+(-0-0.125j) [Y0 X3 X5 X6] +
+0.125j [Y0 X3 Y5 Y6] +
+-0.125j [Y0 Y3 X5 Y6] +
+-0.125j [Y0 Y3 Y5 X6]
+    9   0.16121700 0.125j [X2 X3 X6 Y7] +
+0.125j [X2 X3 Y6 X7] +
+-0.125j [X2 Y3 X6 X7] +
+0.125j [X2 Y3 Y6 Y7] +
+(-0-0.125j) [Y2 X3 X6 X7] +
+0.125j [Y2 X3 Y6 Y7] +
+-0.125j [Y2 Y3 X6 Y7] +
+-0.125j [Y2 Y3 Y6 X7]
+
+
+
+
+ --------------------------------------------------------------------------
+                         ADAPT-VQE iteration:  10
+ --------------------------------------------------------------------------
+ Check each new operator for coupling
+ Measure Operator Pool Gradients:
+ Variance:      0.00273423
+ Uncertainty:   0.05228983
+ Norm of <[H,A]> =   0.00666891
+ Max  of <[H,A]> =   0.00000000
+ Add operator   20
+ Iter:   0 Current Energy =  -1.8637354785269478 Gradient Norm    2.4e-03 Gradient Max    2.4e-03
+ Iter:   1 Current Energy =  -1.8637467907719720 Gradient Norm    7.2e-04 Gradient Max    5.4e-04
+ Iter:   2 Current Energy =  -1.8637476006397424 Gradient Norm    4.7e-04 Gradient Max    4.2e-04
+ Iter:   3 Current Energy =  -1.8637477949734138 Gradient Norm    4.0e-04 Gradient Max    2.5e-04
+ Iter:   4 Current Energy =  -1.8637478958180489 Gradient Norm    3.8e-04 Gradient Max    1.6e-04
+ Iter:   5 Current Energy =  -1.8637479439959592 Gradient Norm    7.8e-05 Gradient Max    6.2e-05
+ Iter:   6 Current Energy =  -1.8637479492069851 Gradient Norm    5.2e-05 Gradient Max    4.2e-05
+ Iter:   7 Current Energy =  -1.8637479533263113 Gradient Norm    1.7e-05 Gradient Max    1.0e-05
+ Iter:   8 Current Energy =  -1.8637479538217545 Gradient Norm    7.6e-06 Gradient Max    3.7e-06
+ Iter:   9 Current Energy =  -1.8637479538920665 Gradient Norm    3.7e-06 Gradient Max    1.8e-06
+ Iter:  10 Current Energy =  -1.8637479539064867 Gradient Norm    2.3e-06 Gradient Max    1.2e-06
+ Iter:  11 Current Energy =  -1.8637479539159534 Gradient Norm    1.4e-06 Gradient Max    7.6e-07
+ Iter:  12 Current Energy =  -1.8637479539182387 Gradient Norm    7.6e-07 Gradient Max    5.3e-07
+ Iter:  13 Current Energy =  -1.8637479539188069 Gradient Norm    2.6e-07 Gradient Max    1.8e-07
+ Iter:  14 Current Energy =  -1.8637479539188726 Gradient Norm    6.0e-08 Gradient Max    3.7e-08
+ Iter:  15 Current Energy =  -1.8637479539188750 Gradient Norm    9.8e-09 Gradient Max    6.9e-09
+ Iter:  16 Current Energy =  -1.8637479539188762 Gradient Norm    1.7e-09 Gradient Max    1.1e-09
+ Iter:  17 Current Energy =  -1.8637479539188766 Gradient Norm    2.8e-10 Gradient Max    1.4e-10
+ Iter:  18 Current Energy =  -1.8637479539188770 Gradient Norm    1.4e-10 Gradient Max    6.6e-11
+ Finished:      -1.863747953919
+ -----------New ansatz----------- 
+    #        Coeff               Term
+    0   0.01328105 0.125j [X0 X1 X3 Y6] +
+0.125j [X0 X1 Y3 X6] +
+-0.125j [X0 Y1 X3 X6] +
+0.125j [X0 Y1 Y3 Y6] +
+(-0-0.125j) [Y0 X1 X3 X6] +
+0.125j [Y0 X1 Y3 Y6] +
+-0.125j [Y0 Y1 X3 Y6] +
+-0.125j [Y0 Y1 Y3 X6]
+    1   0.01364367 0.125j [X0 X5 X6 Y7] +
+0.125j [X0 X5 Y6 X7] +
+-0.125j [X0 Y5 X6 X7] +
+0.125j [X0 Y5 Y6 Y7] +
+(-0-0.125j) [Y0 X5 X6 X7] +
+0.125j [Y0 X5 Y6 Y7] +
+-0.125j [Y0 Y5 X6 Y7] +
+-0.125j [Y0 Y5 Y6 X7]
+    2   0.01048926 (-0-0.5j) [X2 Y6] +
+0.5j [Y2 X6]
+    3  -0.72652231 0.125j [X0 X3 X4 Y7] +
+0.125j [X0 X3 Y4 X7] +
+-0.125j [X0 Y3 X4 X7] +
+0.125j [X0 Y3 Y4 Y7] +
+(-0-0.125j) [Y0 X3 X4 X7] +
+0.125j [Y0 X3 Y4 Y7] +
+-0.125j [Y0 Y3 X4 Y7] +
+-0.125j [Y0 Y3 Y4 X7]
+    4  -0.72454100 0.125j [X1 X2 X5 Y6] +
+0.125j [X1 X2 Y5 X6] +
+-0.125j [X1 Y2 X5 X6] +
+0.125j [X1 Y2 Y5 Y6] +
+(-0-0.125j) [Y1 X2 X5 X6] +
+0.125j [Y1 X2 Y5 Y6] +
+-0.125j [Y1 Y2 X5 Y6] +
+-0.125j [Y1 Y2 Y5 X6]
+    5   0.37987787 0.125j [X0 X1 X6 Y7] +
+0.125j [X0 X1 Y6 X7] +
+-0.125j [X0 Y1 X6 X7] +
+0.125j [X0 Y1 Y6 Y7] +
+(-0-0.125j) [Y0 X1 X6 X7] +
+0.125j [Y0 X1 Y6 Y7] +
+-0.125j [Y0 Y1 X6 Y7] +
+-0.125j [Y0 Y1 Y6 X7]
+    6   0.40626696 0.125j [X2 X3 X4 Y5] +
+0.125j [X2 X3 Y4 X5] +
+-0.125j [X2 Y3 X4 X5] +
+0.125j [X2 Y3 Y4 Y5] +
+(-0-0.125j) [Y2 X3 X4 X5] +
+0.125j [Y2 X3 Y4 Y5] +
+-0.125j [Y2 Y3 X4 Y5] +
+-0.125j [Y2 Y3 Y4 X5]
+    7   0.16726310 0.125j [X1 X2 X4 Y7] +
+0.125j [X1 X2 Y4 X7] +
+-0.125j [X1 Y2 X4 X7] +
+0.125j [X1 Y2 Y4 Y7] +
+(-0-0.125j) [Y1 X2 X4 X7] +
+0.125j [Y1 X2 Y4 Y7] +
+-0.125j [Y1 Y2 X4 Y7] +
+-0.125j [Y1 Y2 Y4 X7]
+    8   0.16331833 0.125j [X0 X1 X4 Y5] +
+0.125j [X0 X1 Y4 X5] +
+-0.125j [X0 Y1 X4 X5] +
+0.125j [X0 Y1 Y4 Y5] +
+(-0-0.125j) [Y0 X1 X4 X5] +
+0.125j [Y0 X1 Y4 Y5] +
+-0.125j [Y0 Y1 X4 Y5] +
+-0.125j [Y0 Y1 Y4 X5]
+    9   0.16993627 0.125j [X0 X3 X5 Y6] +
+0.125j [X0 X3 Y5 X6] +
+-0.125j [X0 Y3 X5 X6] +
+0.125j [X0 Y3 Y5 Y6] +
+(-0-0.125j) [Y0 X3 X5 X6] +
+0.125j [Y0 X3 Y5 Y6] +
+-0.125j [Y0 Y3 X5 Y6] +
+-0.125j [Y0 Y3 Y5 X6]
+   10   0.16110808 0.125j [X2 X3 X6 Y7] +
+0.125j [X2 X3 Y6 X7] +
+-0.125j [X2 Y3 X6 X7] +
+0.125j [X2 Y3 Y6 Y7] +
+(-0-0.125j) [Y2 X3 X6 X7] +
+0.125j [Y2 X3 Y6 Y7] +
+-0.125j [Y2 Y3 X6 Y7] +
+-0.125j [Y2 Y3 Y6 X7]
+
+
+
+
+ --------------------------------------------------------------------------
+                         ADAPT-VQE iteration:  11
+ --------------------------------------------------------------------------
+ Check each new operator for coupling
+ Measure Operator Pool Gradients:
+ Variance:      0.00270897
+ Uncertainty:   0.05204780
+ Norm of <[H,A]> =   0.00626962
+ Max  of <[H,A]> =   0.00000000
+ Add operator    9
+ Iter:   0 Current Energy =  -1.8637525888955593 Gradient Norm    1.8e-03 Gradient Max    1.5e-03
+ Iter:   1 Current Energy =  -1.8637601699508282 Gradient Norm    2.1e-03 Gradient Max    1.1e-03
+ Iter:   2 Current Energy =  -1.8637729920027095 Gradient Norm    3.5e-03 Gradient Max    2.0e-03
+ Iter:   3 Current Energy =  -1.8637957005511463 Gradient Norm    5.6e-03 Gradient Max    3.2e-03
+ Iter:   4 Current Energy =  -1.8638362086531182 Gradient Norm    8.5e-03 Gradient Max    4.6e-03
+ Iter:   5 Current Energy =  -1.8639024185859614 Gradient Norm    1.2e-02 Gradient Max    7.1e-03
+ Iter:   6 Current Energy =  -1.8639478198962816 Gradient Norm    1.8e-02 Gradient Max    1.1e-02
+ Iter:   7 Current Energy =  -1.8640206996740420 Gradient Norm    1.4e-02 Gradient Max    8.6e-03
+ Iter:   8 Current Energy =  -1.8641376372768101 Gradient Norm    8.6e-03 Gradient Max    4.9e-03
+ Iter:   9 Current Energy =  -1.8642442378557575 Gradient Norm    5.3e-03 Gradient Max    2.7e-03
+ Iter:  10 Current Energy =  -1.8642703308566737 Gradient Norm    4.8e-03 Gradient Max    3.0e-03
+ Iter:  11 Current Energy =  -1.8643119697006210 Gradient Norm    4.7e-03 Gradient Max    2.9e-03
+ Iter:  12 Current Energy =  -1.8643543374354998 Gradient Norm    3.9e-03 Gradient Max    1.7e-03
+ Iter:  13 Current Energy =  -1.8643612496808830 Gradient Norm    1.5e-03 Gradient Max    9.1e-04
+ Iter:  14 Current Energy =  -1.8643633859512483 Gradient Norm    5.1e-04 Gradient Max    2.9e-04
+ Iter:  15 Current Energy =  -1.8643640023134338 Gradient Norm    2.8e-04 Gradient Max    1.5e-04
+ Iter:  16 Current Energy =  -1.8643640760588744 Gradient Norm    1.5e-04 Gradient Max    9.5e-05
+ Iter:  17 Current Energy =  -1.8643641065161771 Gradient Norm    5.6e-05 Gradient Max    3.6e-05
+ Iter:  18 Current Energy =  -1.8643641101896944 Gradient Norm    2.6e-05 Gradient Max    1.5e-05
+ Iter:  19 Current Energy =  -1.8643641109124869 Gradient Norm    1.4e-05 Gradient Max    7.8e-06
+ Iter:  20 Current Energy =  -1.8643641111165694 Gradient Norm    7.8e-06 Gradient Max    4.9e-06
+ Iter:  21 Current Energy =  -1.8643641111928726 Gradient Norm    3.1e-06 Gradient Max    1.6e-06
+ Iter:  22 Current Energy =  -1.8643641112030298 Gradient Norm    1.2e-06 Gradient Max    8.6e-07
+ Iter:  23 Current Energy =  -1.8643641112045550 Gradient Norm    5.4e-07 Gradient Max    3.3e-07
+ Iter:  24 Current Energy =  -1.8643641112048071 Gradient Norm    1.8e-07 Gradient Max    7.5e-08
+ Iter:  25 Current Energy =  -1.8643641112048344 Gradient Norm    2.8e-08 Gradient Max    1.5e-08
+ Iter:  26 Current Energy =  -1.8643641112048350 Gradient Norm    4.3e-09 Gradient Max    2.5e-09
+ Iter:  27 Current Energy =  -1.8643641112048353 Gradient Norm    9.9e-10 Gradient Max    6.0e-10
+ Iter:  28 Current Energy =  -1.8643641112048353 Gradient Norm    3.7e-10 Gradient Max    2.0e-10
+ Finished:      -1.864364111205
+ -----------New ansatz----------- 
+    #        Coeff               Term
+    0   0.25478456 (-0-0.5j) [X3 Y7] +
+0.5j [Y3 X7]
+    1   0.18960014 0.125j [X0 X1 X3 Y6] +
+0.125j [X0 X1 Y3 X6] +
+-0.125j [X0 Y1 X3 X6] +
+0.125j [X0 Y1 Y3 Y6] +
+(-0-0.125j) [Y0 X1 X3 X6] +
+0.125j [Y0 X1 Y3 Y6] +
+-0.125j [Y0 Y1 X3 Y6] +
+-0.125j [Y0 Y1 Y3 X6]
+    2   0.19264810 0.125j [X0 X5 X6 Y7] +
+0.125j [X0 X5 Y6 X7] +
+-0.125j [X0 Y5 X6 X7] +
+0.125j [X0 Y5 Y6 Y7] +
+(-0-0.125j) [Y0 X5 X6 X7] +
+0.125j [Y0 X5 Y6 Y7] +
+-0.125j [Y0 Y5 X6 Y7] +
+-0.125j [Y0 Y5 Y6 X7]
+    3   0.08793672 (-0-0.5j) [X2 Y6] +
+0.5j [Y2 X6]
+    4  -0.74811351 0.125j [X0 X3 X4 Y7] +
+0.125j [X0 X3 Y4 X7] +
+-0.125j [X0 Y3 X4 X7] +
+0.125j [X0 Y3 Y4 Y7] +
+(-0-0.125j) [Y0 X3 X4 X7] +
+0.125j [Y0 X3 Y4 Y7] +
+-0.125j [Y0 Y3 X4 Y7] +
+-0.125j [Y0 Y3 Y4 X7]
+    5  -0.68504049 0.125j [X1 X2 X5 Y6] +
+0.125j [X1 X2 Y5 X6] +
+-0.125j [X1 Y2 X5 X6] +
+0.125j [X1 Y2 Y5 Y6] +
+(-0-0.125j) [Y1 X2 X5 X6] +
+0.125j [Y1 X2 Y5 Y6] +
+-0.125j [Y1 Y2 X5 Y6] +
+-0.125j [Y1 Y2 Y5 X6]
+    6   0.39062466 0.125j [X0 X1 X6 Y7] +
+0.125j [X0 X1 Y6 X7] +
+-0.125j [X0 Y1 X6 X7] +
+0.125j [X0 Y1 Y6 Y7] +
+(-0-0.125j) [Y0 X1 X6 X7] +
+0.125j [Y0 X1 Y6 Y7] +
+-0.125j [Y0 Y1 X6 Y7] +
+-0.125j [Y0 Y1 Y6 X7]
+    7   0.42736775 0.125j [X2 X3 X4 Y5] +
+0.125j [X2 X3 Y4 X5] +
+-0.125j [X2 Y3 X4 X5] +
+0.125j [X2 Y3 Y4 Y5] +
+(-0-0.125j) [Y2 X3 X4 X5] +
+0.125j [Y2 X3 Y4 Y5] +
+-0.125j [Y2 Y3 X4 Y5] +
+-0.125j [Y2 Y3 Y4 X5]
+    8   0.19664328 0.125j [X1 X2 X4 Y7] +
+0.125j [X1 X2 Y4 X7] +
+-0.125j [X1 Y2 X4 X7] +
+0.125j [X1 Y2 Y4 Y7] +
+(-0-0.125j) [Y1 X2 X4 X7] +
+0.125j [Y1 X2 Y4 Y7] +
+-0.125j [Y1 Y2 X4 Y7] +
+-0.125j [Y1 Y2 Y4 X7]
+    9   0.19154607 0.125j [X0 X1 X4 Y5] +
+0.125j [X0 X1 Y4 X5] +
+-0.125j [X0 Y1 X4 X5] +
+0.125j [X0 Y1 Y4 Y5] +
+(-0-0.125j) [Y0 X1 X4 X5] +
+0.125j [Y0 X1 Y4 Y5] +
+-0.125j [Y0 Y1 X4 Y5] +
+-0.125j [Y0 Y1 Y4 X5]
+   10   0.19819743 0.125j [X0 X3 X5 Y6] +
+0.125j [X0 X3 Y5 X6] +
+-0.125j [X0 Y3 X5 X6] +
+0.125j [X0 Y3 Y5 Y6] +
+(-0-0.125j) [Y0 X3 X5 X6] +
+0.125j [Y0 X3 Y5 Y6] +
+-0.125j [Y0 Y3 X5 Y6] +
+-0.125j [Y0 Y3 Y5 X6]
+   11   0.18085728 0.125j [X2 X3 X6 Y7] +
+0.125j [X2 X3 Y6 X7] +
+-0.125j [X2 Y3 X6 X7] +
+0.125j [X2 Y3 Y6 Y7] +
+(-0-0.125j) [Y2 X3 X6 X7] +
+0.125j [Y2 X3 Y6 Y7] +
+-0.125j [Y2 Y3 X6 Y7] +
+-0.125j [Y2 Y3 Y6 X7]
+
+
+
+
+ --------------------------------------------------------------------------
+                         ADAPT-VQE iteration:  12
+ --------------------------------------------------------------------------
+ Check each new operator for coupling
+ Measure Operator Pool Gradients:
+ Variance:      0.00237420
+ Uncertainty:   0.04872573
+ Norm of <[H,A]> =   0.03308384
+ Max  of <[H,A]> =   0.00000000
+ Add operator   63
+ Iter:   0 Current Energy =  -1.8644828312048713 Gradient Norm    1.2e-02 Gradient Max    6.6e-03
+ Iter:   1 Current Energy =  -1.8653833411182716 Gradient Norm    3.5e-02 Gradient Max    1.9e-02
+ Iter:   2 Current Energy =  -1.8660640917645501 Gradient Norm    3.8e-02 Gradient Max    1.9e-02
+ Iter:   3 Current Energy =  -1.8664165716752548 Gradient Norm    1.6e-02 Gradient Max    1.0e-02
+ Iter:   4 Current Energy =  -1.8665483500987559 Gradient Norm    3.5e-03 Gradient Max    1.9e-03
+ Iter:   5 Current Energy =  -1.8665580928405170 Gradient Norm    3.0e-03 Gradient Max    1.9e-03
+ Iter:   6 Current Energy =  -1.8665679124814740 Gradient Norm    1.8e-03 Gradient Max    9.1e-04
+ Iter:   7 Current Energy =  -1.8665716552340634 Gradient Norm    1.6e-03 Gradient Max    9.4e-04
+ Iter:   8 Current Energy =  -1.8665769311117011 Gradient Norm    1.9e-03 Gradient Max    1.0e-03
+ Iter:   9 Current Energy =  -1.8665852899726558 Gradient Norm    2.3e-03 Gradient Max    1.2e-03
+ Iter:  10 Current Energy =  -1.8665978319966889 Gradient Norm    2.9e-03 Gradient Max    2.1e-03
+ Iter:  11 Current Energy =  -1.8666132456307105 Gradient Norm    3.2e-03 Gradient Max    2.6e-03
+ Iter:  12 Current Energy =  -1.8666338428682661 Gradient Norm    3.7e-03 Gradient Max    2.6e-03
+ Iter:  13 Current Energy =  -1.8666649784394753 Gradient Norm    4.8e-03 Gradient Max    4.0e-03
+ Iter:  14 Current Energy =  -1.8667151780921052 Gradient Norm    6.9e-03 Gradient Max    6.0e-03
+ Iter:  15 Current Energy =  -1.8667769474659617 Gradient Norm    9.9e-03 Gradient Max    7.4e-03
+ Iter:  16 Current Energy =  -1.8668620243077090 Gradient Norm    8.4e-03 Gradient Max    5.2e-03
+ Iter:  17 Current Energy =  -1.8669624325995411 Gradient Norm    4.7e-03 Gradient Max    2.6e-03
+ Iter:  18 Current Energy =  -1.8669901815975796 Gradient Norm    3.6e-03 Gradient Max    2.0e-03
+ Iter:  19 Current Energy =  -1.8670064015063783 Gradient Norm    6.5e-03 Gradient Max    3.2e-03
+ Iter:  20 Current Energy =  -1.8670202347691445 Gradient Norm    3.2e-03 Gradient Max    1.6e-03
+ Iter:  21 Current Energy =  -1.8670351468672264 Gradient Norm    1.7e-03 Gradient Max    1.1e-03
+ Iter:  22 Current Energy =  -1.8670468689266451 Gradient Norm    1.9e-03 Gradient Max    1.1e-03
+ Iter:  23 Current Energy =  -1.8670543718286983 Gradient Norm    1.4e-03 Gradient Max    8.9e-04
+ Iter:  24 Current Energy =  -1.8670563907445623 Gradient Norm    5.4e-04 Gradient Max    3.6e-04
+ Iter:  25 Current Energy =  -1.8670566552155266 Gradient Norm    2.3e-04 Gradient Max    1.2e-04
+ Iter:  26 Current Energy =  -1.8670566666468207 Gradient Norm    1.8e-04 Gradient Max    1.5e-04
+ Iter:  27 Current Energy =  -1.8670566855057542 Gradient Norm    1.1e-04 Gradient Max    9.5e-05
+ Iter:  28 Current Energy =  -1.8670566984801518 Gradient Norm    8.3e-06 Gradient Max    6.0e-06
+ Iter:  29 Current Energy =  -1.8670566985139798 Gradient Norm    2.7e-06 Gradient Max    2.1e-06
+ Iter:  30 Current Energy =  -1.8670566985179786 Gradient Norm    4.8e-07 Gradient Max    2.7e-07
+ Iter:  31 Current Energy =  -1.8670566985181518 Gradient Norm    1.6e-07 Gradient Max    9.5e-08
+ Iter:  32 Current Energy =  -1.8670566985181707 Gradient Norm    5.9e-08 Gradient Max    3.1e-08
+ Iter:  33 Current Energy =  -1.8670566985181718 Gradient Norm    7.7e-09 Gradient Max    4.4e-09
+ Iter:  34 Current Energy =  -1.8670566985181727 Gradient Norm    1.2e-09 Gradient Max    6.2e-10
+ Finished:      -1.867056698518
+ -----------New ansatz----------- 
+    #        Coeff               Term
+    0   0.45552204 0.125j [X1 X3 X4 Y6] +
+-0.125j [X1 X3 Y4 X6] +
+0.125j [X1 Y3 X4 X6] +
+0.125j [X1 Y3 Y4 Y6] +
+(-0-0.125j) [Y1 X3 X4 X6] +
+-0.125j [Y1 X3 Y4 Y6] +
+0.125j [Y1 Y3 X4 Y6] +
+-0.125j [Y1 Y3 Y4 X6]
+    1   0.01488416 (-0-0.5j) [X3 Y7] +
+0.5j [Y3 X7]
+    2   0.01160057 0.125j [X0 X1 X3 Y6] +
+0.125j [X0 X1 Y3 X6] +
+-0.125j [X0 Y1 X3 X6] +
+0.125j [X0 Y1 Y3 Y6] +
+(-0-0.125j) [Y0 X1 X3 X6] +
+0.125j [Y0 X1 Y3 Y6] +
+-0.125j [Y0 Y1 X3 Y6] +
+-0.125j [Y0 Y1 Y3 X6]
+    3   0.00735980 0.125j [X0 X5 X6 Y7] +
+0.125j [X0 X5 Y6 X7] +
+-0.125j [X0 Y5 X6 X7] +
+0.125j [X0 Y5 Y6 Y7] +
+(-0-0.125j) [Y0 X5 X6 X7] +
+0.125j [Y0 X5 Y6 Y7] +
+-0.125j [Y0 Y5 X6 Y7] +
+-0.125j [Y0 Y5 Y6 X7]
+    4   0.02959339 (-0-0.5j) [X2 Y6] +
+0.5j [Y2 X6]
+    5  -0.93165793 0.125j [X0 X3 X4 Y7] +
+0.125j [X0 X3 Y4 X7] +
+-0.125j [X0 Y3 X4 X7] +
+0.125j [X0 Y3 Y4 Y7] +
+(-0-0.125j) [Y0 X3 X4 X7] +
+0.125j [Y0 X3 Y4 Y7] +
+-0.125j [Y0 Y3 X4 Y7] +
+-0.125j [Y0 Y3 Y4 X7]
+    6  -0.54223341 0.125j [X1 X2 X5 Y6] +
+0.125j [X1 X2 Y5 X6] +
+-0.125j [X1 Y2 X5 X6] +
+0.125j [X1 Y2 Y5 Y6] +
+(-0-0.125j) [Y1 X2 X5 X6] +
+0.125j [Y1 X2 Y5 Y6] +
+-0.125j [Y1 Y2 X5 Y6] +
+-0.125j [Y1 Y2 Y5 X6]
+    7   0.20354520 0.125j [X0 X1 X6 Y7] +
+0.125j [X0 X1 Y6 X7] +
+-0.125j [X0 Y1 X6 X7] +
+0.125j [X0 Y1 Y6 Y7] +
+(-0-0.125j) [Y0 X1 X6 X7] +
+0.125j [Y0 X1 Y6 Y7] +
+-0.125j [Y0 Y1 X6 Y7] +
+-0.125j [Y0 Y1 Y6 X7]
+    8   0.58701464 0.125j [X2 X3 X4 Y5] +
+0.125j [X2 X3 Y4 X5] +
+-0.125j [X2 Y3 X4 X5] +
+0.125j [X2 Y3 Y4 Y5] +
+(-0-0.125j) [Y2 X3 X4 X5] +
+0.125j [Y2 X3 Y4 Y5] +
+-0.125j [Y2 Y3 X4 Y5] +
+-0.125j [Y2 Y3 Y4 X5]
+    9   0.03306602 0.125j [X1 X2 X4 Y7] +
+0.125j [X1 X2 Y4 X7] +
+-0.125j [X1 Y2 X4 X7] +
+0.125j [X1 Y2 Y4 Y7] +
+(-0-0.125j) [Y1 X2 X4 X7] +
+0.125j [Y1 X2 Y4 Y7] +
+-0.125j [Y1 Y2 X4 Y7] +
+-0.125j [Y1 Y2 Y4 X7]
+   10   0.03301604 0.125j [X0 X1 X4 Y5] +
+0.125j [X0 X1 Y4 X5] +
+-0.125j [X0 Y1 X4 X5] +
+0.125j [X0 Y1 Y4 Y5] +
+(-0-0.125j) [Y0 X1 X4 X5] +
+0.125j [Y0 X1 Y4 Y5] +
+-0.125j [Y0 Y1 X4 Y5] +
+-0.125j [Y0 Y1 Y4 X5]
+   11   0.03323399 0.125j [X0 X3 X5 Y6] +
+0.125j [X0 X3 Y5 X6] +
+-0.125j [X0 Y3 X5 X6] +
+0.125j [X0 Y3 Y5 Y6] +
+(-0-0.125j) [Y0 X3 X5 X6] +
+0.125j [Y0 X3 Y5 Y6] +
+-0.125j [Y0 Y3 X5 Y6] +
+-0.125j [Y0 Y3 Y5 X6]
+   12   0.03257991 0.125j [X2 X3 X6 Y7] +
+0.125j [X2 X3 Y6 X7] +
+-0.125j [X2 Y3 X6 X7] +
+0.125j [X2 Y3 Y6 Y7] +
+(-0-0.125j) [Y2 X3 X6 X7] +
+0.125j [Y2 X3 Y6 Y7] +
+-0.125j [Y2 Y3 X6 Y7] +
+-0.125j [Y2 Y3 Y6 X7]
+
+
+
+
+ --------------------------------------------------------------------------
+                         ADAPT-VQE iteration:  13
+ --------------------------------------------------------------------------
+ Check each new operator for coupling
+ Measure Operator Pool Gradients:
+ Variance:      0.00003550
+ Uncertainty:   0.00595845
+ Norm of <[H,A]> =   0.00488004
+ Max  of <[H,A]> =   0.00000000
+ Add operator   70
+ Iter:   0 Current Energy =  -1.8670613394937159 Gradient Norm    1.7e-03 Gradient Max    1.4e-03
+ Iter:   1 Current Energy =  -1.8670674246665089 Gradient Norm    1.6e-03 Gradient Max    1.3e-03
+ Iter:   2 Current Energy =  -1.8670708290179421 Gradient Norm    1.7e-03 Gradient Max    1.3e-03
+ Iter:   3 Current Energy =  -1.8670742635915243 Gradient Norm    2.2e-03 Gradient Max    1.2e-03
+ Iter:   4 Current Energy =  -1.8670760219438127 Gradient Norm    1.6e-03 Gradient Max    8.1e-04
+ Iter:   5 Current Energy =  -1.8670769821941762 Gradient Norm    6.9e-04 Gradient Max    4.8e-04
+ Iter:   6 Current Energy =  -1.8670774488439303 Gradient Norm    6.4e-04 Gradient Max    4.0e-04
+ Iter:   7 Current Energy =  -1.8670776978702068 Gradient Norm    4.5e-04 Gradient Max    1.8e-04
+ Iter:   8 Current Energy =  -1.8670778241248329 Gradient Norm    2.1e-04 Gradient Max    1.3e-04
+ Iter:   9 Current Energy =  -1.8670778734359312 Gradient Norm    1.7e-04 Gradient Max    7.9e-05
+ Iter:  10 Current Energy =  -1.8670779297674958 Gradient Norm    2.4e-04 Gradient Max    9.5e-05
+ Iter:  11 Current Energy =  -1.8670780238580655 Gradient Norm    3.1e-04 Gradient Max    1.2e-04
+ Iter:  12 Current Energy =  -1.8670781665031684 Gradient Norm    3.4e-04 Gradient Max    1.3e-04
+ Iter:  13 Current Energy =  -1.8670782929424670 Gradient Norm    2.8e-04 Gradient Max    1.5e-04
+ Iter:  14 Current Energy =  -1.8670783861146900 Gradient Norm    2.5e-04 Gradient Max    1.9e-04
+ Iter:  15 Current Energy =  -1.8670785297611792 Gradient Norm    3.3e-04 Gradient Max    2.1e-04
+ Iter:  16 Current Energy =  -1.8670787358093706 Gradient Norm    4.8e-04 Gradient Max    1.9e-04
+ Iter:  17 Current Energy =  -1.8670789932966949 Gradient Norm    5.3e-04 Gradient Max    2.2e-04
+ Iter:  18 Current Energy =  -1.8670791886215947 Gradient Norm    3.4e-04 Gradient Max    1.4e-04
+ Iter:  19 Current Energy =  -1.8670792476369495 Gradient Norm    9.5e-05 Gradient Max    4.2e-05
+ Iter:  20 Current Energy =  -1.8670792534194214 Gradient Norm    9.9e-06 Gradient Max    4.9e-06
+ Iter:  21 Current Energy =  -1.8670792536332104 Gradient Norm    1.3e-06 Gradient Max    6.5e-07
+ Iter:  22 Current Energy =  -1.8670792536364686 Gradient Norm    3.2e-07 Gradient Max    1.5e-07
+ Iter:  23 Current Energy =  -1.8670792536365515 Gradient Norm    9.9e-08 Gradient Max    5.5e-08
+ Iter:  24 Current Energy =  -1.8670792536365608 Gradient Norm    2.2e-08 Gradient Max    1.1e-08
+ Iter:  25 Current Energy =  -1.8670792536365610 Gradient Norm    1.6e-08 Gradient Max    7.4e-09
+ Finished:      -1.867079253637
+ -----------New ansatz----------- 
+    #        Coeff               Term
+    0  -0.01910708 0.125j [X1 X4 X6 Y7] +
+0.125j [X1 X4 Y6 X7] +
+-0.125j [X1 Y4 X6 X7] +
+0.125j [X1 Y4 Y6 Y7] +
+(-0-0.125j) [Y1 X4 X6 X7] +
+0.125j [Y1 X4 Y6 Y7] +
+-0.125j [Y1 Y4 X6 Y7] +
+-0.125j [Y1 Y4 Y6 X7]
+    1   0.44647619 0.125j [X1 X3 X4 Y6] +
+-0.125j [X1 X3 Y4 X6] +
+0.125j [X1 Y3 X4 X6] +
+0.125j [X1 Y3 Y4 Y6] +
+(-0-0.125j) [Y1 X3 X4 X6] +
+-0.125j [Y1 X3 Y4 Y6] +
+0.125j [Y1 Y3 X4 Y6] +
+-0.125j [Y1 Y3 Y4 X6]
+    2   0.02525797 (-0-0.5j) [X3 Y7] +
+0.5j [Y3 X7]
+    3   0.02859878 0.125j [X0 X1 X3 Y6] +
+0.125j [X0 X1 Y3 X6] +
+-0.125j [X0 Y1 X3 X6] +
+0.125j [X0 Y1 Y3 Y6] +
+(-0-0.125j) [Y0 X1 X3 X6] +
+0.125j [Y0 X1 Y3 Y6] +
+-0.125j [Y0 Y1 X3 Y6] +
+-0.125j [Y0 Y1 Y3 X6]
+    4   0.00810252 0.125j [X0 X5 X6 Y7] +
+0.125j [X0 X5 Y6 X7] +
+-0.125j [X0 Y5 X6 X7] +
+0.125j [X0 Y5 Y6 Y7] +
+(-0-0.125j) [Y0 X5 X6 X7] +
+0.125j [Y0 X5 Y6 Y7] +
+-0.125j [Y0 Y5 X6 Y7] +
+-0.125j [Y0 Y5 Y6 X7]
+    5   0.02362130 (-0-0.5j) [X2 Y6] +
+0.5j [Y2 X6]
+    6  -0.92446773 0.125j [X0 X3 X4 Y7] +
+0.125j [X0 X3 Y4 X7] +
+-0.125j [X0 Y3 X4 X7] +
+0.125j [X0 Y3 Y4 Y7] +
+(-0-0.125j) [Y0 X3 X4 X7] +
+0.125j [Y0 X3 Y4 Y7] +
+-0.125j [Y0 Y3 X4 Y7] +
+-0.125j [Y0 Y3 Y4 X7]
+    7  -0.54825598 0.125j [X1 X2 X5 Y6] +
+0.125j [X1 X2 Y5 X6] +
+-0.125j [X1 Y2 X5 X6] +
+0.125j [X1 Y2 Y5 Y6] +
+(-0-0.125j) [Y1 X2 X5 X6] +
+0.125j [Y1 X2 Y5 Y6] +
+-0.125j [Y1 Y2 X5 Y6] +
+-0.125j [Y1 Y2 Y5 X6]
+    8   0.20806018 0.125j [X0 X1 X6 Y7] +
+0.125j [X0 X1 Y6 X7] +
+-0.125j [X0 Y1 X6 X7] +
+0.125j [X0 Y1 Y6 Y7] +
+(-0-0.125j) [Y0 X1 X6 X7] +
+0.125j [Y0 X1 Y6 Y7] +
+-0.125j [Y0 Y1 X6 Y7] +
+-0.125j [Y0 Y1 Y6 X7]
+    9   0.58245433 0.125j [X2 X3 X4 Y5] +
+0.125j [X2 X3 Y4 X5] +
+-0.125j [X2 Y3 X4 X5] +
+0.125j [X2 Y3 Y4 Y5] +
+(-0-0.125j) [Y2 X3 X4 X5] +
+0.125j [Y2 X3 Y4 Y5] +
+-0.125j [Y2 Y3 X4 Y5] +
+-0.125j [Y2 Y3 Y4 X5]
+   10   0.04022084 0.125j [X1 X2 X4 Y7] +
+0.125j [X1 X2 Y4 X7] +
+-0.125j [X1 Y2 X4 X7] +
+0.125j [X1 Y2 Y4 Y7] +
+(-0-0.125j) [Y1 X2 X4 X7] +
+0.125j [Y1 X2 Y4 Y7] +
+-0.125j [Y1 Y2 X4 Y7] +
+-0.125j [Y1 Y2 Y4 X7]
+   11   0.03999196 0.125j [X0 X1 X4 Y5] +
+0.125j [X0 X1 Y4 X5] +
+-0.125j [X0 Y1 X4 X5] +
+0.125j [X0 Y1 Y4 Y5] +
+(-0-0.125j) [Y0 X1 X4 X5] +
+0.125j [Y0 X1 Y4 Y5] +
+-0.125j [Y0 Y1 X4 Y5] +
+-0.125j [Y0 Y1 Y4 X5]
+   12   0.04019971 0.125j [X0 X3 X5 Y6] +
+0.125j [X0 X3 Y5 X6] +
+-0.125j [X0 Y3 X5 X6] +
+0.125j [X0 Y3 Y5 Y6] +
+(-0-0.125j) [Y0 X3 X5 X6] +
+0.125j [Y0 X3 Y5 Y6] +
+-0.125j [Y0 Y3 X5 Y6] +
+-0.125j [Y0 Y3 Y5 X6]
+   13   0.03961150 0.125j [X2 X3 X6 Y7] +
+0.125j [X2 X3 Y6 X7] +
+-0.125j [X2 Y3 X6 X7] +
+0.125j [X2 Y3 Y6 Y7] +
+(-0-0.125j) [Y2 X3 X6 X7] +
+0.125j [Y2 X3 Y6 Y7] +
+-0.125j [Y2 Y3 X6 Y7] +
+-0.125j [Y2 Y3 Y6 X7]
+
+
+
+
+ --------------------------------------------------------------------------
+                         ADAPT-VQE iteration:  14
+ --------------------------------------------------------------------------
+ Check each new operator for coupling
+ Measure Operator Pool Gradients:
+ Variance:      0.00002787
+ Uncertainty:   0.00527900
+ Norm of <[H,A]> =   0.00165971
+ Max  of <[H,A]> =   0.00000000
+ Add operator    3
+ Iter:   0 Current Energy =  -1.8670797271471862 Gradient Norm    6.7e-04 Gradient Max    4.5e-04
+ Iter:   1 Current Energy =  -1.8670805917644913 Gradient Norm    8.0e-04 Gradient Max    4.9e-04
+ Iter:   2 Current Energy =  -1.8670821352901634 Gradient Norm    1.0e-03 Gradient Max    6.4e-04
+ Iter:   3 Current Energy =  -1.8670845369641145 Gradient Norm    1.2e-03 Gradient Max    7.6e-04
+ Iter:   4 Current Energy =  -1.8670861785701205 Gradient Norm    1.9e-03 Gradient Max    9.8e-04
+ Iter:   5 Current Energy =  -1.8670869581837195 Gradient Norm    1.2e-03 Gradient Max    4.2e-04
+ Iter:   6 Current Energy =  -1.8670875980638668 Gradient Norm    8.0e-04 Gradient Max    4.2e-04
+ Iter:   7 Current Energy =  -1.8670883490877599 Gradient Norm    4.8e-04 Gradient Max    3.7e-04
+ Iter:   8 Current Energy =  -1.8670887307945991 Gradient Norm    5.6e-04 Gradient Max    4.0e-04
+ Iter:   9 Current Energy =  -1.8670890224869610 Gradient Norm    4.1e-04 Gradient Max    2.7e-04
+ Iter:  10 Current Energy =  -1.8670892419202292 Gradient Norm    3.0e-04 Gradient Max    2.2e-04
+ Iter:  11 Current Energy =  -1.8670894105753419 Gradient Norm    3.1e-04 Gradient Max    1.6e-04
+ Iter:  12 Current Energy =  -1.8670895056093717 Gradient Norm    2.3e-04 Gradient Max    1.1e-04
+ Iter:  13 Current Energy =  -1.8670895398620513 Gradient Norm    1.1e-04 Gradient Max    6.0e-05
+ Iter:  14 Current Energy =  -1.8670895527677496 Gradient Norm    8.2e-05 Gradient Max    4.7e-05
+ Iter:  15 Current Energy =  -1.8670895653235036 Gradient Norm    1.1e-04 Gradient Max    5.0e-05
+ Iter:  16 Current Energy =  -1.8670895814339092 Gradient Norm    1.3e-04 Gradient Max    6.6e-05
+ Iter:  17 Current Energy =  -1.8670895952301492 Gradient Norm    1.0e-04 Gradient Max    6.1e-05
+ Iter:  18 Current Energy =  -1.8670896042879157 Gradient Norm    6.8e-05 Gradient Max    3.7e-05
+ Iter:  19 Current Energy =  -1.8670896130109482 Gradient Norm    8.8e-05 Gradient Max    6.8e-05
+ Iter:  20 Current Energy =  -1.8670896275521442 Gradient Norm    1.4e-04 Gradient Max    1.0e-04
+ Iter:  21 Current Energy =  -1.8670896525327976 Gradient Norm    2.1e-04 Gradient Max    1.3e-04
+ Iter:  22 Current Energy =  -1.8670896944015043 Gradient Norm    2.6e-04 Gradient Max    1.5e-04
+ Iter:  23 Current Energy =  -1.8670897554597916 Gradient Norm    2.7e-04 Gradient Max    1.4e-04
+ Iter:  24 Current Energy =  -1.8670897932289674 Gradient Norm    1.8e-04 Gradient Max    8.2e-05
+ Iter:  25 Current Energy =  -1.8670898056388090 Gradient Norm    6.3e-05 Gradient Max    2.8e-05
+ Iter:  26 Current Energy =  -1.8670898079480198 Gradient Norm    5.5e-06 Gradient Max    3.2e-06
+ Iter:  27 Current Energy =  -1.8670898080479481 Gradient Norm    8.2e-07 Gradient Max    5.1e-07
+ Iter:  28 Current Energy =  -1.8670898080497464 Gradient Norm    1.6e-07 Gradient Max    8.1e-08
+ Iter:  29 Current Energy =  -1.8670898080497627 Gradient Norm    3.3e-08 Gradient Max    1.7e-08
+ Finished:      -1.867089808050
+ -----------New ansatz----------- 
+    #        Coeff               Term
+    0  -0.02716102 (-0-0.5j) [X1 Y5] +
+0.5j [Y1 X5]
+    1  -0.00947196 0.125j [X1 X4 X6 Y7] +
+0.125j [X1 X4 Y6 X7] +
+-0.125j [X1 Y4 X6 X7] +
+0.125j [X1 Y4 Y6 Y7] +
+(-0-0.125j) [Y1 X4 X6 X7] +
+0.125j [Y1 X4 Y6 Y7] +
+-0.125j [Y1 Y4 X6 Y7] +
+-0.125j [Y1 Y4 Y6 X7]
+    2   0.43887150 0.125j [X1 X3 X4 Y6] +
+-0.125j [X1 X3 Y4 X6] +
+0.125j [X1 Y3 X4 X6] +
+0.125j [X1 Y3 Y4 Y6] +
+(-0-0.125j) [Y1 X3 X4 X6] +
+-0.125j [Y1 X3 Y4 Y6] +
+0.125j [Y1 Y3 X4 Y6] +
+-0.125j [Y1 Y3 Y4 X6]
+    3   0.04247405 (-0-0.5j) [X3 Y7] +
+0.5j [Y3 X7]
+    4   0.02137301 0.125j [X0 X1 X3 Y6] +
+0.125j [X0 X1 Y3 X6] +
+-0.125j [X0 Y1 X3 X6] +
+0.125j [X0 Y1 Y3 Y6] +
+(-0-0.125j) [Y0 X1 X3 X6] +
+0.125j [Y0 X1 Y3 Y6] +
+-0.125j [Y0 Y1 X3 Y6] +
+-0.125j [Y0 Y1 Y3 X6]
+    5   0.00855041 0.125j [X0 X5 X6 Y7] +
+0.125j [X0 X5 Y6 X7] +
+-0.125j [X0 Y5 X6 X7] +
+0.125j [X0 Y5 Y6 Y7] +
+(-0-0.125j) [Y0 X5 X6 X7] +
+0.125j [Y0 X5 Y6 Y7] +
+-0.125j [Y0 Y5 X6 Y7] +
+-0.125j [Y0 Y5 Y6 X7]
+    6   0.02212933 (-0-0.5j) [X2 Y6] +
+0.5j [Y2 X6]
+    7  -0.92361682 0.125j [X0 X3 X4 Y7] +
+0.125j [X0 X3 Y4 X7] +
+-0.125j [X0 Y3 X4 X7] +
+0.125j [X0 Y3 Y4 Y7] +
+(-0-0.125j) [Y0 X3 X4 X7] +
+0.125j [Y0 X3 Y4 Y7] +
+-0.125j [Y0 Y3 X4 Y7] +
+-0.125j [Y0 Y3 Y4 X7]
+    8  -0.54922199 0.125j [X1 X2 X5 Y6] +
+0.125j [X1 X2 Y5 X6] +
+-0.125j [X1 Y2 X5 X6] +
+0.125j [X1 Y2 Y5 Y6] +
+(-0-0.125j) [Y1 X2 X5 X6] +
+0.125j [Y1 X2 Y5 Y6] +
+-0.125j [Y1 Y2 X5 Y6] +
+-0.125j [Y1 Y2 Y5 X6]
+    9   0.21020011 0.125j [X0 X1 X6 Y7] +
+0.125j [X0 X1 Y6 X7] +
+-0.125j [X0 Y1 X6 X7] +
+0.125j [X0 Y1 Y6 Y7] +
+(-0-0.125j) [Y0 X1 X6 X7] +
+0.125j [Y0 X1 Y6 Y7] +
+-0.125j [Y0 Y1 X6 Y7] +
+-0.125j [Y0 Y1 Y6 X7]
+   10   0.57785336 0.125j [X2 X3 X4 Y5] +
+0.125j [X2 X3 Y4 X5] +
+-0.125j [X2 Y3 X4 X5] +
+0.125j [X2 Y3 Y4 Y5] +
+(-0-0.125j) [Y2 X3 X4 X5] +
+0.125j [Y2 X3 Y4 Y5] +
+-0.125j [Y2 Y3 X4 Y5] +
+-0.125j [Y2 Y3 Y4 X5]
+   11   0.04261055 0.125j [X1 X2 X4 Y7] +
+0.125j [X1 X2 Y4 X7] +
+-0.125j [X1 Y2 X4 X7] +
+0.125j [X1 Y2 Y4 Y7] +
+(-0-0.125j) [Y1 X2 X4 X7] +
+0.125j [Y1 X2 Y4 Y7] +
+-0.125j [Y1 Y2 X4 Y7] +
+-0.125j [Y1 Y2 Y4 X7]
+   12   0.04269838 0.125j [X0 X1 X4 Y5] +
+0.125j [X0 X1 Y4 X5] +
+-0.125j [X0 Y1 X4 X5] +
+0.125j [X0 Y1 Y4 Y5] +
+(-0-0.125j) [Y0 X1 X4 X5] +
+0.125j [Y0 X1 Y4 Y5] +
+-0.125j [Y0 Y1 X4 Y5] +
+-0.125j [Y0 Y1 Y4 X5]
+   13   0.04272465 0.125j [X0 X3 X5 Y6] +
+0.125j [X0 X3 Y5 X6] +
+-0.125j [X0 Y3 X5 X6] +
+0.125j [X0 Y3 Y5 Y6] +
+(-0-0.125j) [Y0 X3 X5 X6] +
+0.125j [Y0 X3 Y5 Y6] +
+-0.125j [Y0 Y3 X5 Y6] +
+-0.125j [Y0 Y3 Y5 X6]
+   14   0.04184259 0.125j [X2 X3 X6 Y7] +
+0.125j [X2 X3 Y6 X7] +
+-0.125j [X2 Y3 X6 X7] +
+0.125j [X2 Y3 Y6 Y7] +
+(-0-0.125j) [Y2 X3 X6 X7] +
+0.125j [Y2 X3 Y6 Y7] +
+-0.125j [Y2 Y3 X6 Y7] +
+-0.125j [Y2 Y3 Y6 X7]
+
+
+
+
+ --------------------------------------------------------------------------
+                         ADAPT-VQE iteration:  15
+ --------------------------------------------------------------------------
+ Check each new operator for coupling
+ Measure Operator Pool Gradients:
+ Variance:      0.00002176
+ Uncertainty:   0.00466473
+ Norm of <[H,A]> =   0.00112724
+ Max  of <[H,A]> =   0.00000000
+ Add operator   16
+ Iter:   0 Current Energy =  -1.8670900647661106 Gradient Norm    4.2e-04 Gradient Max    3.4e-04
+ Iter:   1 Current Energy =  -1.8670904441139862 Gradient Norm    4.3e-04 Gradient Max    3.5e-04
+ Iter:   2 Current Energy =  -1.8670908796074182 Gradient Norm    6.6e-04 Gradient Max    5.1e-04
+ Iter:   3 Current Energy =  -1.8670915431447663 Gradient Norm    9.3e-04 Gradient Max    6.4e-04
+ Iter:   4 Current Energy =  -1.8670926091010818 Gradient Norm    1.1e-03 Gradient Max    7.0e-04
+ Iter:   5 Current Energy =  -1.8670943263689952 Gradient Norm    1.3e-03 Gradient Max    7.1e-04
+ Iter:   6 Current Energy =  -1.8670970087424636 Gradient Norm    1.4e-03 Gradient Max    8.3e-04
+ Iter:   7 Current Energy =  -1.8671007277052265 Gradient Norm    1.5e-03 Gradient Max    9.2e-04
+ Iter:   8 Current Energy =  -1.8671040112755990 Gradient Norm    1.5e-03 Gradient Max    8.2e-04
+ Iter:   9 Current Energy =  -1.8671086888541750 Gradient Norm    1.8e-03 Gradient Max    9.8e-04
+ Iter:  10 Current Energy =  -1.8671143083257660 Gradient Norm    2.0e-03 Gradient Max    1.3e-03
+ Iter:  11 Current Energy =  -1.8671209593439708 Gradient Norm    1.9e-03 Gradient Max    1.3e-03
+ Iter:  12 Current Energy =  -1.8671264721214798 Gradient Norm    1.4e-03 Gradient Max    9.2e-04
+ Iter:  13 Current Energy =  -1.8671292362518035 Gradient Norm    1.1e-03 Gradient Max    5.0e-04
+ Iter:  14 Current Energy =  -1.8671306309372411 Gradient Norm    1.1e-03 Gradient Max    6.0e-04
+ Iter:  15 Current Energy =  -1.8671317962498144 Gradient Norm    1.7e-03 Gradient Max    9.0e-04
+ Iter:  16 Current Energy =  -1.8671337781692170 Gradient Norm    1.1e-03 Gradient Max    7.8e-04
+ Iter:  17 Current Energy =  -1.8671369365512958 Gradient Norm    9.7e-04 Gradient Max    4.9e-04
+ Iter:  18 Current Energy =  -1.8671402024946349 Gradient Norm    1.0e-03 Gradient Max    4.6e-04
+ Iter:  19 Current Energy =  -1.8671421683794356 Gradient Norm    1.5e-03 Gradient Max    7.5e-04
+ Iter:  20 Current Energy =  -1.8671453143368066 Gradient Norm    1.4e-03 Gradient Max    7.1e-04
+ Iter:  21 Current Energy =  -1.8671499382220298 Gradient Norm    2.3e-03 Gradient Max    1.2e-03
+ Iter:  22 Current Energy =  -1.8671552083876231 Gradient Norm    1.9e-03 Gradient Max    1.1e-03
+ Iter:  23 Current Energy =  -1.8671616347903244 Gradient Norm    1.9e-03 Gradient Max    8.0e-04
+ Iter:  24 Current Energy =  -1.8671671339401057 Gradient Norm    1.4e-03 Gradient Max    8.6e-04
+ Iter:  25 Current Energy =  -1.8671748783379798 Gradient Norm    1.4e-03 Gradient Max    7.9e-04
+ Iter:  26 Current Energy =  -1.8671785003596721 Gradient Norm    1.6e-03 Gradient Max    9.7e-04
+ Iter:  27 Current Energy =  -1.8671802650360179 Gradient Norm    1.6e-03 Gradient Max    8.5e-04
+ Iter:  28 Current Energy =  -1.8671822823587438 Gradient Norm    1.3e-03 Gradient Max    6.4e-04
+ Iter:  29 Current Energy =  -1.8671849851680784 Gradient Norm    1.4e-03 Gradient Max    6.9e-04
+ Iter:  30 Current Energy =  -1.8671891952553441 Gradient Norm    1.4e-03 Gradient Max    7.7e-04
+ Iter:  31 Current Energy =  -1.8671940738674790 Gradient Norm    2.4e-03 Gradient Max    1.0e-03
+ Iter:  32 Current Energy =  -1.8672007271282289 Gradient Norm    1.9e-03 Gradient Max    8.4e-04
+ Iter:  33 Current Energy =  -1.8672049912858739 Gradient Norm    1.1e-03 Gradient Max    4.9e-04
+ Iter:  34 Current Energy =  -1.8672068379336304 Gradient Norm    2.1e-03 Gradient Max    1.2e-03
+ Iter:  35 Current Energy =  -1.8672083192660764 Gradient Norm    1.2e-03 Gradient Max    6.8e-04
+ Iter:  36 Current Energy =  -1.8672091610189807 Gradient Norm    5.9e-04 Gradient Max    3.0e-04
+ Iter:  37 Current Energy =  -1.8672104783188528 Gradient Norm    5.8e-04 Gradient Max    3.2e-04
+ Iter:  38 Current Energy =  -1.8672123193211858 Gradient Norm    6.9e-04 Gradient Max    3.6e-04
+ Iter:  39 Current Energy =  -1.8672139262961807 Gradient Norm    9.4e-04 Gradient Max    5.2e-04
+ Iter:  40 Current Energy =  -1.8672153716985276 Gradient Norm    1.1e-03 Gradient Max    6.8e-04
+ Iter:  41 Current Energy =  -1.8672162125185927 Gradient Norm    1.9e-03 Gradient Max    1.1e-03
+ Iter:  42 Current Energy =  -1.8672172346114346 Gradient Norm    1.4e-03 Gradient Max    7.2e-04
+ Iter:  43 Current Energy =  -1.8672188010035291 Gradient Norm    1.2e-03 Gradient Max    5.7e-04
+ Iter:  44 Current Energy =  -1.8672211700034200 Gradient Norm    9.0e-04 Gradient Max    5.0e-04
+ Iter:  45 Current Energy =  -1.8672232580840231 Gradient Norm    6.2e-04 Gradient Max    3.5e-04
+ Iter:  46 Current Energy =  -1.8672246338148528 Gradient Norm    6.2e-04 Gradient Max    3.3e-04
+ Iter:  47 Current Energy =  -1.8672252887765550 Gradient Norm    1.1e-03 Gradient Max    6.5e-04
+ Iter:  48 Current Energy =  -1.8672256606907025 Gradient Norm    3.7e-04 Gradient Max    1.9e-04
+ Iter:  49 Current Energy =  -1.8672257708698410 Gradient Norm    1.7e-04 Gradient Max    8.4e-05
+ Iter:  50 Current Energy =  -1.8672258519565594 Gradient Norm    1.5e-04 Gradient Max    5.6e-05
+ Iter:  51 Current Energy =  -1.8672258979765342 Gradient Norm    1.1e-04 Gradient Max    5.1e-05
+ Iter:  52 Current Energy =  -1.8672259160087323 Gradient Norm    6.1e-05 Gradient Max    2.7e-05
+ Iter:  53 Current Energy =  -1.8672259193553569 Gradient Norm    3.1e-05 Gradient Max    2.1e-05
+ Iter:  54 Current Energy =  -1.8672259199283054 Gradient Norm    9.2e-06 Gradient Max    5.9e-06
+ Iter:  55 Current Energy =  -1.8672259199924579 Gradient Norm    4.4e-06 Gradient Max    2.7e-06
+ Iter:  56 Current Energy =  -1.8672259200350820 Gradient Norm    3.3e-06 Gradient Max    1.8e-06
+ Iter:  57 Current Energy =  -1.8672259200588364 Gradient Norm    2.2e-06 Gradient Max    9.9e-07
+ Iter:  58 Current Energy =  -1.8672259200647097 Gradient Norm    7.1e-07 Gradient Max    3.0e-07
+ Iter:  59 Current Energy =  -1.8672259200652479 Gradient Norm    1.1e-07 Gradient Max    7.2e-08
+ Iter:  60 Current Energy =  -1.8672259200652652 Gradient Norm    3.0e-08 Gradient Max    1.6e-08
+ Iter:  61 Current Energy =  -1.8672259200652654 Gradient Norm    8.4e-09 Gradient Max    5.8e-09
+ Iter:  62 Current Energy =  -1.8672259200652659 Gradient Norm    1.4e-09 Gradient Max    9.7e-10
+ Iter:  63 Current Energy =  -1.8672259200652670 Gradient Norm    8.2e-10 Gradient Max    5.7e-10
+ Finished:      -1.867225920065
+ -----------New ansatz----------- 
+    #        Coeff               Term
+    0  -0.37079902 0.125j [X0 X1 X2 Y7] +
+0.125j [X0 X1 Y2 X7] +
+-0.125j [X0 Y1 X2 X7] +
+0.125j [X0 Y1 Y2 Y7] +
+(-0-0.125j) [Y0 X1 X2 X7] +
+0.125j [Y0 X1 Y2 Y7] +
+-0.125j [Y0 Y1 X2 Y7] +
+-0.125j [Y0 Y1 Y2 X7]
+    1   0.00433235 (-0-0.5j) [X1 Y5] +
+0.5j [Y1 X5]
+    2  -0.10080142 0.125j [X1 X4 X6 Y7] +
+0.125j [X1 X4 Y6 X7] +
+-0.125j [X1 Y4 X6 X7] +
+0.125j [X1 Y4 Y6 Y7] +
+(-0-0.125j) [Y1 X4 X6 X7] +
+0.125j [Y1 X4 Y6 Y7] +
+-0.125j [Y1 Y4 X6 Y7] +
+-0.125j [Y1 Y4 Y6 X7]
+    3   0.23194675 0.125j [X1 X3 X4 Y6] +
+-0.125j [X1 X3 Y4 X6] +
+0.125j [X1 Y3 X4 X6] +
+0.125j [X1 Y3 Y4 Y6] +
+(-0-0.125j) [Y1 X3 X4 X6] +
+-0.125j [Y1 X3 Y4 Y6] +
+0.125j [Y1 Y3 X4 Y6] +
+-0.125j [Y1 Y3 Y4 X6]
+    4   0.19026787 (-0-0.5j) [X3 Y7] +
+0.5j [Y3 X7]
+    5   0.10944460 0.125j [X0 X1 X3 Y6] +
+0.125j [X0 X1 Y3 X6] +
+-0.125j [X0 Y1 X3 X6] +
+0.125j [X0 Y1 Y3 Y6] +
+(-0-0.125j) [Y0 X1 X3 X6] +
+0.125j [Y0 X1 Y3 Y6] +
+-0.125j [Y0 Y1 X3 Y6] +
+-0.125j [Y0 Y1 Y3 X6]
+    6   0.36771445 0.125j [X0 X5 X6 Y7] +
+0.125j [X0 X5 Y6 X7] +
+-0.125j [X0 Y5 X6 X7] +
+0.125j [X0 Y5 Y6 Y7] +
+(-0-0.125j) [Y0 X5 X6 X7] +
+0.125j [Y0 X5 Y6 Y7] +
+-0.125j [Y0 Y5 X6 Y7] +
+-0.125j [Y0 Y5 Y6 X7]
+    7  -0.23232340 (-0-0.5j) [X2 Y6] +
+0.5j [Y2 X6]
+    8  -0.81680627 0.125j [X0 X3 X4 Y7] +
+0.125j [X0 X3 Y4 X7] +
+-0.125j [X0 Y3 X4 X7] +
+0.125j [X0 Y3 Y4 Y7] +
+(-0-0.125j) [Y0 X3 X4 X7] +
+0.125j [Y0 X3 Y4 Y7] +
+-0.125j [Y0 Y3 X4 Y7] +
+-0.125j [Y0 Y3 Y4 X7]
+    9  -0.63495096 0.125j [X1 X2 X5 Y6] +
+0.125j [X1 X2 Y5 X6] +
+-0.125j [X1 Y2 X5 X6] +
+0.125j [X1 Y2 Y5 Y6] +
+(-0-0.125j) [Y1 X2 X5 X6] +
+0.125j [Y1 X2 Y5 Y6] +
+-0.125j [Y1 Y2 X5 Y6] +
+-0.125j [Y1 Y2 Y5 X6]
+   10   0.27250753 0.125j [X0 X1 X6 Y7] +
+0.125j [X0 X1 Y6 X7] +
+-0.125j [X0 Y1 X6 X7] +
+0.125j [X0 Y1 Y6 Y7] +
+(-0-0.125j) [Y0 X1 X6 X7] +
+0.125j [Y0 X1 Y6 Y7] +
+-0.125j [Y0 Y1 X6 Y7] +
+-0.125j [Y0 Y1 Y6 X7]
+   11   0.46829969 0.125j [X2 X3 X4 Y5] +
+0.125j [X2 X3 Y4 X5] +
+-0.125j [X2 Y3 X4 X5] +
+0.125j [X2 Y3 Y4 Y5] +
+(-0-0.125j) [Y2 X3 X4 X5] +
+0.125j [Y2 X3 Y4 Y5] +
+-0.125j [Y2 Y3 X4 Y5] +
+-0.125j [Y2 Y3 Y4 X5]
+   12   0.13808847 0.125j [X1 X2 X4 Y7] +
+0.125j [X1 X2 Y4 X7] +
+-0.125j [X1 Y2 X4 X7] +
+0.125j [X1 Y2 Y4 Y7] +
+(-0-0.125j) [Y1 X2 X4 X7] +
+0.125j [Y1 X2 Y4 Y7] +
+-0.125j [Y1 Y2 X4 Y7] +
+-0.125j [Y1 Y2 Y4 X7]
+   13   0.11478019 0.125j [X0 X1 X4 Y5] +
+0.125j [X0 X1 Y4 X5] +
+-0.125j [X0 Y1 X4 X5] +
+0.125j [X0 Y1 Y4 Y5] +
+(-0-0.125j) [Y0 X1 X4 X5] +
+0.125j [Y0 X1 Y4 Y5] +
+-0.125j [Y0 Y1 X4 Y5] +
+-0.125j [Y0 Y1 Y4 X5]
+   14   0.13899822 0.125j [X0 X3 X5 Y6] +
+0.125j [X0 X3 Y5 X6] +
+-0.125j [X0 Y3 X5 X6] +
+0.125j [X0 Y3 Y5 Y6] +
+(-0-0.125j) [Y0 X3 X5 X6] +
+0.125j [Y0 X3 Y5 Y6] +
+-0.125j [Y0 Y3 X5 Y6] +
+-0.125j [Y0 Y3 Y5 X6]
+   15   0.10988850 0.125j [X2 X3 X6 Y7] +
+0.125j [X2 X3 Y6 X7] +
+-0.125j [X2 Y3 X6 X7] +
+0.125j [X2 Y3 Y6 Y7] +
+(-0-0.125j) [Y2 X3 X6 X7] +
+0.125j [Y2 X3 Y6 Y7] +
+-0.125j [Y2 Y3 X6 Y7] +
+-0.125j [Y2 Y3 Y6 X7]
+
+
+
+
+ --------------------------------------------------------------------------
+                         ADAPT-VQE iteration:  16
+ --------------------------------------------------------------------------
+ Check each new operator for coupling
+ Measure Operator Pool Gradients:
+ Variance:      0.00000817
+ Uncertainty:   0.00285806
+ Norm of <[H,A]> =   0.00760694
+ Max  of <[H,A]> =   0.00000000
+ Add operator   65
+ Iter:   0 Current Energy =  -1.8672356091772562 Gradient Norm    1.7e-03 Gradient Max    1.7e-03
+ Iter:   1 Current Energy =  -1.8672382848470410 Gradient Norm    3.3e-04 Gradient Max    1.8e-04
+ Iter:   2 Current Energy =  -1.8672383356767650 Gradient Norm    3.3e-04 Gradient Max    1.4e-04
+ Iter:   3 Current Energy =  -1.8672384065758765 Gradient Norm    2.7e-04 Gradient Max    1.6e-04
+ Iter:   4 Current Energy =  -1.8672385272533176 Gradient Norm    2.8e-04 Gradient Max    1.7e-04
+ Iter:   5 Current Energy =  -1.8672387176086851 Gradient Norm    3.3e-04 Gradient Max    2.1e-04
+ Iter:   6 Current Energy =  -1.8672389427763483 Gradient Norm    4.0e-04 Gradient Max    2.3e-04
+ Iter:   7 Current Energy =  -1.8672390773657215 Gradient Norm    3.2e-04 Gradient Max    1.6e-04
+ Iter:   8 Current Energy =  -1.8672391728745870 Gradient Norm    1.5e-04 Gradient Max    6.9e-05
+ Iter:   9 Current Energy =  -1.8672391985734249 Gradient Norm    1.1e-04 Gradient Max    6.2e-05
+ Iter:  10 Current Energy =  -1.8672392160374907 Gradient Norm    1.2e-04 Gradient Max    6.1e-05
+ Iter:  11 Current Energy =  -1.8672392471931614 Gradient Norm    1.5e-04 Gradient Max    8.3e-05
+ Iter:  12 Current Energy =  -1.8672393039917223 Gradient Norm    2.0e-04 Gradient Max    1.1e-04
+ Iter:  13 Current Energy =  -1.8672394069811629 Gradient Norm    2.6e-04 Gradient Max    1.5e-04
+ Iter:  14 Current Energy =  -1.8672395877926460 Gradient Norm    3.4e-04 Gradient Max    1.9e-04
+ Iter:  15 Current Energy =  -1.8672398788096654 Gradient Norm    4.4e-04 Gradient Max    2.4e-04
+ Iter:  16 Current Energy =  -1.8672402133667376 Gradient Norm    4.8e-04 Gradient Max    2.6e-04
+ Iter:  17 Current Energy =  -1.8672403940155085 Gradient Norm    3.7e-04 Gradient Max    2.1e-04
+ Iter:  18 Current Energy =  -1.8672405979819433 Gradient Norm    2.2e-04 Gradient Max    1.2e-04
+ Iter:  19 Current Energy =  -1.8672406792555474 Gradient Norm    2.4e-04 Gradient Max    1.1e-04
+ Iter:  20 Current Energy =  -1.8672407994838420 Gradient Norm    2.9e-04 Gradient Max    1.5e-04
+ Iter:  21 Current Energy =  -1.8672409833091965 Gradient Norm    3.4e-04 Gradient Max    1.9e-04
+ Iter:  22 Current Energy =  -1.8672412373389886 Gradient Norm    3.4e-04 Gradient Max    1.9e-04
+ Iter:  23 Current Energy =  -1.8672414346219495 Gradient Norm    2.6e-04 Gradient Max    1.4e-04
+ Iter:  24 Current Energy =  -1.8672415369902049 Gradient Norm    1.9e-04 Gradient Max    9.0e-05
+ Iter:  25 Current Energy =  -1.8672415991874645 Gradient Norm    1.9e-04 Gradient Max    1.2e-04
+ Iter:  26 Current Energy =  -1.8672416810900443 Gradient Norm    2.3e-04 Gradient Max    1.4e-04
+ Iter:  27 Current Energy =  -1.8672418176702490 Gradient Norm    3.0e-04 Gradient Max    1.8e-04
+ Iter:  28 Current Energy =  -1.8672420532592338 Gradient Norm    3.8e-04 Gradient Max    2.4e-04
+ Iter:  29 Current Energy =  -1.8672424603143059 Gradient Norm    4.5e-04 Gradient Max    2.9e-04
+ Iter:  30 Current Energy =  -1.8672431208783797 Gradient Norm    4.5e-04 Gradient Max    3.1e-04
+ Iter:  31 Current Energy =  -1.8672438261584583 Gradient Norm    4.8e-04 Gradient Max    2.2e-04
+ Iter:  32 Current Energy =  -1.8672438555719084 Gradient Norm    3.0e-04 Gradient Max    1.8e-04
+ Iter:  33 Current Energy =  -1.8672439104848930 Gradient Norm    2.4e-04 Gradient Max    1.3e-04
+ Iter:  34 Current Energy =  -1.8672440070267109 Gradient Norm    1.5e-04 Gradient Max    7.0e-05
+ Iter:  35 Current Energy =  -1.8672441507258548 Gradient Norm    1.1e-04 Gradient Max    6.3e-05
+ Iter:  36 Current Energy =  -1.8672442392563744 Gradient Norm    1.2e-04 Gradient Max    8.6e-05
+ Iter:  37 Current Energy =  -1.8672442671648164 Gradient Norm    9.1e-05 Gradient Max    5.4e-05
+ Iter:  38 Current Energy =  -1.8672442783634906 Gradient Norm    7.7e-05 Gradient Max    3.9e-05
+ Iter:  39 Current Energy =  -1.8672442889349528 Gradient Norm    5.5e-05 Gradient Max    2.6e-05
+ Iter:  40 Current Energy =  -1.8672442947781549 Gradient Norm    4.2e-05 Gradient Max    2.7e-05
+ Iter:  41 Current Energy =  -1.8672442985139546 Gradient Norm    4.9e-05 Gradient Max    2.8e-05
+ Iter:  42 Current Energy =  -1.8672443031125925 Gradient Norm    6.2e-05 Gradient Max    4.4e-05
+ Iter:  43 Current Energy =  -1.8672443106430339 Gradient Norm    7.6e-05 Gradient Max    5.5e-05
+ Iter:  44 Current Energy =  -1.8672443230043414 Gradient Norm    8.9e-05 Gradient Max    5.9e-05
+ Iter:  45 Current Energy =  -1.8672443424683740 Gradient Norm    1.0e-04 Gradient Max    5.1e-05
+ Iter:  46 Current Energy =  -1.8672443685121087 Gradient Norm    1.1e-04 Gradient Max    5.1e-05
+ Iter:  47 Current Energy =  -1.8672443885497898 Gradient Norm    8.4e-05 Gradient Max    5.2e-05
+ Iter:  48 Current Energy =  -1.8672443994019856 Gradient Norm    4.5e-05 Gradient Max    3.3e-05
+ Iter:  49 Current Energy =  -1.8672444015603178 Gradient Norm    2.1e-05 Gradient Max    1.5e-05
+ Iter:  50 Current Energy =  -1.8672444019503378 Gradient Norm    7.1e-06 Gradient Max    4.5e-06
+ Iter:  51 Current Energy =  -1.8672444020042271 Gradient Norm    1.6e-06 Gradient Max    9.5e-07
+ Iter:  52 Current Energy =  -1.8672444020104046 Gradient Norm    1.6e-07 Gradient Max    7.0e-08
+ Iter:  53 Current Energy =  -1.8672444020106460 Gradient Norm    3.8e-08 Gradient Max    2.3e-08
+ Iter:  54 Current Energy =  -1.8672444020106485 Gradient Norm    6.0e-09 Gradient Max    3.4e-09
+ Iter:  55 Current Energy =  -1.8672444020106496 Gradient Norm    3.5e-09 Gradient Max    1.6e-09
+ Iter:  56 Current Energy =  -1.8672444020106496 Gradient Norm    4.4e-10 Gradient Max    2.6e-10
+ Finished:      -1.867244402011
+ -----------New ansatz----------- 
+    #        Coeff               Term
+    0   0.01046330 0.125j [X1 X3 X5 Y7] +
+0.125j [X1 X3 Y5 X7] +
+-0.125j [X1 Y3 X5 X7] +
+0.125j [X1 Y3 Y5 Y7] +
+(-0-0.125j) [Y1 X3 X5 X7] +
+0.125j [Y1 X3 Y5 Y7] +
+-0.125j [Y1 Y3 X5 Y7] +
+-0.125j [Y1 Y3 Y5 X7]
+    1  -0.43426496 0.125j [X0 X1 X2 Y7] +
+0.125j [X0 X1 Y2 X7] +
+-0.125j [X0 Y1 X2 X7] +
+0.125j [X0 Y1 Y2 Y7] +
+(-0-0.125j) [Y0 X1 X2 X7] +
+0.125j [Y0 X1 Y2 Y7] +
+-0.125j [Y0 Y1 X2 Y7] +
+-0.125j [Y0 Y1 Y2 X7]
+    2   0.01430943 (-0-0.5j) [X1 Y5] +
+0.5j [Y1 X5]
+    3  -0.10093573 0.125j [X1 X4 X6 Y7] +
+0.125j [X1 X4 Y6 X7] +
+-0.125j [X1 Y4 X6 X7] +
+0.125j [X1 Y4 Y6 Y7] +
+(-0-0.125j) [Y1 X4 X6 X7] +
+0.125j [Y1 X4 Y6 Y7] +
+-0.125j [Y1 Y4 X6 Y7] +
+-0.125j [Y1 Y4 Y6 X7]
+    4   0.18788318 0.125j [X1 X3 X4 Y6] +
+-0.125j [X1 X3 Y4 X6] +
+0.125j [X1 Y3 X4 X6] +
+0.125j [X1 Y3 Y4 Y6] +
+(-0-0.125j) [Y1 X3 X4 X6] +
+-0.125j [Y1 X3 Y4 Y6] +
+0.125j [Y1 Y3 X4 Y6] +
+-0.125j [Y1 Y3 Y4 X6]
+    5   0.24937486 (-0-0.5j) [X3 Y7] +
+0.5j [Y3 X7]
+    6   0.13963229 0.125j [X0 X1 X3 Y6] +
+0.125j [X0 X1 Y3 X6] +
+-0.125j [X0 Y1 X3 X6] +
+0.125j [X0 Y1 Y3 Y6] +
+(-0-0.125j) [Y0 X1 X3 X6] +
+0.125j [Y0 X1 Y3 Y6] +
+-0.125j [Y0 Y1 X3 Y6] +
+-0.125j [Y0 Y1 Y3 X6]
+    7   0.44951752 0.125j [X0 X5 X6 Y7] +
+0.125j [X0 X5 Y6 X7] +
+-0.125j [X0 Y5 X6 X7] +
+0.125j [X0 Y5 Y6 Y7] +
+(-0-0.125j) [Y0 X5 X6 X7] +
+0.125j [Y0 X5 Y6 Y7] +
+-0.125j [Y0 Y5 X6 Y7] +
+-0.125j [Y0 Y5 Y6 X7]
+    8  -0.24720102 (-0-0.5j) [X2 Y6] +
+0.5j [Y2 X6]
+    9  -0.79963269 0.125j [X0 X3 X4 Y7] +
+0.125j [X0 X3 Y4 X7] +
+-0.125j [X0 Y3 X4 X7] +
+0.125j [X0 Y3 Y4 Y7] +
+(-0-0.125j) [Y0 X3 X4 X7] +
+0.125j [Y0 X3 Y4 Y7] +
+-0.125j [Y0 Y3 X4 Y7] +
+-0.125j [Y0 Y3 Y4 X7]
+   10  -0.64233675 0.125j [X1 X2 X5 Y6] +
+0.125j [X1 X2 Y5 X6] +
+-0.125j [X1 Y2 X5 X6] +
+0.125j [X1 Y2 Y5 Y6] +
+(-0-0.125j) [Y1 X2 X5 X6] +
+0.125j [Y1 X2 Y5 Y6] +
+-0.125j [Y1 Y2 X5 Y6] +
+-0.125j [Y1 Y2 Y5 X6]
+   11   0.29171022 0.125j [X0 X1 X6 Y7] +
+0.125j [X0 X1 Y6 X7] +
+-0.125j [X0 Y1 X6 X7] +
+0.125j [X0 Y1 Y6 Y7] +
+(-0-0.125j) [Y0 X1 X6 X7] +
+0.125j [Y0 X1 Y6 Y7] +
+-0.125j [Y0 Y1 X6 Y7] +
+-0.125j [Y0 Y1 Y6 X7]
+   12   0.45511810 0.125j [X2 X3 X4 Y5] +
+0.125j [X2 X3 Y4 X5] +
+-0.125j [X2 Y3 X4 X5] +
+0.125j [X2 Y3 Y4 Y5] +
+(-0-0.125j) [Y2 X3 X4 X5] +
+0.125j [Y2 X3 Y4 Y5] +
+-0.125j [Y2 Y3 X4 Y5] +
+-0.125j [Y2 Y3 Y4 X5]
+   13   0.16482452 0.125j [X1 X2 X4 Y7] +
+0.125j [X1 X2 Y4 X7] +
+-0.125j [X1 Y2 X4 X7] +
+0.125j [X1 Y2 Y4 Y7] +
+(-0-0.125j) [Y1 X2 X4 X7] +
+0.125j [Y1 X2 Y4 Y7] +
+-0.125j [Y1 Y2 X4 Y7] +
+-0.125j [Y1 Y2 Y4 X7]
+   14   0.12698831 0.125j [X0 X1 X4 Y5] +
+0.125j [X0 X1 Y4 X5] +
+-0.125j [X0 Y1 X4 X5] +
+0.125j [X0 Y1 Y4 Y5] +
+(-0-0.125j) [Y0 X1 X4 X5] +
+0.125j [Y0 X1 Y4 Y5] +
+-0.125j [Y0 Y1 X4 Y5] +
+-0.125j [Y0 Y1 Y4 X5]
+   15   0.16601031 0.125j [X0 X3 X5 Y6] +
+0.125j [X0 X3 Y5 X6] +
+-0.125j [X0 Y3 X5 X6] +
+0.125j [X0 Y3 Y5 Y6] +
+(-0-0.125j) [Y0 X3 X5 X6] +
+0.125j [Y0 X3 Y5 Y6] +
+-0.125j [Y0 Y3 X5 Y6] +
+-0.125j [Y0 Y3 Y5 X6]
+   16   0.12024107 0.125j [X2 X3 X6 Y7] +
+0.125j [X2 X3 Y6 X7] +
+-0.125j [X2 Y3 X6 X7] +
+0.125j [X2 Y3 Y6 Y7] +
+(-0-0.125j) [Y2 X3 X6 X7] +
+0.125j [Y2 X3 Y6 Y7] +
+-0.125j [Y2 Y3 X6 Y7] +
+-0.125j [Y2 Y3 Y6 X7]
+
+
+
+
+ --------------------------------------------------------------------------
+                         ADAPT-VQE iteration:  17
+ --------------------------------------------------------------------------
+ Check each new operator for coupling
+ Measure Operator Pool Gradients:
+ Variance:      0.00000156
+ Uncertainty:   0.00124921
+ Norm of <[H,A]> =   0.00080755
+ Max  of <[H,A]> =   0.00000000
+ Add operator   78
+ Iter:   0 Current Energy =  -1.8672444593200734 Gradient Norm    2.8e-04 Gradient Max    2.0e-04
+ Iter:   1 Current Energy =  -1.8672445611160586 Gradient Norm    2.8e-04 Gradient Max    1.9e-04
+ Iter:   2 Current Energy =  -1.8672447140241069 Gradient Norm    2.0e-04 Gradient Max    1.2e-04
+ Iter:   3 Current Energy =  -1.8672447763797571 Gradient Norm    2.1e-04 Gradient Max    1.0e-04
+ Iter:   4 Current Energy =  -1.8672447884991592 Gradient Norm    1.9e-04 Gradient Max    9.3e-05
+ Iter:   5 Current Energy =  -1.8672448058577384 Gradient Norm    1.2e-04 Gradient Max    5.2e-05
+ Iter:   6 Current Energy =  -1.8672448347408701 Gradient Norm    9.3e-05 Gradient Max    3.6e-05
+ Iter:   7 Current Energy =  -1.8672448767864274 Gradient Norm    1.7e-04 Gradient Max    8.8e-05
+ Iter:   8 Current Energy =  -1.8672449113521015 Gradient Norm    2.0e-04 Gradient Max    8.4e-05
+ Iter:   9 Current Energy =  -1.8672449450296917 Gradient Norm    1.7e-04 Gradient Max    7.8e-05
+ Iter:  10 Current Energy =  -1.8672449754404845 Gradient Norm    1.3e-04 Gradient Max    5.3e-05
+ Iter:  11 Current Energy =  -1.8672450002047427 Gradient Norm    1.4e-04 Gradient Max    6.9e-05
+ Iter:  12 Current Energy =  -1.8672450288969769 Gradient Norm    1.7e-04 Gradient Max    7.8e-05
+ Iter:  13 Current Energy =  -1.8672450734565376 Gradient Norm    1.9e-04 Gradient Max    1.1e-04
+ Iter:  14 Current Energy =  -1.8672451441093878 Gradient Norm    2.3e-04 Gradient Max    1.3e-04
+ Iter:  15 Current Energy =  -1.8672452605475076 Gradient Norm    3.0e-04 Gradient Max    1.5e-04
+ Iter:  16 Current Energy =  -1.8672454563724976 Gradient Norm    4.2e-04 Gradient Max    1.9e-04
+ Iter:  17 Current Energy =  -1.8672457765915524 Gradient Norm    5.6e-04 Gradient Max    2.7e-04
+ Iter:  18 Current Energy =  -1.8672462272984982 Gradient Norm    6.5e-04 Gradient Max    3.0e-04
+ Iter:  19 Current Energy =  -1.8672465426428868 Gradient Norm    4.8e-04 Gradient Max    2.3e-04
+ Iter:  20 Current Energy =  -1.8672467096550081 Gradient Norm    1.8e-04 Gradient Max    7.0e-05
+ Iter:  21 Current Energy =  -1.8672467398985155 Gradient Norm    1.0e-04 Gradient Max    6.1e-05
+ Iter:  22 Current Energy =  -1.8672467565488389 Gradient Norm    1.2e-04 Gradient Max    6.7e-05
+ Iter:  23 Current Energy =  -1.8672467843387814 Gradient Norm    1.6e-04 Gradient Max    6.4e-05
+ Iter:  24 Current Energy =  -1.8672468311967543 Gradient Norm    2.0e-04 Gradient Max    8.7e-05
+ Iter:  25 Current Energy =  -1.8672469065254302 Gradient Norm    2.4e-04 Gradient Max    1.0e-04
+ Iter:  26 Current Energy =  -1.8672470056009187 Gradient Norm    2.2e-04 Gradient Max    1.3e-04
+ Iter:  27 Current Energy =  -1.8672470605488283 Gradient Norm    1.6e-04 Gradient Max    1.1e-04
+ Iter:  28 Current Energy =  -1.8672470942713719 Gradient Norm    8.7e-05 Gradient Max    6.1e-05
+ Iter:  29 Current Energy =  -1.8672471054652564 Gradient Norm    7.8e-05 Gradient Max    3.5e-05
+ Iter:  30 Current Energy =  -1.8672471160046149 Gradient Norm    8.6e-05 Gradient Max    3.8e-05
+ Iter:  31 Current Energy =  -1.8672471332152549 Gradient Norm    1.1e-04 Gradient Max    6.8e-05
+ Iter:  32 Current Energy =  -1.8672471627089489 Gradient Norm    1.5e-04 Gradient Max    9.7e-05
+ Iter:  33 Current Energy =  -1.8672472141687977 Gradient Norm    2.0e-04 Gradient Max    1.3e-04
+ Iter:  34 Current Energy =  -1.8672473028176320 Gradient Norm    2.6e-04 Gradient Max    1.5e-04
+ Iter:  35 Current Energy =  -1.8672474472817933 Gradient Norm    3.1e-04 Gradient Max    1.7e-04
+ Iter:  36 Current Energy =  -1.8672476500539279 Gradient Norm    3.4e-04 Gradient Max    1.7e-04
+ Iter:  37 Current Energy =  -1.8672477845443847 Gradient Norm    2.5e-04 Gradient Max    1.3e-04
+ Iter:  38 Current Energy =  -1.8672478595055280 Gradient Norm    1.7e-04 Gradient Max    9.1e-05
+ Iter:  39 Current Energy =  -1.8672478760754623 Gradient Norm    2.0e-04 Gradient Max    1.0e-04
+ Iter:  40 Current Energy =  -1.8672478988010002 Gradient Norm    1.1e-04 Gradient Max    6.2e-05
+ Iter:  41 Current Energy =  -1.8672479188970272 Gradient Norm    1.1e-04 Gradient Max    5.8e-05
+ Iter:  42 Current Energy =  -1.8672479547589975 Gradient Norm    1.5e-04 Gradient Max    9.2e-05
+ Iter:  43 Current Energy =  -1.8672480201922319 Gradient Norm    2.3e-04 Gradient Max    1.4e-04
+ Iter:  44 Current Energy =  -1.8672481398397711 Gradient Norm    3.4e-04 Gradient Max    2.0e-04
+ Iter:  45 Current Energy =  -1.8672483569038199 Gradient Norm    4.9e-04 Gradient Max    2.8e-04
+ Iter:  46 Current Energy =  -1.8672487504421946 Gradient Norm    6.9e-04 Gradient Max    3.8e-04
+ Iter:  47 Current Energy =  -1.8672494541633420 Gradient Norm    9.0e-04 Gradient Max    4.7e-04
+ Iter:  48 Current Energy =  -1.8672500269354044 Gradient Norm    1.1e-03 Gradient Max    6.0e-04
+ Iter:  49 Current Energy =  -1.8672508311007983 Gradient Norm    1.1e-03 Gradient Max    5.1e-04
+ Iter:  50 Current Energy =  -1.8672518175561275 Gradient Norm    7.9e-04 Gradient Max    4.0e-04
+ Iter:  51 Current Energy =  -1.8672524785054245 Gradient Norm    8.2e-04 Gradient Max    3.4e-04
+ Iter:  52 Current Energy =  -1.8672535092428004 Gradient Norm    9.6e-04 Gradient Max    3.7e-04
+ Iter:  53 Current Energy =  -1.8672546386076179 Gradient Norm    8.9e-04 Gradient Max    4.7e-04
+ Iter:  54 Current Energy =  -1.8672554761084339 Gradient Norm    8.4e-04 Gradient Max    5.1e-04
+ Iter:  55 Current Energy =  -1.8672560244026473 Gradient Norm    1.1e-03 Gradient Max    6.2e-04
+ Iter:  56 Current Energy =  -1.8672562488739262 Gradient Norm    6.6e-04 Gradient Max    5.0e-04
+ Iter:  57 Current Energy =  -1.8672565861174748 Gradient Norm    2.4e-04 Gradient Max    1.5e-04
+ Iter:  58 Current Energy =  -1.8672569998214819 Gradient Norm    7.2e-04 Gradient Max    4.1e-04
+ Iter:  59 Current Energy =  -1.8672572051841172 Gradient Norm    8.2e-04 Gradient Max    5.0e-04
+ Iter:  60 Current Energy =  -1.8672575308316766 Gradient Norm    6.4e-04 Gradient Max    3.9e-04
+ Iter:  61 Current Energy =  -1.8672578229018690 Gradient Norm    5.3e-04 Gradient Max    3.0e-04
+ Iter:  62 Current Energy =  -1.8672579087285315 Gradient Norm    5.0e-04 Gradient Max    3.7e-04
+ Iter:  63 Current Energy =  -1.8672580407823332 Gradient Norm    3.8e-04 Gradient Max    2.8e-04
+ Iter:  64 Current Energy =  -1.8672580871299005 Gradient Norm    4.9e-04 Gradient Max    3.1e-04
+ Iter:  65 Current Energy =  -1.8672581558691417 Gradient Norm    3.6e-04 Gradient Max    2.2e-04
+ Iter:  66 Current Energy =  -1.8672582668143729 Gradient Norm    3.5e-04 Gradient Max    2.1e-04
+ Iter:  67 Current Energy =  -1.8672584403458439 Gradient Norm    4.0e-04 Gradient Max    2.0e-04
+ Iter:  68 Current Energy =  -1.8672587125813294 Gradient Norm    4.6e-04 Gradient Max    2.4e-04
+ Iter:  69 Current Energy =  -1.8672591311977274 Gradient Norm    7.2e-04 Gradient Max    4.1e-04
+ Iter:  70 Current Energy =  -1.8672596120835487 Gradient Norm    1.1e-03 Gradient Max    6.9e-04
+ Iter:  71 Current Energy =  -1.8672603189706227 Gradient Norm    6.8e-04 Gradient Max    3.0e-04
+ Iter:  72 Current Energy =  -1.8672614542124961 Gradient Norm    8.6e-04 Gradient Max    3.6e-04
+ Iter:  73 Current Energy =  -1.8672631360615035 Gradient Norm    1.1e-03 Gradient Max    5.2e-04
+ Iter:  74 Current Energy =  -1.8672642455581121 Gradient Norm    1.7e-03 Gradient Max    9.3e-04
+ Iter:  75 Current Energy =  -1.8672651445111654 Gradient Norm    1.3e-03 Gradient Max    6.8e-04
+ Iter:  76 Current Energy =  -1.8672658532615052 Gradient Norm    1.1e-03 Gradient Max    4.5e-04
+ Iter:  77 Current Energy =  -1.8672663828755072 Gradient Norm    3.7e-04 Gradient Max    1.8e-04
+ Iter:  78 Current Energy =  -1.8672669143325953 Gradient Norm    6.8e-04 Gradient Max    3.8e-04
+ Iter:  79 Current Energy =  -1.8672671659464142 Gradient Norm    5.6e-04 Gradient Max    2.7e-04
+ Iter:  80 Current Energy =  -1.8672674322457707 Gradient Norm    5.0e-04 Gradient Max    2.5e-04
+ Iter:  81 Current Energy =  -1.8672677920119605 Gradient Norm    6.2e-04 Gradient Max    3.2e-04
+ Iter:  82 Current Energy =  -1.8672681040997638 Gradient Norm    2.9e-04 Gradient Max    1.3e-04
+ Iter:  83 Current Energy =  -1.8672682135040510 Gradient Norm    7.5e-04 Gradient Max    4.3e-04
+ Iter:  84 Current Energy =  -1.8672683208289780 Gradient Norm    4.7e-04 Gradient Max    2.6e-04
+ Iter:  85 Current Energy =  -1.8672685045650201 Gradient Norm    3.9e-04 Gradient Max    2.1e-04
+ Iter:  86 Current Energy =  -1.8672688244072235 Gradient Norm    4.8e-04 Gradient Max    2.4e-04
+ Iter:  87 Current Energy =  -1.8672692544181801 Gradient Norm    7.4e-04 Gradient Max    4.1e-04
+ Iter:  88 Current Energy =  -1.8672694806326517 Gradient Norm    4.7e-04 Gradient Max    2.0e-04
+ Iter:  89 Current Energy =  -1.8672695897719989 Gradient Norm    5.7e-04 Gradient Max    3.3e-04
+ Iter:  90 Current Energy =  -1.8672697117515642 Gradient Norm    1.9e-04 Gradient Max    1.2e-04
+ Iter:  91 Current Energy =  -1.8672697744929603 Gradient Norm    2.0e-04 Gradient Max    1.3e-04
+ Iter:  92 Current Energy =  -1.8672698088546489 Gradient Norm    1.4e-04 Gradient Max    8.1e-05
+ Iter:  93 Current Energy =  -1.8672698375573296 Gradient Norm    1.0e-04 Gradient Max    4.1e-05
+ Iter:  94 Current Energy =  -1.8672698585234524 Gradient Norm    9.9e-05 Gradient Max    3.9e-05
+ Iter:  95 Current Energy =  -1.8672698654764366 Gradient Norm    7.6e-05 Gradient Max    3.7e-05
+ Iter:  96 Current Energy =  -1.8672698688522329 Gradient Norm    3.9e-05 Gradient Max    2.1e-05
+ Iter:  97 Current Energy =  -1.8672698705787067 Gradient Norm    2.1e-05 Gradient Max    9.1e-06
+ Iter:  98 Current Energy =  -1.8672698717324094 Gradient Norm    2.3e-05 Gradient Max    1.3e-05
+ Iter:  99 Current Energy =  -1.8672698728719881 Gradient Norm    1.8e-05 Gradient Max    1.1e-05
+ Iter: 100 Current Energy =  -1.8672698733253998 Gradient Norm    1.0e-05 Gradient Max    4.0e-06
+ Iter: 101 Current Energy =  -1.8672698734379889 Gradient Norm    3.7e-06 Gradient Max    1.8e-06
+ Iter: 102 Current Energy =  -1.8672698734543647 Gradient Norm    1.7e-06 Gradient Max    7.9e-07
+ Iter: 103 Current Energy =  -1.8672698734564610 Gradient Norm    4.0e-07 Gradient Max    2.4e-07
+ Iter: 104 Current Energy =  -1.8672698734566635 Gradient Norm    1.4e-07 Gradient Max    9.0e-08
+ Iter: 105 Current Energy =  -1.8672698734566771 Gradient Norm    3.1e-08 Gradient Max    1.6e-08
+ Iter: 106 Current Energy =  -1.8672698734566779 Gradient Norm    7.6e-09 Gradient Max    3.4e-09
+ Iter: 107 Current Energy =  -1.8672698734566786 Gradient Norm    1.2e-09 Gradient Max    6.8e-10
+ Iter: 108 Current Energy =  -1.8672698734566788 Gradient Norm    1.2e-10 Gradient Max    6.1e-11
+ Finished:      -1.867269873457
+ -----------New ansatz----------- 
+    #        Coeff               Term
+    0  -0.05993094 0.125j [X2 X3 X6 Y7] +
+0.125j [X2 X3 Y6 X7] +
+-0.125j [X2 Y3 X6 X7] +
+0.125j [X2 Y3 Y6 Y7] +
+(-0-0.125j) [Y2 X3 X6 X7] +
+0.125j [Y2 X3 Y6 Y7] +
+-0.125j [Y2 Y3 X6 Y7] +
+-0.125j [Y2 Y3 Y6 X7]
+    1   0.02801272 0.125j [X1 X3 X5 Y7] +
+0.125j [X1 X3 Y5 X7] +
+-0.125j [X1 Y3 X5 X7] +
+0.125j [X1 Y3 Y5 Y7] +
+(-0-0.125j) [Y1 X3 X5 X7] +
+0.125j [Y1 X3 Y5 Y7] +
+-0.125j [Y1 Y3 X5 Y7] +
+-0.125j [Y1 Y3 Y5 X7]
+    2  -0.77433565 0.125j [X0 X1 X2 Y7] +
+0.125j [X0 X1 Y2 X7] +
+-0.125j [X0 Y1 X2 X7] +
+0.125j [X0 Y1 Y2 Y7] +
+(-0-0.125j) [Y0 X1 X2 X7] +
+0.125j [Y0 X1 Y2 Y7] +
+-0.125j [Y0 Y1 X2 Y7] +
+-0.125j [Y0 Y1 Y2 X7]
+    3   0.03653157 (-0-0.5j) [X1 Y5] +
+0.5j [Y1 X5]
+    4  -0.61784303 0.125j [X1 X4 X6 Y7] +
+0.125j [X1 X4 Y6 X7] +
+-0.125j [X1 Y4 X6 X7] +
+0.125j [X1 Y4 Y6 Y7] +
+(-0-0.125j) [Y1 X4 X6 X7] +
+0.125j [Y1 X4 Y6 Y7] +
+-0.125j [Y1 Y4 X6 Y7] +
+-0.125j [Y1 Y4 Y6 X7]
+    5  -0.02061563 0.125j [X1 X3 X4 Y6] +
+-0.125j [X1 X3 Y4 X6] +
+0.125j [X1 Y3 X4 X6] +
+0.125j [X1 Y3 Y4 Y6] +
+(-0-0.125j) [Y1 X3 X4 X6] +
+-0.125j [Y1 X3 Y4 Y6] +
+0.125j [Y1 Y3 X4 Y6] +
+-0.125j [Y1 Y3 Y4 X6]
+    6   0.51462974 (-0-0.5j) [X3 Y7] +
+0.5j [Y3 X7]
+    7   0.75107017 0.125j [X0 X1 X3 Y6] +
+0.125j [X0 X1 Y3 X6] +
+-0.125j [X0 Y1 X3 X6] +
+0.125j [X0 Y1 Y3 Y6] +
+(-0-0.125j) [Y0 X1 X3 X6] +
+0.125j [Y0 X1 Y3 Y6] +
+-0.125j [Y0 Y1 X3 Y6] +
+-0.125j [Y0 Y1 Y3 X6]
+    8   0.95761370 0.125j [X0 X5 X6 Y7] +
+0.125j [X0 X5 Y6 X7] +
+-0.125j [X0 Y5 X6 X7] +
+0.125j [X0 Y5 Y6 Y7] +
+(-0-0.125j) [Y0 X5 X6 X7] +
+0.125j [Y0 X5 Y6 Y7] +
+-0.125j [Y0 Y5 X6 Y7] +
+-0.125j [Y0 Y5 Y6 X7]
+    9  -0.51489782 (-0-0.5j) [X2 Y6] +
+0.5j [Y2 X6]
+   10  -0.73806211 0.125j [X0 X3 X4 Y7] +
+0.125j [X0 X3 Y4 X7] +
+-0.125j [X0 Y3 X4 X7] +
+0.125j [X0 Y3 Y4 Y7] +
+(-0-0.125j) [Y0 X3 X4 X7] +
+0.125j [Y0 X3 Y4 Y7] +
+-0.125j [Y0 Y3 X4 Y7] +
+-0.125j [Y0 Y3 Y4 X7]
+   11  -0.72617897 0.125j [X1 X2 X5 Y6] +
+0.125j [X1 X2 Y5 X6] +
+-0.125j [X1 Y2 X5 X6] +
+0.125j [X1 Y2 Y5 Y6] +
+(-0-0.125j) [Y1 X2 X5 X6] +
+0.125j [Y1 X2 Y5 Y6] +
+-0.125j [Y1 Y2 X5 Y6] +
+-0.125j [Y1 Y2 Y5 X6]
+   12   0.20959091 0.125j [X0 X1 X6 Y7] +
+0.125j [X0 X1 Y6 X7] +
+-0.125j [X0 Y1 X6 X7] +
+0.125j [X0 Y1 Y6 Y7] +
+(-0-0.125j) [Y0 X1 X6 X7] +
+0.125j [Y0 X1 Y6 Y7] +
+-0.125j [Y0 Y1 X6 Y7] +
+-0.125j [Y0 Y1 Y6 X7]
+   13   0.27682556 0.125j [X2 X3 X4 Y5] +
+0.125j [X2 X3 Y4 X5] +
+-0.125j [X2 Y3 X4 X5] +
+0.125j [X2 Y3 Y4 Y5] +
+(-0-0.125j) [Y2 X3 X4 X5] +
+0.125j [Y2 X3 Y4 Y5] +
+-0.125j [Y2 Y3 X4 Y5] +
+-0.125j [Y2 Y3 Y4 X5]
+   14   0.20001379 0.125j [X1 X2 X4 Y7] +
+0.125j [X1 X2 Y4 X7] +
+-0.125j [X1 Y2 X4 X7] +
+0.125j [X1 Y2 Y4 Y7] +
+(-0-0.125j) [Y1 X2 X4 X7] +
+0.125j [Y1 X2 Y4 Y7] +
+-0.125j [Y1 Y2 X4 Y7] +
+-0.125j [Y1 Y2 Y4 X7]
+   15   0.03372551 0.125j [X0 X1 X4 Y5] +
+0.125j [X0 X1 Y4 X5] +
+-0.125j [X0 Y1 X4 X5] +
+0.125j [X0 Y1 Y4 Y5] +
+(-0-0.125j) [Y0 X1 X4 X5] +
+0.125j [Y0 X1 Y4 Y5] +
+-0.125j [Y0 Y1 X4 Y5] +
+-0.125j [Y0 Y1 Y4 X5]
+   16   0.20047222 0.125j [X0 X3 X5 Y6] +
+0.125j [X0 X3 Y5 X6] +
+-0.125j [X0 Y3 X5 X6] +
+0.125j [X0 Y3 Y5 Y6] +
+(-0-0.125j) [Y0 X3 X5 X6] +
+0.125j [Y0 X3 Y5 Y6] +
+-0.125j [Y0 Y3 X5 Y6] +
+-0.125j [Y0 Y3 Y5 X6]
+   17   0.08400061 0.125j [X2 X3 X6 Y7] +
+0.125j [X2 X3 Y6 X7] +
+-0.125j [X2 Y3 X6 X7] +
+0.125j [X2 Y3 Y6 Y7] +
+(-0-0.125j) [Y2 X3 X6 X7] +
+0.125j [Y2 X3 Y6 Y7] +
+-0.125j [Y2 Y3 X6 Y7] +
+-0.125j [Y2 Y3 Y6 X7]
+
+
+
+
+ --------------------------------------------------------------------------
+                         ADAPT-VQE iteration:  18
+ --------------------------------------------------------------------------
+ Check each new operator for coupling
+ Measure Operator Pool Gradients:
+ Variance:      0.00000031
+ Uncertainty:   0.00056068
+ Norm of <[H,A]> =   0.00074311
+ Max  of <[H,A]> =   0.00000000
+ Add operator   37
+ Iter:   0 Current Energy =  -1.8672699608889176 Gradient Norm    2.6e-04 Gradient Max    1.7e-04
+ Iter:   1 Current Energy =  -1.8672700822960353 Gradient Norm    2.2e-04 Gradient Max    1.2e-04
+ Iter:   2 Current Energy =  -1.8672701621549206 Gradient Norm    2.2e-04 Gradient Max    1.1e-04
+ Iter:   3 Current Energy =  -1.8672702264082739 Gradient Norm    1.8e-04 Gradient Max    1.0e-04
+ Iter:   4 Current Energy =  -1.8672702605936427 Gradient Norm    1.3e-04 Gradient Max    9.8e-05
+ Iter:   5 Current Energy =  -1.8672702801540080 Gradient Norm    1.2e-04 Gradient Max    7.1e-05
+ Iter:   6 Current Energy =  -1.8672703057204405 Gradient Norm    1.5e-04 Gradient Max    6.4e-05
+ Iter:   7 Current Energy =  -1.8672703508306614 Gradient Norm    2.0e-04 Gradient Max    1.1e-04
+ Iter:   8 Current Energy =  -1.8672704332574317 Gradient Norm    2.6e-04 Gradient Max    1.4e-04
+ Iter:   9 Current Energy =  -1.8672705833375338 Gradient Norm    3.4e-04 Gradient Max    1.8e-04
+ Iter:  10 Current Energy =  -1.8672708469657455 Gradient Norm    4.4e-04 Gradient Max    2.2e-04
+ Iter:  11 Current Energy =  -1.8672712644985729 Gradient Norm    5.4e-04 Gradient Max    2.5e-04
+ Iter:  12 Current Energy =  -1.8672716931635511 Gradient Norm    5.7e-04 Gradient Max    2.4e-04
+ Iter:  13 Current Energy =  -1.8672719505370834 Gradient Norm    4.4e-04 Gradient Max    2.0e-04
+ Iter:  14 Current Energy =  -1.8672722425966124 Gradient Norm    2.4e-04 Gradient Max    1.0e-04
+ Iter:  15 Current Energy =  -1.8672723107741882 Gradient Norm    2.4e-04 Gradient Max    1.2e-04
+ Iter:  16 Current Energy =  -1.8672723763832471 Gradient Norm    2.2e-04 Gradient Max    1.2e-04
+ Iter:  17 Current Energy =  -1.8672724605635973 Gradient Norm    1.9e-04 Gradient Max    8.6e-05
+ Iter:  18 Current Energy =  -1.8672725529734073 Gradient Norm    1.7e-04 Gradient Max    8.3e-05
+ Iter:  19 Current Energy =  -1.8672725957054126 Gradient Norm    1.6e-04 Gradient Max    7.9e-05
+ Iter:  20 Current Energy =  -1.8672726437649358 Gradient Norm    1.6e-04 Gradient Max    7.3e-05
+ Iter:  21 Current Energy =  -1.8672727024756526 Gradient Norm    1.7e-04 Gradient Max    1.2e-04
+ Iter:  22 Current Energy =  -1.8672727687911350 Gradient Norm    1.9e-04 Gradient Max    1.3e-04
+ Iter:  23 Current Energy =  -1.8672728295761871 Gradient Norm    1.9e-04 Gradient Max    9.9e-05
+ Iter:  24 Current Energy =  -1.8672728934443972 Gradient Norm    2.0e-04 Gradient Max    1.3e-04
+ Iter:  25 Current Energy =  -1.8672729803204640 Gradient Norm    2.4e-04 Gradient Max    1.4e-04
+ Iter:  26 Current Energy =  -1.8672731183037001 Gradient Norm    3.2e-04 Gradient Max    1.7e-04
+ Iter:  27 Current Energy =  -1.8672733416043725 Gradient Norm    4.2e-04 Gradient Max    2.4e-04
+ Iter:  28 Current Energy =  -1.8672736962134182 Gradient Norm    5.1e-04 Gradient Max    3.0e-04
+ Iter:  29 Current Energy =  -1.8672742061570728 Gradient Norm    5.3e-04 Gradient Max    2.9e-04
+ Iter:  30 Current Energy =  -1.8672746293036222 Gradient Norm    4.1e-04 Gradient Max    1.8e-04
+ Iter:  31 Current Energy =  -1.8672749038069560 Gradient Norm    2.2e-04 Gradient Max    8.3e-05
+ Iter:  32 Current Energy =  -1.8672749687410251 Gradient Norm    1.2e-04 Gradient Max    5.3e-05
+ Iter:  33 Current Energy =  -1.8672749877771577 Gradient Norm    9.6e-05 Gradient Max    4.3e-05
+ Iter:  34 Current Energy =  -1.8672750035064143 Gradient Norm    1.0e-04 Gradient Max    5.2e-05
+ Iter:  35 Current Energy =  -1.8672750250205863 Gradient Norm    1.2e-04 Gradient Max    6.0e-05
+ Iter:  36 Current Energy =  -1.8672750624517982 Gradient Norm    1.7e-04 Gradient Max    1.1e-04
+ Iter:  37 Current Energy =  -1.8672751303388457 Gradient Norm    2.2e-04 Gradient Max    1.6e-04
+ Iter:  38 Current Energy =  -1.8672752547167799 Gradient Norm    3.0e-04 Gradient Max    2.3e-04
+ Iter:  39 Current Energy =  -1.8672754801833711 Gradient Norm    4.1e-04 Gradient Max    3.1e-04
+ Iter:  40 Current Energy =  -1.8672758731612096 Gradient Norm    5.8e-04 Gradient Max    4.2e-04
+ Iter:  41 Current Energy =  -1.8672764865720763 Gradient Norm    8.6e-04 Gradient Max    5.6e-04
+ Iter:  42 Current Energy =  -1.8672772310696777 Gradient Norm    1.2e-03 Gradient Max    6.5e-04
+ Iter:  43 Current Energy =  -1.8672782830219035 Gradient Norm    1.1e-03 Gradient Max    5.6e-04
+ Iter:  44 Current Energy =  -1.8672797283425004 Gradient Norm    1.2e-03 Gradient Max    7.8e-04
+ Iter:  45 Current Energy =  -1.8672808546526978 Gradient Norm    5.5e-04 Gradient Max    3.6e-04
+ Iter:  46 Current Energy =  -1.8672813601647391 Gradient Norm    4.0e-04 Gradient Max    2.4e-04
+ Iter:  47 Current Energy =  -1.8672816045621485 Gradient Norm    6.5e-04 Gradient Max    3.4e-04
+ Iter:  48 Current Energy =  -1.8672818161946876 Gradient Norm    7.4e-04 Gradient Max    4.6e-04
+ Iter:  49 Current Energy =  -1.8672821017025869 Gradient Norm    5.7e-04 Gradient Max    3.2e-04
+ Iter:  50 Current Energy =  -1.8672823890160968 Gradient Norm    5.8e-04 Gradient Max    3.9e-04
+ Iter:  51 Current Energy =  -1.8672826939376901 Gradient Norm    2.1e-04 Gradient Max    1.2e-04
+ Iter:  52 Current Energy =  -1.8672828285685088 Gradient Norm    3.9e-04 Gradient Max    1.8e-04
+ Iter:  53 Current Energy =  -1.8672830070270692 Gradient Norm    4.5e-04 Gradient Max    2.4e-04
+ Iter:  54 Current Energy =  -1.8672831423501435 Gradient Norm    2.1e-04 Gradient Max    1.4e-04
+ Iter:  55 Current Energy =  -1.8672832269174482 Gradient Norm    5.1e-04 Gradient Max    3.1e-04
+ Iter:  56 Current Energy =  -1.8672833338527968 Gradient Norm    2.2e-04 Gradient Max    1.6e-04
+ Iter:  57 Current Energy =  -1.8672834033018182 Gradient Norm    1.7e-04 Gradient Max    6.3e-05
+ Iter:  58 Current Energy =  -1.8672834340823234 Gradient Norm    1.8e-04 Gradient Max    8.9e-05
+ Iter:  59 Current Energy =  -1.8672834661994040 Gradient Norm    1.5e-04 Gradient Max    9.0e-05
+ Iter:  60 Current Energy =  -1.8672834857905027 Gradient Norm    1.3e-04 Gradient Max    7.7e-05
+ Iter:  61 Current Energy =  -1.8672835020838516 Gradient Norm    7.4e-05 Gradient Max    3.5e-05
+ Iter:  62 Current Energy =  -1.8672835089352016 Gradient Norm    5.9e-05 Gradient Max    2.9e-05
+ Iter:  63 Current Energy =  -1.8672835165679762 Gradient Norm    7.2e-05 Gradient Max    3.8e-05
+ Iter:  64 Current Energy =  -1.8672835226144462 Gradient Norm    5.8e-05 Gradient Max    3.5e-05
+ Iter:  65 Current Energy =  -1.8672835297577988 Gradient Norm    4.8e-05 Gradient Max    3.1e-05
+ Iter:  66 Current Energy =  -1.8672835334953002 Gradient Norm    3.9e-05 Gradient Max    2.8e-05
+ Iter:  67 Current Energy =  -1.8672835352583086 Gradient Norm    2.8e-05 Gradient Max    1.8e-05
+ Iter:  68 Current Energy =  -1.8672835366150768 Gradient Norm    2.8e-05 Gradient Max    1.9e-05
+ Iter:  69 Current Energy =  -1.8672835389024212 Gradient Norm    3.7e-05 Gradient Max    2.7e-05
+ Iter:  70 Current Energy =  -1.8672835430021897 Gradient Norm    5.2e-05 Gradient Max    3.5e-05
+ Iter:  71 Current Energy =  -1.8672835505491099 Gradient Norm    7.2e-05 Gradient Max    4.5e-05
+ Iter:  72 Current Energy =  -1.8672835645378476 Gradient Norm    9.9e-05 Gradient Max    5.8e-05
+ Iter:  73 Current Energy =  -1.8672835903278759 Gradient Norm    1.4e-04 Gradient Max    7.5e-05
+ Iter:  74 Current Energy =  -1.8672836370726900 Gradient Norm    1.9e-04 Gradient Max    1.0e-04
+ Iter:  75 Current Energy =  -1.8672837188401052 Gradient Norm    2.8e-04 Gradient Max    1.4e-04
+ Iter:  76 Current Energy =  -1.8672838512154757 Gradient Norm    4.3e-04 Gradient Max    1.9e-04
+ Iter:  77 Current Energy =  -1.8672840374358359 Gradient Norm    5.8e-04 Gradient Max    2.6e-04
+ Iter:  78 Current Energy =  -1.8672841740887540 Gradient Norm    1.1e-03 Gradient Max    6.0e-04
+ Iter:  79 Current Energy =  -1.8672844033326232 Gradient Norm    8.7e-04 Gradient Max    4.7e-04
+ Iter:  80 Current Energy =  -1.8672848030557860 Gradient Norm    6.0e-04 Gradient Max    2.9e-04
+ Iter:  81 Current Energy =  -1.8672854069979619 Gradient Norm    5.4e-04 Gradient Max    2.6e-04
+ Iter:  82 Current Energy =  -1.8672857807728498 Gradient Norm    4.2e-04 Gradient Max    2.6e-04
+ Iter:  83 Current Energy =  -1.8672860254277666 Gradient Norm    3.9e-04 Gradient Max    1.8e-04
+ Iter:  84 Current Energy =  -1.8672860747882167 Gradient Norm    3.4e-04 Gradient Max    2.0e-04
+ Iter:  85 Current Energy =  -1.8672861432363324 Gradient Norm    3.8e-04 Gradient Max    2.3e-04
+ Iter:  86 Current Energy =  -1.8672862101682559 Gradient Norm    2.4e-04 Gradient Max    1.2e-04
+ Iter:  87 Current Energy =  -1.8672862506970389 Gradient Norm    2.1e-04 Gradient Max    1.3e-04
+ Iter:  88 Current Energy =  -1.8672862775888324 Gradient Norm    3.0e-04 Gradient Max    1.9e-04
+ Iter:  89 Current Energy =  -1.8672862969853647 Gradient Norm    9.6e-05 Gradient Max    4.1e-05
+ Iter:  90 Current Energy =  -1.8672863140639333 Gradient Norm    9.6e-05 Gradient Max    5.0e-05
+ Iter:  91 Current Energy =  -1.8672863285739245 Gradient Norm    1.6e-04 Gradient Max    9.4e-05
+ Iter:  92 Current Energy =  -1.8672863497356849 Gradient Norm    1.8e-04 Gradient Max    1.2e-04
+ Iter:  93 Current Energy =  -1.8672863851865142 Gradient Norm    1.7e-04 Gradient Max    1.1e-04
+ Iter:  94 Current Energy =  -1.8672864379001730 Gradient Norm    1.6e-04 Gradient Max    7.2e-05
+ Iter:  95 Current Energy =  -1.8672864821615331 Gradient Norm    1.6e-04 Gradient Max    7.1e-05
+ Iter:  96 Current Energy =  -1.8672865208373226 Gradient Norm    1.4e-04 Gradient Max    5.5e-05
+ Iter:  97 Current Energy =  -1.8672865401566150 Gradient Norm    4.6e-04 Gradient Max    2.8e-04
+ Iter:  98 Current Energy =  -1.8672865736604556 Gradient Norm    3.4e-04 Gradient Max    1.9e-04
+ Iter:  99 Current Energy =  -1.8672866272866586 Gradient Norm    2.0e-04 Gradient Max    9.1e-05
+ Iter: 100 Current Energy =  -1.8672866858107655 Gradient Norm    1.6e-04 Gradient Max    8.8e-05
+ Iter: 101 Current Energy =  -1.8672867281761549 Gradient Norm    1.3e-04 Gradient Max    6.0e-05
+ Iter: 102 Current Energy =  -1.8672867469183796 Gradient Norm    1.8e-04 Gradient Max    1.1e-04
+ Iter: 103 Current Energy =  -1.8672867677824514 Gradient Norm    1.3e-04 Gradient Max    6.9e-05
+ Iter: 104 Current Energy =  -1.8672867798957762 Gradient Norm    1.1e-04 Gradient Max    6.5e-05
+ Iter: 105 Current Energy =  -1.8672867918926870 Gradient Norm    1.9e-04 Gradient Max    1.3e-04
+ Iter: 106 Current Energy =  -1.8672868017799698 Gradient Norm    1.0e-04 Gradient Max    4.4e-05
+ Iter: 107 Current Energy =  -1.8672868130934219 Gradient Norm    1.4e-04 Gradient Max    8.7e-05
+ Iter: 108 Current Energy =  -1.8672868279501063 Gradient Norm    9.8e-05 Gradient Max    5.7e-05
+ Iter: 109 Current Energy =  -1.8672868351895917 Gradient Norm    5.1e-05 Gradient Max    2.2e-05
+ Iter: 110 Current Energy =  -1.8672868391948811 Gradient Norm    8.1e-05 Gradient Max    4.8e-05
+ Iter: 111 Current Energy =  -1.8672868444395112 Gradient Norm    4.7e-05 Gradient Max    3.6e-05
+ Iter: 112 Current Energy =  -1.8672868494543735 Gradient Norm    6.5e-05 Gradient Max    3.6e-05
+ Iter: 113 Current Energy =  -1.8672868533520446 Gradient Norm    3.3e-05 Gradient Max    1.7e-05
+ Iter: 114 Current Energy =  -1.8672868550437185 Gradient Norm    6.1e-05 Gradient Max    3.4e-05
+ Iter: 115 Current Energy =  -1.8672868564650604 Gradient Norm    2.5e-05 Gradient Max    1.9e-05
+ Iter: 116 Current Energy =  -1.8672868572658214 Gradient Norm    1.3e-05 Gradient Max    1.0e-05
+ Iter: 117 Current Energy =  -1.8672868575928898 Gradient Norm    1.1e-05 Gradient Max    5.2e-06
+ Iter: 118 Current Energy =  -1.8672868577396995 Gradient Norm    9.0e-06 Gradient Max    5.2e-06
+ Iter: 119 Current Energy =  -1.8672868578189670 Gradient Norm    8.0e-06 Gradient Max    5.7e-06
+ Iter: 120 Current Energy =  -1.8672868578619104 Gradient Norm    2.1e-06 Gradient Max    9.6e-07
+ Iter: 121 Current Energy =  -1.8672868578725146 Gradient Norm    3.6e-06 Gradient Max    2.7e-06
+ Iter: 122 Current Energy =  -1.8672868578784456 Gradient Norm    1.1e-06 Gradient Max    6.0e-07
+ Iter: 123 Current Energy =  -1.8672868578792241 Gradient Norm    2.5e-07 Gradient Max    1.2e-07
+ Iter: 124 Current Energy =  -1.8672868578793804 Gradient Norm    9.5e-08 Gradient Max    4.4e-08
+ Iter: 125 Current Energy =  -1.8672868578793913 Gradient Norm    2.7e-08 Gradient Max    1.2e-08
+ Iter: 126 Current Energy =  -1.8672868578793924 Gradient Norm    1.1e-08 Gradient Max    6.5e-09
+ Iter: 127 Current Energy =  -1.8672868578793931 Gradient Norm    3.8e-09 Gradient Max    2.5e-09
+ Iter: 128 Current Energy =  -1.8672868578793933 Gradient Norm    6.4e-10 Gradient Max    3.6e-10
+ Iter: 129 Current Energy =  -1.8672868578793935 Gradient Norm    3.4e-10 Gradient Max    2.2e-10
+ Iter: 130 Current Energy =  -1.8672868578793937 Gradient Norm    1.7e-10 Gradient Max    1.1e-10
+ Finished:      -1.867286857879
+ -----------New ansatz----------- 
+    #        Coeff               Term
+    0  -0.08167985 0.125j [X0 X2 X5 Y7] +
+-0.125j [X0 X2 Y5 X7] +
+0.125j [X0 Y2 X5 X7] +
+0.125j [X0 Y2 Y5 Y7] +
+(-0-0.125j) [Y0 X2 X5 X7] +
+-0.125j [Y0 X2 Y5 Y7] +
+0.125j [Y0 Y2 X5 Y7] +
+-0.125j [Y0 Y2 Y5 X7]
+    1  -0.00469595 0.125j [X2 X3 X6 Y7] +
+0.125j [X2 X3 Y6 X7] +
+-0.125j [X2 Y3 X6 X7] +
+0.125j [X2 Y3 Y6 Y7] +
+(-0-0.125j) [Y2 X3 X6 X7] +
+0.125j [Y2 X3 Y6 Y7] +
+-0.125j [Y2 Y3 X6 Y7] +
+-0.125j [Y2 Y3 Y6 X7]
+    2   0.01839128 0.125j [X1 X3 X5 Y7] +
+0.125j [X1 X3 Y5 X7] +
+-0.125j [X1 Y3 X5 X7] +
+0.125j [X1 Y3 Y5 Y7] +
+(-0-0.125j) [Y1 X3 X5 X7] +
+0.125j [Y1 X3 Y5 Y7] +
+-0.125j [Y1 Y3 X5 Y7] +
+-0.125j [Y1 Y3 Y5 X7]
+    3  -1.13478024 0.125j [X0 X1 X2 Y7] +
+0.125j [X0 X1 Y2 X7] +
+-0.125j [X0 Y1 X2 X7] +
+0.125j [X0 Y1 Y2 Y7] +
+(-0-0.125j) [Y0 X1 X2 X7] +
+0.125j [Y0 X1 Y2 Y7] +
+-0.125j [Y0 Y1 X2 Y7] +
+-0.125j [Y0 Y1 Y2 X7]
+    4   0.27553221 (-0-0.5j) [X1 Y5] +
+0.5j [Y1 X5]
+    5  -0.70925973 0.125j [X1 X4 X6 Y7] +
+0.125j [X1 X4 Y6 X7] +
+-0.125j [X1 Y4 X6 X7] +
+0.125j [X1 Y4 Y6 Y7] +
+(-0-0.125j) [Y1 X4 X6 X7] +
+0.125j [Y1 X4 Y6 Y7] +
+-0.125j [Y1 Y4 X6 Y7] +
+-0.125j [Y1 Y4 Y6 X7]
+    6  -0.04856909 0.125j [X1 X3 X4 Y6] +
+-0.125j [X1 X3 Y4 X6] +
+0.125j [X1 Y3 X4 X6] +
+0.125j [X1 Y3 Y4 Y6] +
+(-0-0.125j) [Y1 X3 X4 X6] +
+-0.125j [Y1 X3 Y4 Y6] +
+0.125j [Y1 Y3 X4 Y6] +
+-0.125j [Y1 Y3 Y4 X6]
+    7   0.33061197 (-0-0.5j) [X3 Y7] +
+0.5j [Y3 X7]
+    8   0.88087884 0.125j [X0 X1 X3 Y6] +
+0.125j [X0 X1 Y3 X6] +
+-0.125j [X0 Y1 X3 X6] +
+0.125j [X0 Y1 Y3 Y6] +
+(-0-0.125j) [Y0 X1 X3 X6] +
+0.125j [Y0 X1 Y3 Y6] +
+-0.125j [Y0 Y1 X3 Y6] +
+-0.125j [Y0 Y1 Y3 X6]
+    9   1.85147974 0.125j [X0 X5 X6 Y7] +
+0.125j [X0 X5 Y6 X7] +
+-0.125j [X0 Y5 X6 X7] +
+0.125j [X0 Y5 Y6 Y7] +
+(-0-0.125j) [Y0 X5 X6 X7] +
+0.125j [Y0 X5 Y6 Y7] +
+-0.125j [Y0 Y5 X6 Y7] +
+-0.125j [Y0 Y5 Y6 X7]
+   10  -0.51365469 (-0-0.5j) [X2 Y6] +
+0.5j [Y2 X6]
+   11  -0.74593783 0.125j [X0 X3 X4 Y7] +
+0.125j [X0 X3 Y4 X7] +
+-0.125j [X0 Y3 X4 X7] +
+0.125j [X0 Y3 Y4 Y7] +
+(-0-0.125j) [Y0 X3 X4 X7] +
+0.125j [Y0 X3 Y4 Y7] +
+-0.125j [Y0 Y3 X4 Y7] +
+-0.125j [Y0 Y3 Y4 X7]
+   12  -0.70315612 0.125j [X1 X2 X5 Y6] +
+0.125j [X1 X2 Y5 X6] +
+-0.125j [X1 Y2 X5 X6] +
+0.125j [X1 Y2 Y5 Y6] +
+(-0-0.125j) [Y1 X2 X5 X6] +
+0.125j [Y1 X2 Y5 Y6] +
+-0.125j [Y1 Y2 X5 Y6] +
+-0.125j [Y1 Y2 Y5 X6]
+   13   0.09162564 0.125j [X0 X1 X6 Y7] +
+0.125j [X0 X1 Y6 X7] +
+-0.125j [X0 Y1 X6 X7] +
+0.125j [X0 Y1 Y6 Y7] +
+(-0-0.125j) [Y0 X1 X6 X7] +
+0.125j [Y0 X1 Y6 Y7] +
+-0.125j [Y0 Y1 X6 Y7] +
+-0.125j [Y0 Y1 Y6 X7]
+   14   0.10595809 0.125j [X2 X3 X4 Y5] +
+0.125j [X2 X3 Y4 X5] +
+-0.125j [X2 Y3 X4 X5] +
+0.125j [X2 Y3 Y4 Y5] +
+(-0-0.125j) [Y2 X3 X4 X5] +
+0.125j [Y2 X3 Y4 Y5] +
+-0.125j [Y2 Y3 X4 Y5] +
+-0.125j [Y2 Y3 Y4 X5]
+   15   0.20468104 0.125j [X1 X2 X4 Y7] +
+0.125j [X1 X2 Y4 X7] +
+-0.125j [X1 Y2 X4 X7] +
+0.125j [X1 Y2 Y4 Y7] +
+(-0-0.125j) [Y1 X2 X4 X7] +
+0.125j [Y1 X2 Y4 Y7] +
+-0.125j [Y1 Y2 X4 Y7] +
+-0.125j [Y1 Y2 Y4 X7]
+   16   0.07973302 0.125j [X0 X1 X4 Y5] +
+0.125j [X0 X1 Y4 X5] +
+-0.125j [X0 Y1 X4 X5] +
+0.125j [X0 Y1 Y4 Y5] +
+(-0-0.125j) [Y0 X1 X4 X5] +
+0.125j [Y0 X1 Y4 Y5] +
+-0.125j [Y0 Y1 X4 Y5] +
+-0.125j [Y0 Y1 Y4 X5]
+   17   0.20528093 0.125j [X0 X3 X5 Y6] +
+0.125j [X0 X3 Y5 X6] +
+-0.125j [X0 Y3 X5 X6] +
+0.125j [X0 Y3 Y5 Y6] +
+(-0-0.125j) [Y0 X3 X5 X6] +
+0.125j [Y0 X3 Y5 Y6] +
+-0.125j [Y0 Y3 X5 Y6] +
+-0.125j [Y0 Y3 Y5 X6]
+   18   0.07569752 0.125j [X2 X3 X6 Y7] +
+0.125j [X2 X3 Y6 X7] +
+-0.125j [X2 Y3 X6 X7] +
+0.125j [X2 Y3 Y6 Y7] +
+(-0-0.125j) [Y2 X3 X6 X7] +
+0.125j [Y2 X3 Y6 Y7] +
+-0.125j [Y2 Y3 X6 Y7] +
+-0.125j [Y2 Y3 Y6 X7]
+
+
+
+
+ --------------------------------------------------------------------------
+                         ADAPT-VQE iteration:  19
+ --------------------------------------------------------------------------
+ Check each new operator for coupling
+ Measure Operator Pool Gradients:
+ Variance:      0.00000002
+ Uncertainty:   0.00014861
+ Norm of <[H,A]> =   0.00013018
+ Max  of <[H,A]> =   0.00000000
+ Add operator   28
+ Iter:   0 Current Energy =  -1.8672868601460197 Gradient Norm    4.1e-05 Gradient Max    2.4e-05
+ Iter:   1 Current Energy =  -1.8672868616568290 Gradient Norm    3.3e-05 Gradient Max    2.1e-05
+ Iter:   2 Current Energy =  -1.8672868634403361 Gradient Norm    3.0e-05 Gradient Max    1.8e-05
+ Iter:   3 Current Energy =  -1.8672868646575604 Gradient Norm    2.9e-05 Gradient Max    1.9e-05
+ Iter:   4 Current Energy =  -1.8672868660284163 Gradient Norm    3.2e-05 Gradient Max    2.4e-05
+ Iter:   5 Current Energy =  -1.8672868675952916 Gradient Norm    3.3e-05 Gradient Max    1.6e-05
+ Iter:   6 Current Energy =  -1.8672868686461372 Gradient Norm    2.6e-05 Gradient Max    1.3e-05
+ Iter:   7 Current Energy =  -1.8672868692204487 Gradient Norm    1.8e-05 Gradient Max    9.0e-06
+ Iter:   8 Current Energy =  -1.8672868697080878 Gradient Norm    1.9e-05 Gradient Max    9.3e-06
+ Iter:   9 Current Energy =  -1.8672868704541208 Gradient Norm    2.4e-05 Gradient Max    1.2e-05
+ Iter:  10 Current Energy =  -1.8672868715281363 Gradient Norm    2.8e-05 Gradient Max    1.3e-05
+ Iter:  11 Current Energy =  -1.8672868726091256 Gradient Norm    2.6e-05 Gradient Max    1.3e-05
+ Iter:  12 Current Energy =  -1.8672868736057151 Gradient Norm    2.5e-05 Gradient Max    1.3e-05
+ Iter:  13 Current Energy =  -1.8672868749452149 Gradient Norm    3.0e-05 Gradient Max    1.9e-05
+ Iter:  14 Current Energy =  -1.8672868769530613 Gradient Norm    4.0e-05 Gradient Max    2.9e-05
+ Iter:  15 Current Energy =  -1.8672868799160889 Gradient Norm    4.8e-05 Gradient Max    3.4e-05
+ Iter:  16 Current Energy =  -1.8672868840231502 Gradient Norm    5.5e-05 Gradient Max    3.0e-05
+ Iter:  17 Current Energy =  -1.8672868902859154 Gradient Norm    6.7e-05 Gradient Max    3.3e-05
+ Iter:  18 Current Energy =  -1.8672869003330279 Gradient Norm    8.9e-05 Gradient Max    3.9e-05
+ Iter:  19 Current Energy =  -1.8672869162521715 Gradient Norm    1.1e-04 Gradient Max    4.7e-05
+ Iter:  20 Current Energy =  -1.8672869379655195 Gradient Norm    1.2e-04 Gradient Max    4.6e-05
+ Iter:  21 Current Energy =  -1.8672869505969174 Gradient Norm    7.4e-05 Gradient Max    3.8e-05
+ Iter:  22 Current Energy =  -1.8672869552793880 Gradient Norm    2.4e-05 Gradient Max    1.5e-05
+ Iter:  23 Current Energy =  -1.8672869559448741 Gradient Norm    1.4e-05 Gradient Max    5.8e-06
+ Iter:  24 Current Energy =  -1.8672869562302297 Gradient Norm    1.3e-05 Gradient Max    5.5e-06
+ Iter:  25 Current Energy =  -1.8672869565195411 Gradient Norm    1.1e-05 Gradient Max    4.6e-06
+ Iter:  26 Current Energy =  -1.8672869567204924 Gradient Norm    8.2e-06 Gradient Max    3.9e-06
+ Iter:  27 Current Energy =  -1.8672869568236738 Gradient Norm    7.1e-06 Gradient Max    4.6e-06
+ Iter:  28 Current Energy =  -1.8672869569152619 Gradient Norm    8.0e-06 Gradient Max    5.1e-06
+ Iter:  29 Current Energy =  -1.8672869570722377 Gradient Norm    1.1e-05 Gradient Max    5.6e-06
+ Iter:  30 Current Energy =  -1.8672869573548345 Gradient Norm    1.5e-05 Gradient Max    6.9e-06
+ Iter:  31 Current Energy =  -1.8672869578742946 Gradient Norm    2.1e-05 Gradient Max    9.5e-06
+ Iter:  32 Current Energy =  -1.8672869588333578 Gradient Norm    2.9e-05 Gradient Max    1.5e-05
+ Iter:  33 Current Energy =  -1.8672869605930262 Gradient Norm    4.1e-05 Gradient Max    2.2e-05
+ Iter:  34 Current Energy =  -1.8672869637725977 Gradient Norm    5.7e-05 Gradient Max    3.3e-05
+ Iter:  35 Current Energy =  -1.8672869693793805 Gradient Norm    8.1e-05 Gradient Max    4.9e-05
+ Iter:  36 Current Energy =  -1.8672869789488584 Gradient Norm    1.1e-04 Gradient Max    7.1e-05
+ Iter:  37 Current Energy =  -1.8672869947106752 Gradient Norm    1.6e-04 Gradient Max    9.9e-05
+ Iter:  38 Current Energy =  -1.8672870199013183 Gradient Norm    2.0e-04 Gradient Max    1.3e-04
+ Iter:  39 Current Energy =  -1.8672870587974275 Gradient Norm    2.3e-04 Gradient Max    1.5e-04
+ Iter:  40 Current Energy =  -1.8672871131597963 Gradient Norm    2.2e-04 Gradient Max    1.4e-04
+ Iter:  41 Current Energy =  -1.8672871681736589 Gradient Norm    1.2e-04 Gradient Max    8.3e-05
+ Iter:  42 Current Energy =  -1.8672871904607051 Gradient Norm    4.9e-05 Gradient Max    2.6e-05
+ Iter:  43 Current Energy =  -1.8672871935259119 Gradient Norm    5.8e-05 Gradient Max    3.8e-05
+ Iter:  44 Current Energy =  -1.8672871955613906 Gradient Norm    2.7e-05 Gradient Max    1.5e-05
+ Iter:  45 Current Energy =  -1.8672871966933604 Gradient Norm    2.5e-05 Gradient Max    1.2e-05
+ Iter:  46 Current Energy =  -1.8672871972790146 Gradient Norm    1.9e-05 Gradient Max    1.1e-05
+ Iter:  47 Current Energy =  -1.8672871979196064 Gradient Norm    2.1e-05 Gradient Max    1.0e-05
+ Iter:  48 Current Energy =  -1.8672871991152695 Gradient Norm    2.8e-05 Gradient Max    1.4e-05
+ Iter:  49 Current Energy =  -1.8672872013735322 Gradient Norm    4.0e-05 Gradient Max    2.3e-05
+ Iter:  50 Current Energy =  -1.8672872056274095 Gradient Norm    5.9e-05 Gradient Max    3.6e-05
+ Iter:  51 Current Energy =  -1.8672872135365943 Gradient Norm    8.8e-05 Gradient Max    5.4e-05
+ Iter:  52 Current Energy =  -1.8672872278701691 Gradient Norm    1.3e-04 Gradient Max    8.1e-05
+ Iter:  53 Current Energy =  -1.8672872526826458 Gradient Norm    2.0e-04 Gradient Max    1.2e-04
+ Iter:  54 Current Energy =  -1.8672872922378789 Gradient Norm    2.9e-04 Gradient Max    1.8e-04
+ Iter:  55 Current Energy =  -1.8672873477337573 Gradient Norm    3.9e-04 Gradient Max    2.4e-04
+ Iter:  56 Current Energy =  -1.8672874144000742 Gradient Norm    4.1e-04 Gradient Max    2.6e-04
+ Iter:  57 Current Energy =  -1.8672875175898624 Gradient Norm    3.7e-04 Gradient Max    2.1e-04
+ Iter:  58 Current Energy =  -1.8672876084122785 Gradient Norm    2.7e-04 Gradient Max    2.1e-04
+ Iter:  59 Current Energy =  -1.8672876655281456 Gradient Norm    3.4e-04 Gradient Max    2.2e-04
+ Iter:  60 Current Energy =  -1.8672876970948391 Gradient Norm    2.0e-04 Gradient Max    9.4e-05
+ Iter:  61 Current Energy =  -1.8672877171889017 Gradient Norm    4.3e-05 Gradient Max    2.1e-05
+ Iter:  62 Current Energy =  -1.8672877371326033 Gradient Norm    1.3e-04 Gradient Max    5.9e-05
+ Iter:  63 Current Energy =  -1.8672877650825166 Gradient Norm    1.5e-04 Gradient Max    9.9e-05
+ Iter:  64 Current Energy =  -1.8672877942701365 Gradient Norm    8.1e-05 Gradient Max    4.5e-05
+ Iter:  65 Current Energy =  -1.8672878051785839 Gradient Norm    1.1e-04 Gradient Max    6.7e-05
+ Iter:  66 Current Energy =  -1.8672878127555537 Gradient Norm    6.8e-05 Gradient Max    3.3e-05
+ Iter:  67 Current Energy =  -1.8672878159900432 Gradient Norm    3.3e-05 Gradient Max    1.6e-05
+ Iter:  68 Current Energy =  -1.8672878165765638 Gradient Norm    6.4e-06 Gradient Max    3.2e-06
+ Iter:  69 Current Energy =  -1.8672878167993112 Gradient Norm    6.4e-06 Gradient Max    3.9e-06
+ Iter:  70 Current Energy =  -1.8672878168760159 Gradient Norm    4.7e-06 Gradient Max    2.8e-06
+ Iter:  71 Current Energy =  -1.8672878169008211 Gradient Norm    4.8e-06 Gradient Max    2.7e-06
+ Iter:  72 Current Energy =  -1.8672878169422145 Gradient Norm    5.1e-06 Gradient Max    2.7e-06
+ Iter:  73 Current Energy =  -1.8672878170130707 Gradient Norm    6.4e-06 Gradient Max    3.3e-06
+ Iter:  74 Current Energy =  -1.8672878171322558 Gradient Norm    8.5e-06 Gradient Max    4.6e-06
+ Iter:  75 Current Energy =  -1.8672878173155218 Gradient Norm    1.0e-05 Gradient Max    5.0e-06
+ Iter:  76 Current Energy =  -1.8672878174949268 Gradient Norm    1.1e-05 Gradient Max    5.3e-06
+ Iter:  77 Current Energy =  -1.8672878176089243 Gradient Norm    9.6e-06 Gradient Max    5.2e-06
+ Iter:  78 Current Energy =  -1.8672878177225078 Gradient Norm    9.9e-06 Gradient Max    5.6e-06
+ Iter:  79 Current Energy =  -1.8672878178482999 Gradient Norm    1.2e-05 Gradient Max    5.6e-06
+ Iter:  80 Current Energy =  -1.8672878180624080 Gradient Norm    1.5e-05 Gradient Max    7.1e-06
+ Iter:  81 Current Energy =  -1.8672878184405348 Gradient Norm    1.9e-05 Gradient Max    9.0e-06
+ Iter:  82 Current Energy =  -1.8672878191164166 Gradient Norm    2.4e-05 Gradient Max    1.3e-05
+ Iter:  83 Current Energy =  -1.8672878203210459 Gradient Norm    3.1e-05 Gradient Max    1.8e-05
+ Iter:  84 Current Energy =  -1.8672878224473846 Gradient Norm    4.1e-05 Gradient Max    2.5e-05
+ Iter:  85 Current Energy =  -1.8672878261751360 Gradient Norm    5.4e-05 Gradient Max    3.3e-05
+ Iter:  86 Current Energy =  -1.8672878327542295 Gradient Norm    7.0e-05 Gradient Max    4.2e-05
+ Iter:  87 Current Energy =  -1.8672878445813741 Gradient Norm    8.9e-05 Gradient Max    5.4e-05
+ Iter:  88 Current Energy =  -1.8672878658429151 Gradient Norm    1.2e-04 Gradient Max    6.9e-05
+ Iter:  89 Current Energy =  -1.8672879001694489 Gradient Norm    1.9e-04 Gradient Max    9.3e-05
+ Iter:  90 Current Energy =  -1.8672879314305972 Gradient Norm    3.0e-04 Gradient Max    1.6e-04
+ Iter:  91 Current Energy =  -1.8672879424321573 Gradient Norm    3.5e-04 Gradient Max    2.0e-04
+ Iter:  92 Current Energy =  -1.8672879630562611 Gradient Norm    3.1e-04 Gradient Max    1.7e-04
+ Iter:  93 Current Energy =  -1.8672880005776251 Gradient Norm    2.8e-04 Gradient Max    1.5e-04
+ Iter:  94 Current Energy =  -1.8672880630875941 Gradient Norm    2.0e-04 Gradient Max    8.6e-05
+ Iter:  95 Current Energy =  -1.8672881543891466 Gradient Norm    2.2e-04 Gradient Max    9.3e-05
+ Iter:  96 Current Energy =  -1.8672882344205191 Gradient Norm    2.2e-04 Gradient Max    8.8e-05
+ Iter:  97 Current Energy =  -1.8672882545455949 Gradient Norm    2.3e-04 Gradient Max    1.2e-04
+ Iter:  98 Current Energy =  -1.8672882838059914 Gradient Norm    2.2e-04 Gradient Max    1.1e-04
+ Iter:  99 Current Energy =  -1.8672883211338414 Gradient Norm    1.8e-04 Gradient Max    9.6e-05
+ Iter: 100 Current Energy =  -1.8672883419529855 Gradient Norm    1.1e-04 Gradient Max    5.8e-05
+ Iter: 101 Current Energy =  -1.8672883539861655 Gradient Norm    7.7e-05 Gradient Max    4.6e-05
+ Iter: 102 Current Energy =  -1.8672883587435374 Gradient Norm    1.2e-04 Gradient Max    5.3e-05
+ Iter: 103 Current Energy =  -1.8672883651082695 Gradient Norm    6.3e-05 Gradient Max    2.6e-05
+ Iter: 104 Current Energy =  -1.8672883718689828 Gradient Norm    9.2e-05 Gradient Max    6.3e-05
+ Iter: 105 Current Energy =  -1.8672883829290587 Gradient Norm    5.1e-05 Gradient Max    2.0e-05
+ Iter: 106 Current Energy =  -1.8672884017149580 Gradient Norm    7.6e-05 Gradient Max    4.0e-05
+ Iter: 107 Current Energy =  -1.8672884178981588 Gradient Norm    1.3e-04 Gradient Max    5.7e-05
+ Iter: 108 Current Energy =  -1.8672884283090925 Gradient Norm    1.4e-04 Gradient Max    7.8e-05
+ Iter: 109 Current Energy =  -1.8672884412965791 Gradient Norm    4.7e-05 Gradient Max    3.3e-05
+ Iter: 110 Current Energy =  -1.8672884468750568 Gradient Norm    1.2e-04 Gradient Max    6.3e-05
+ Iter: 111 Current Energy =  -1.8672884525697575 Gradient Norm    6.6e-05 Gradient Max    2.8e-05
+ Iter: 112 Current Energy =  -1.8672884564199448 Gradient Norm    6.5e-05 Gradient Max    2.8e-05
+ Iter: 113 Current Energy =  -1.8672884623645989 Gradient Norm    6.4e-05 Gradient Max    2.6e-05
+ Iter: 114 Current Energy =  -1.8672884694486203 Gradient Norm    5.8e-05 Gradient Max    2.7e-05
+ Iter: 115 Current Energy =  -1.8672884793332356 Gradient Norm    5.5e-05 Gradient Max    2.5e-05
+ Iter: 116 Current Energy =  -1.8672884861860002 Gradient Norm    8.6e-05 Gradient Max    5.8e-05
+ Iter: 117 Current Energy =  -1.8672884980051112 Gradient Norm    9.4e-05 Gradient Max    6.7e-05
+ Iter: 118 Current Energy =  -1.8672885167502140 Gradient Norm    7.5e-05 Gradient Max    5.1e-05
+ Iter: 119 Current Energy =  -1.8672885250611220 Gradient Norm    7.8e-05 Gradient Max    4.9e-05
+ Iter: 120 Current Energy =  -1.8672885374553307 Gradient Norm    1.0e-04 Gradient Max    6.6e-05
+ Iter: 121 Current Energy =  -1.8672885475836143 Gradient Norm    4.3e-05 Gradient Max    2.2e-05
+ Iter: 122 Current Energy =  -1.8672885525755387 Gradient Norm    7.3e-05 Gradient Max    3.4e-05
+ Iter: 123 Current Energy =  -1.8672885562510406 Gradient Norm    1.2e-04 Gradient Max    7.6e-05
+ Iter: 124 Current Energy =  -1.8672885619076567 Gradient Norm    1.3e-04 Gradient Max    7.3e-05
+ Iter: 125 Current Energy =  -1.8672885717746015 Gradient Norm    9.3e-05 Gradient Max    5.1e-05
+ Iter: 126 Current Energy =  -1.8672885881373509 Gradient Norm    8.7e-05 Gradient Max    4.2e-05
+ Iter: 127 Current Energy =  -1.8672885994118733 Gradient Norm    1.1e-04 Gradient Max    6.4e-05
+ Iter: 128 Current Energy =  -1.8672886165297189 Gradient Norm    6.5e-05 Gradient Max    4.5e-05
+ Iter: 129 Current Energy =  -1.8672886314626083 Gradient Norm    1.6e-04 Gradient Max    8.3e-05
+ Iter: 130 Current Energy =  -1.8672886424096287 Gradient Norm    1.2e-04 Gradient Max    7.9e-05
+ Iter: 131 Current Energy =  -1.8672886536704660 Gradient Norm    7.8e-05 Gradient Max    4.7e-05
+ Iter: 132 Current Energy =  -1.8672886589125097 Gradient Norm    6.9e-05 Gradient Max    3.7e-05
+ Iter: 133 Current Energy =  -1.8672886638985742 Gradient Norm    5.0e-05 Gradient Max    2.5e-05
+ Iter: 134 Current Energy =  -1.8672886673425078 Gradient Norm    7.8e-05 Gradient Max    4.7e-05
+ Iter: 135 Current Energy =  -1.8672886711822467 Gradient Norm    4.1e-05 Gradient Max    1.8e-05
+ Iter: 136 Current Energy =  -1.8672886725872957 Gradient Norm    5.6e-05 Gradient Max    3.0e-05
+ Iter: 137 Current Energy =  -1.8672886741770967 Gradient Norm    1.7e-05 Gradient Max    8.7e-06
+ Iter: 138 Current Energy =  -1.8672886744123764 Gradient Norm    2.5e-05 Gradient Max    1.0e-05
+ Iter: 139 Current Energy =  -1.8672886745669035 Gradient Norm    1.7e-05 Gradient Max    7.1e-06
+ Iter: 140 Current Energy =  -1.8672886747804074 Gradient Norm    1.2e-05 Gradient Max    6.2e-06
+ Iter: 141 Current Energy =  -1.8672886751409215 Gradient Norm    1.4e-05 Gradient Max    6.4e-06
+ Iter: 142 Current Energy =  -1.8672886757620295 Gradient Norm    2.2e-05 Gradient Max    1.2e-05
+ Iter: 143 Current Energy =  -1.8672886768329020 Gradient Norm    3.3e-05 Gradient Max    2.0e-05
+ Iter: 144 Current Energy =  -1.8672886786561897 Gradient Norm    4.9e-05 Gradient Max    3.0e-05
+ Iter: 145 Current Energy =  -1.8672886816541809 Gradient Norm    6.9e-05 Gradient Max    4.1e-05
+ Iter: 146 Current Energy =  -1.8672886862018285 Gradient Norm    1.0e-04 Gradient Max    5.1e-05
+ Iter: 147 Current Energy =  -1.8672886922981735 Gradient Norm    1.3e-04 Gradient Max    8.7e-05
+ Iter: 148 Current Energy =  -1.8672886996278364 Gradient Norm    1.6e-04 Gradient Max    8.3e-05
+ Iter: 149 Current Energy =  -1.8672887079874263 Gradient Norm    1.8e-04 Gradient Max    1.2e-04
+ Iter: 150 Current Energy =  -1.8672887212917124 Gradient Norm    2.0e-04 Gradient Max    8.7e-05
+ Iter: 151 Current Energy =  -1.8672887415473431 Gradient Norm    1.7e-04 Gradient Max    8.3e-05
+ Iter: 152 Current Energy =  -1.8672887535984617 Gradient Norm    1.8e-04 Gradient Max    8.7e-05
+ Iter: 153 Current Energy =  -1.8672887687384656 Gradient Norm    1.0e-04 Gradient Max    6.7e-05
+ Iter: 154 Current Energy =  -1.8672887772225502 Gradient Norm    1.4e-04 Gradient Max    7.8e-05
+ Iter: 155 Current Energy =  -1.8672887868256469 Gradient Norm    9.9e-05 Gradient Max    4.4e-05
+ Iter: 156 Current Energy =  -1.8672888001040415 Gradient Norm    6.3e-05 Gradient Max    2.9e-05
+ Iter: 157 Current Energy =  -1.8672888115160280 Gradient Norm    2.0e-04 Gradient Max    1.1e-04
+ Iter: 158 Current Energy =  -1.8672888307675430 Gradient Norm    1.7e-04 Gradient Max    9.9e-05
+ Iter: 159 Current Energy =  -1.8672888648062993 Gradient Norm    1.6e-04 Gradient Max    7.3e-05
+ Iter: 160 Current Energy =  -1.8672889022892545 Gradient Norm    3.0e-04 Gradient Max    1.9e-04
+ Iter: 161 Current Energy =  -1.8672889626927496 Gradient Norm    2.2e-04 Gradient Max    1.2e-04
+ Iter: 162 Current Energy =  -1.8672890252090573 Gradient Norm    1.4e-04 Gradient Max    6.4e-05
+ Iter: 163 Current Energy =  -1.8672890581628079 Gradient Norm    2.1e-04 Gradient Max    1.1e-04
+ Iter: 164 Current Energy =  -1.8672890789268086 Gradient Norm    1.5e-04 Gradient Max    9.3e-05
+ Iter: 165 Current Energy =  -1.8672891133197052 Gradient Norm    1.6e-04 Gradient Max    1.0e-04
+ Iter: 166 Current Energy =  -1.8672891263452756 Gradient Norm    2.0e-04 Gradient Max    1.3e-04
+ Iter: 167 Current Energy =  -1.8672891433626315 Gradient Norm    2.0e-04 Gradient Max    1.3e-04
+ Iter: 168 Current Energy =  -1.8672891657670803 Gradient Norm    1.9e-04 Gradient Max    1.2e-04
+ Iter: 169 Current Energy =  -1.8672891949283532 Gradient Norm    1.6e-04 Gradient Max    9.9e-05
+ Iter: 170 Current Energy =  -1.8672892193699844 Gradient Norm    1.3e-04 Gradient Max    6.1e-05
+ Iter: 171 Current Energy =  -1.8672892375001586 Gradient Norm    7.5e-05 Gradient Max    4.1e-05
+ Iter: 172 Current Energy =  -1.8672892414003990 Gradient Norm    1.1e-04 Gradient Max    5.8e-05
+ Iter: 173 Current Energy =  -1.8672892477149625 Gradient Norm    9.4e-05 Gradient Max    5.1e-05
+ Iter: 174 Current Energy =  -1.8672892576123079 Gradient Norm    7.9e-05 Gradient Max    5.1e-05
+ Iter: 175 Current Energy =  -1.8672892716010430 Gradient Norm    1.2e-04 Gradient Max    7.0e-05
+ Iter: 176 Current Energy =  -1.8672892899413780 Gradient Norm    1.0e-04 Gradient Max    4.8e-05
+ Iter: 177 Current Energy =  -1.8672892970184423 Gradient Norm    1.2e-04 Gradient Max    7.8e-05
+ Iter: 178 Current Energy =  -1.8672893077644741 Gradient Norm    1.1e-04 Gradient Max    6.2e-05
+ Iter: 179 Current Energy =  -1.8672893193624449 Gradient Norm    5.9e-05 Gradient Max    2.8e-05
+ Iter: 180 Current Energy =  -1.8672893245555628 Gradient Norm    6.5e-05 Gradient Max    3.1e-05
+ Iter: 181 Current Energy =  -1.8672893276292766 Gradient Norm    1.5e-04 Gradient Max    7.1e-05
+ Iter: 182 Current Energy =  -1.8672893331670983 Gradient Norm    1.2e-04 Gradient Max    6.2e-05
+ Iter: 183 Current Energy =  -1.8672893430334954 Gradient Norm    8.8e-05 Gradient Max    4.4e-05
+ Iter: 184 Current Energy =  -1.8672893592702680 Gradient Norm    9.9e-05 Gradient Max    5.4e-05
+ Iter: 185 Current Energy =  -1.8672893837148856 Gradient Norm    1.0e-04 Gradient Max    6.8e-05
+ Iter: 186 Current Energy =  -1.8672894167603937 Gradient Norm    1.1e-04 Gradient Max    7.7e-05
+ Iter: 187 Current Energy =  -1.8672894396308704 Gradient Norm    1.9e-04 Gradient Max    1.0e-04
+ Iter: 188 Current Energy =  -1.8672894654089947 Gradient Norm    2.0e-04 Gradient Max    1.4e-04
+ Iter: 189 Current Energy =  -1.8672894834936851 Gradient Norm    2.4e-04 Gradient Max    1.6e-04
+ Iter: 190 Current Energy =  -1.8672894976351546 Gradient Norm    1.2e-04 Gradient Max    5.2e-05
+ Iter: 191 Current Energy =  -1.8672895184132492 Gradient Norm    3.9e-05 Gradient Max    1.7e-05
+ Iter: 192 Current Energy =  -1.8672895270529084 Gradient Norm    1.0e-04 Gradient Max    5.2e-05
+ Iter: 193 Current Energy =  -1.8672895405000269 Gradient Norm    1.4e-04 Gradient Max    7.5e-05
+ Iter: 194 Current Energy =  -1.8672895616309086 Gradient Norm    1.5e-04 Gradient Max    9.0e-05
+ Iter: 195 Current Energy =  -1.8672895913226188 Gradient Norm    1.6e-04 Gradient Max    9.8e-05
+ Iter: 196 Current Energy =  -1.8672896146017932 Gradient Norm    9.8e-05 Gradient Max    4.3e-05
+ Iter: 197 Current Energy =  -1.8672896344691328 Gradient Norm    9.4e-05 Gradient Max    5.0e-05
+ Iter: 198 Current Energy =  -1.8672896418782752 Gradient Norm    1.2e-04 Gradient Max    6.7e-05
+ Iter: 199 Current Energy =  -1.8672896480058994 Gradient Norm    8.9e-05 Gradient Max    4.9e-05
+ Iter: 200 Current Energy =  -1.8672896524017086 Gradient Norm    7.6e-05 Gradient Max    3.3e-05
+ Iter: 201 Current Energy =  -1.8672896586189982 Gradient Norm    5.1e-05 Gradient Max    2.7e-05
+ Iter: 202 Current Energy =  -1.8672896647732649 Gradient Norm    1.1e-04 Gradient Max    7.1e-05
+ Iter: 203 Current Energy =  -1.8672896718538525 Gradient Norm    1.1e-04 Gradient Max    4.7e-05
+ Iter: 204 Current Energy =  -1.8672896766272187 Gradient Norm    1.1e-04 Gradient Max    5.8e-05
+ Iter: 205 Current Energy =  -1.8672896834217647 Gradient Norm    8.1e-05 Gradient Max    3.9e-05
+ Iter: 206 Current Energy =  -1.8672896907496681 Gradient Norm    9.6e-05 Gradient Max    6.8e-05
+ Iter: 207 Current Energy =  -1.8672896947542976 Gradient Norm    1.5e-04 Gradient Max    7.4e-05
+ Iter: 208 Current Energy =  -1.8672897003253799 Gradient Norm    1.1e-04 Gradient Max    5.5e-05
+ Iter: 209 Current Energy =  -1.8672897091604534 Gradient Norm    7.3e-05 Gradient Max    5.0e-05
+ Iter: 210 Current Energy =  -1.8672897251805853 Gradient Norm    7.0e-05 Gradient Max    4.4e-05
+ Iter: 211 Current Energy =  -1.8672897425187085 Gradient Norm    2.2e-04 Gradient Max    1.3e-04
+ Iter: 212 Current Energy =  -1.8672897672525974 Gradient Norm    2.3e-04 Gradient Max    1.3e-04
+ Iter: 213 Current Energy =  -1.8672898076186468 Gradient Norm    1.7e-04 Gradient Max    8.4e-05
+ Iter: 214 Current Energy =  -1.8672898319300133 Gradient Norm    2.5e-04 Gradient Max    1.4e-04
+ Iter: 215 Current Energy =  -1.8672898737324712 Gradient Norm    2.3e-04 Gradient Max    1.3e-04
+ Iter: 216 Current Energy =  -1.8672899427745828 Gradient Norm    1.7e-04 Gradient Max    8.9e-05
+ Iter: 217 Current Energy =  -1.8672899840041022 Gradient Norm    2.2e-04 Gradient Max    1.1e-04
+ Iter: 218 Current Energy =  -1.8672900520421229 Gradient Norm    2.4e-04 Gradient Max    1.1e-04
+ Iter: 219 Current Energy =  -1.8672901164758506 Gradient Norm    4.4e-04 Gradient Max    2.1e-04
+ Iter: 220 Current Energy =  -1.8672902196141825 Gradient Norm    3.1e-04 Gradient Max    1.4e-04
+ Iter: 221 Current Energy =  -1.8672903228379554 Gradient Norm    4.7e-04 Gradient Max    2.7e-04
+ Iter: 222 Current Energy =  -1.8672904605991574 Gradient Norm    2.3e-04 Gradient Max    1.3e-04
+ Iter: 223 Current Energy =  -1.8672905907874862 Gradient Norm    5.1e-04 Gradient Max    3.0e-04
+ Iter: 224 Current Energy =  -1.8672906598059253 Gradient Norm    2.9e-04 Gradient Max    1.5e-04
+ Iter: 225 Current Energy =  -1.8672907632319558 Gradient Norm    1.5e-04 Gradient Max    7.0e-05
+ Iter: 226 Current Energy =  -1.8672908123982295 Gradient Norm    2.6e-04 Gradient Max    1.5e-04
+ Iter: 227 Current Energy =  -1.8672908474203853 Gradient Norm    4.9e-04 Gradient Max    2.7e-04
+ Iter: 228 Current Energy =  -1.8672908942181832 Gradient Norm    4.7e-04 Gradient Max    3.1e-04
+ Iter: 229 Current Energy =  -1.8672909612188566 Gradient Norm    2.3e-04 Gradient Max    1.4e-04
+ Iter: 230 Current Energy =  -1.8672910409473662 Gradient Norm    2.0e-04 Gradient Max    1.1e-04
+ Iter: 231 Current Energy =  -1.8672911109452333 Gradient Norm    2.0e-04 Gradient Max    1.5e-04
+ Iter: 232 Current Energy =  -1.8672911475014047 Gradient Norm    2.3e-04 Gradient Max    1.2e-04
+ Iter: 233 Current Energy =  -1.8672911925547238 Gradient Norm    1.4e-04 Gradient Max    7.1e-05
+ Iter: 234 Current Energy =  -1.8672912101239239 Gradient Norm    2.8e-04 Gradient Max    1.3e-04
+ Iter: 235 Current Energy =  -1.8672912341750589 Gradient Norm    1.5e-04 Gradient Max    6.9e-05
+ Iter: 236 Current Energy =  -1.8672912484578321 Gradient Norm    6.8e-05 Gradient Max    3.4e-05
+ Iter: 237 Current Energy =  -1.8672912592571418 Gradient Norm    7.3e-05 Gradient Max    3.8e-05
+ Iter: 238 Current Energy =  -1.8672912655402372 Gradient Norm    1.2e-04 Gradient Max    7.4e-05
+ Iter: 239 Current Energy =  -1.8672912720450154 Gradient Norm    5.3e-05 Gradient Max    2.2e-05
+ Iter: 240 Current Energy =  -1.8672912740286145 Gradient Norm    4.7e-05 Gradient Max    2.1e-05
+ Iter: 241 Current Energy =  -1.8672912762769727 Gradient Norm    6.2e-05 Gradient Max    3.6e-05
+ Iter: 242 Current Energy =  -1.8672912781995668 Gradient Norm    6.5e-05 Gradient Max    3.6e-05
+ Iter: 243 Current Energy =  -1.8672912815543552 Gradient Norm    7.3e-05 Gradient Max    3.6e-05
+ Iter: 244 Current Energy =  -1.8672912874807792 Gradient Norm    8.2e-05 Gradient Max    3.5e-05
+ Iter: 245 Current Energy =  -1.8672912976392944 Gradient Norm    9.4e-05 Gradient Max    4.2e-05
+ Iter: 246 Current Energy =  -1.8672913132873987 Gradient Norm    1.0e-04 Gradient Max    5.0e-05
+ Iter: 247 Current Energy =  -1.8672913276981244 Gradient Norm    8.2e-05 Gradient Max    4.3e-05
+ Iter: 248 Current Energy =  -1.8672913350130618 Gradient Norm    5.7e-05 Gradient Max    2.5e-05
+ Iter: 249 Current Energy =  -1.8672913364998929 Gradient Norm    5.9e-05 Gradient Max    2.8e-05
+ Iter: 250 Current Energy =  -1.8672913385531666 Gradient Norm    2.4e-05 Gradient Max    1.4e-05
+ Iter: 251 Current Energy =  -1.8672913391849495 Gradient Norm    2.3e-05 Gradient Max    1.2e-05
+ Iter: 252 Current Energy =  -1.8672913395006947 Gradient Norm    2.6e-05 Gradient Max    1.4e-05
+ Iter: 253 Current Energy =  -1.8672913400923368 Gradient Norm    2.8e-05 Gradient Max    1.5e-05
+ Iter: 254 Current Energy =  -1.8672913411979284 Gradient Norm    3.1e-05 Gradient Max    1.7e-05
+ Iter: 255 Current Energy =  -1.8672913432144740 Gradient Norm    3.5e-05 Gradient Max    2.1e-05
+ Iter: 256 Current Energy =  -1.8672913466901981 Gradient Norm    4.4e-05 Gradient Max    2.6e-05
+ Iter: 257 Current Energy =  -1.8672913519397769 Gradient Norm    6.2e-05 Gradient Max    3.6e-05
+ Iter: 258 Current Energy =  -1.8672913575435923 Gradient Norm    6.3e-05 Gradient Max    3.5e-05
+ Iter: 259 Current Energy =  -1.8672913628849748 Gradient Norm    5.9e-05 Gradient Max    3.3e-05
+ Iter: 260 Current Energy =  -1.8672913665072222 Gradient Norm    8.5e-05 Gradient Max    5.6e-05
+ Iter: 261 Current Energy =  -1.8672913698428737 Gradient Norm    3.1e-05 Gradient Max    1.5e-05
+ Iter: 262 Current Energy =  -1.8672913709040269 Gradient Norm    2.9e-05 Gradient Max    1.7e-05
+ Iter: 263 Current Energy =  -1.8672913715877106 Gradient Norm    1.9e-05 Gradient Max    1.2e-05
+ Iter: 264 Current Energy =  -1.8672913718800761 Gradient Norm    1.3e-05 Gradient Max    6.2e-06
+ Iter: 265 Current Energy =  -1.8672913720001552 Gradient Norm    8.7e-06 Gradient Max    4.9e-06
+ Iter: 266 Current Energy =  -1.8672913721222488 Gradient Norm    7.1e-06 Gradient Max    3.8e-06
+ Iter: 267 Current Energy =  -1.8672913721874065 Gradient Norm    5.6e-06 Gradient Max    2.9e-06
+ Iter: 268 Current Energy =  -1.8672913722689037 Gradient Norm    6.0e-06 Gradient Max    2.9e-06
+ Iter: 269 Current Energy =  -1.8672913723451248 Gradient Norm    5.2e-06 Gradient Max    2.8e-06
+ Iter: 270 Current Energy =  -1.8672913723877209 Gradient Norm    3.2e-06 Gradient Max    1.5e-06
+ Iter: 271 Current Energy =  -1.8672913723991320 Gradient Norm    1.4e-06 Gradient Max    5.8e-07
+ Iter: 272 Current Energy =  -1.8672913724010416 Gradient Norm    6.9e-07 Gradient Max    2.7e-07
+ Iter: 273 Current Energy =  -1.8672913724013387 Gradient Norm    2.4e-07 Gradient Max    9.6e-08
+ Iter: 274 Current Energy =  -1.8672913724013733 Gradient Norm    4.9e-08 Gradient Max    2.7e-08
+ Iter: 275 Current Energy =  -1.8672913724013742 Gradient Norm    1.0e-08 Gradient Max    5.2e-09
+ Iter: 276 Current Energy =  -1.8672913724013760 Gradient Norm    1.7e-09 Gradient Max    7.4e-10
+ Iter: 277 Current Energy =  -1.8672913724013764 Gradient Norm    1.0e-09 Gradient Max    4.8e-10
+ Iter: 278 Current Energy =  -1.8672913724013764 Gradient Norm    3.9e-10 Gradient Max    1.9e-10
+ Finished:      -1.867291372401
+ -----------New ansatz----------- 
+    #        Coeff               Term
+    0  -0.24672509 0.125j [X0 X1 X6 Y7] +
+0.125j [X0 X1 Y6 X7] +
+-0.125j [X0 Y1 X6 X7] +
+0.125j [X0 Y1 Y6 Y7] +
+(-0-0.125j) [Y0 X1 X6 X7] +
+0.125j [Y0 X1 Y6 Y7] +
+-0.125j [Y0 Y1 X6 Y7] +
+-0.125j [Y0 Y1 Y6 X7]
+    1  -0.12245344 0.125j [X0 X2 X5 Y7] +
+-0.125j [X0 X2 Y5 X7] +
+0.125j [X0 Y2 X5 X7] +
+0.125j [X0 Y2 Y5 Y7] +
+(-0-0.125j) [Y0 X2 X5 X7] +
+-0.125j [Y0 X2 Y5 Y7] +
+0.125j [Y0 Y2 X5 Y7] +
+-0.125j [Y0 Y2 Y5 X7]
+    2   0.59994570 0.125j [X2 X3 X6 Y7] +
+0.125j [X2 X3 Y6 X7] +
+-0.125j [X2 Y3 X6 X7] +
+0.125j [X2 Y3 Y6 Y7] +
+(-0-0.125j) [Y2 X3 X6 X7] +
+0.125j [Y2 X3 Y6 Y7] +
+-0.125j [Y2 Y3 X6 Y7] +
+-0.125j [Y2 Y3 Y6 X7]
+    3   0.02218278 0.125j [X1 X3 X5 Y7] +
+0.125j [X1 X3 Y5 X7] +
+-0.125j [X1 Y3 X5 X7] +
+0.125j [X1 Y3 Y5 Y7] +
+(-0-0.125j) [Y1 X3 X5 X7] +
+0.125j [Y1 X3 Y5 Y7] +
+-0.125j [Y1 Y3 X5 Y7] +
+-0.125j [Y1 Y3 Y5 X7]
+    4  -1.07843893 0.125j [X0 X1 X2 Y7] +
+0.125j [X0 X1 Y2 X7] +
+-0.125j [X0 Y1 X2 X7] +
+0.125j [X0 Y1 Y2 Y7] +
+(-0-0.125j) [Y0 X1 X2 X7] +
+0.125j [Y0 X1 Y2 Y7] +
+-0.125j [Y0 Y1 X2 Y7] +
+-0.125j [Y0 Y1 Y2 X7]
+    5   0.41679602 (-0-0.5j) [X1 Y5] +
+0.5j [Y1 X5]
+    6  -1.76123050 0.125j [X1 X4 X6 Y7] +
+0.125j [X1 X4 Y6 X7] +
+-0.125j [X1 Y4 X6 X7] +
+0.125j [X1 Y4 Y6 Y7] +
+(-0-0.125j) [Y1 X4 X6 X7] +
+0.125j [Y1 X4 Y6 Y7] +
+-0.125j [Y1 Y4 X6 Y7] +
+-0.125j [Y1 Y4 Y6 X7]
+    7  -0.83585346 0.125j [X1 X3 X4 Y6] +
+-0.125j [X1 X3 Y4 X6] +
+0.125j [X1 Y3 X4 X6] +
+0.125j [X1 Y3 Y4 Y6] +
+(-0-0.125j) [Y1 X3 X4 X6] +
+-0.125j [Y1 X3 Y4 Y6] +
+0.125j [Y1 Y3 X4 Y6] +
+-0.125j [Y1 Y3 Y4 X6]
+    8   0.42411648 (-0-0.5j) [X3 Y7] +
+0.5j [Y3 X7]
+    9   1.81657040 0.125j [X0 X1 X3 Y6] +
+0.125j [X0 X1 Y3 X6] +
+-0.125j [X0 Y1 X3 X6] +
+0.125j [X0 Y1 Y3 Y6] +
+(-0-0.125j) [Y0 X1 X3 X6] +
+0.125j [Y0 X1 Y3 Y6] +
+-0.125j [Y0 Y1 X3 Y6] +
+-0.125j [Y0 Y1 Y3 X6]
+   10   2.09909161 0.125j [X0 X5 X6 Y7] +
+0.125j [X0 X5 Y6 X7] +
+-0.125j [X0 Y5 X6 X7] +
+0.125j [X0 Y5 Y6 Y7] +
+(-0-0.125j) [Y0 X5 X6 X7] +
+0.125j [Y0 X5 Y6 Y7] +
+-0.125j [Y0 Y5 X6 Y7] +
+-0.125j [Y0 Y5 Y6 X7]
+   11  -0.58314129 (-0-0.5j) [X2 Y6] +
+0.5j [Y2 X6]
+   12  -0.83217049 0.125j [X0 X3 X4 Y7] +
+0.125j [X0 X3 Y4 X7] +
+-0.125j [X0 Y3 X4 X7] +
+0.125j [X0 Y3 Y4 Y7] +
+(-0-0.125j) [Y0 X3 X4 X7] +
+0.125j [Y0 X3 Y4 Y7] +
+-0.125j [Y0 Y3 X4 Y7] +
+-0.125j [Y0 Y3 Y4 X7]
+   13  -0.63024692 0.125j [X1 X2 X5 Y6] +
+0.125j [X1 X2 Y5 X6] +
+-0.125j [X1 Y2 X5 X6] +
+0.125j [X1 Y2 Y5 Y6] +
+(-0-0.125j) [Y1 X2 X5 X6] +
+0.125j [Y1 X2 Y5 Y6] +
+-0.125j [Y1 Y2 X5 Y6] +
+-0.125j [Y1 Y2 Y5 X6]
+   14   0.08015930 0.125j [X0 X1 X6 Y7] +
+0.125j [X0 X1 Y6 X7] +
+-0.125j [X0 Y1 X6 X7] +
+0.125j [X0 Y1 Y6 Y7] +
+(-0-0.125j) [Y0 X1 X6 X7] +
+0.125j [Y0 X1 Y6 Y7] +
+-0.125j [Y0 Y1 X6 Y7] +
+-0.125j [Y0 Y1 Y6 X7]
+   15   0.02347511 0.125j [X2 X3 X4 Y5] +
+0.125j [X2 X3 Y4 X5] +
+-0.125j [X2 Y3 X4 X5] +
+0.125j [X2 Y3 Y4 Y5] +
+(-0-0.125j) [Y2 X3 X4 X5] +
+0.125j [Y2 X3 Y4 Y5] +
+-0.125j [Y2 Y3 X4 Y5] +
+-0.125j [Y2 Y3 Y4 X5]
+   16   0.23894902 0.125j [X1 X2 X4 Y7] +
+0.125j [X1 X2 Y4 X7] +
+-0.125j [X1 Y2 X4 X7] +
+0.125j [X1 Y2 Y4 Y7] +
+(-0-0.125j) [Y1 X2 X4 X7] +
+0.125j [Y1 X2 Y4 Y7] +
+-0.125j [Y1 Y2 X4 Y7] +
+-0.125j [Y1 Y2 Y4 X7]
+   17   0.40573517 0.125j [X0 X1 X4 Y5] +
+0.125j [X0 X1 Y4 X5] +
+-0.125j [X0 Y1 X4 X5] +
+0.125j [X0 Y1 Y4 Y5] +
+(-0-0.125j) [Y0 X1 X4 X5] +
+0.125j [Y0 X1 Y4 Y5] +
+-0.125j [Y0 Y1 X4 Y5] +
+-0.125j [Y0 Y1 Y4 X5]
+   18   0.19027109 0.125j [X0 X3 X5 Y6] +
+0.125j [X0 X3 Y5 X6] +
+-0.125j [X0 Y3 X5 X6] +
+0.125j [X0 Y3 Y5 Y6] +
+(-0-0.125j) [Y0 X3 X5 X6] +
+0.125j [Y0 X3 Y5 Y6] +
+-0.125j [Y0 Y3 X5 Y6] +
+-0.125j [Y0 Y3 Y5 X6]
+   19  -0.30869752 0.125j [X2 X3 X6 Y7] +
+0.125j [X2 X3 Y6 X7] +
+-0.125j [X2 Y3 X6 X7] +
+0.125j [X2 Y3 Y6 Y7] +
+(-0-0.125j) [Y2 X3 X6 X7] +
+0.125j [Y2 X3 Y6 Y7] +
+-0.125j [Y2 Y3 X6 Y7] +
+-0.125j [Y2 Y3 Y6 X7]
+
+
+
+
+ --------------------------------------------------------------------------
+                         ADAPT-VQE iteration:  20
+ --------------------------------------------------------------------------
+ Check each new operator for coupling
+ Measure Operator Pool Gradients:
+ Variance:     -0.00000000
+ Uncertainty:          nan
+ Norm of <[H,A]> =   0.00000000
+ Max  of <[H,A]> =   0.00000000
+ Ansatz Growth Converged!
+ Number of operators in ansatz:  20
+ *Finished:      -1.867291372401
+ -----------Final ansatz----------- 
+    #        Coeff               Term
+    0  -0.24672509 0.125j [X0 X1 X6 Y7] +
+0.125j [X0 X1 Y6 X7] +
+-0.125j [X0 Y1 X6 X7] +
+0.125j [X0 Y1 Y6 Y7] +
+(-0-0.125j) [Y0 X1 X6 X7] +
+0.125j [Y0 X1 Y6 Y7] +
+-0.125j [Y0 Y1 X6 Y7] +
+-0.125j [Y0 Y1 Y6 X7]
+    1  -0.12245344 0.125j [X0 X2 X5 Y7] +
+-0.125j [X0 X2 Y5 X7] +
+0.125j [X0 Y2 X5 X7] +
+0.125j [X0 Y2 Y5 Y7] +
+(-0-0.125j) [Y0 X2 X5 X7] +
+-0.125j [Y0 X2 Y5 Y7] +
+0.125j [Y0 Y2 X5 Y7] +
+-0.125j [Y0 Y2 Y5 X7]
+    2   0.59994570 0.125j [X2 X3 X6 Y7] +
+0.125j [X2 X3 Y6 X7] +
+-0.125j [X2 Y3 X6 X7] +
+0.125j [X2 Y3 Y6 Y7] +
+(-0-0.125j) [Y2 X3 X6 X7] +
+0.125j [Y2 X3 Y6 Y7] +
+-0.125j [Y2 Y3 X6 Y7] +
+-0.125j [Y2 Y3 Y6 X7]
+    3   0.02218278 0.125j [X1 X3 X5 Y7] +
+0.125j [X1 X3 Y5 X7] +
+-0.125j [X1 Y3 X5 X7] +
+0.125j [X1 Y3 Y5 Y7] +
+(-0-0.125j) [Y1 X3 X5 X7] +
+0.125j [Y1 X3 Y5 Y7] +
+-0.125j [Y1 Y3 X5 Y7] +
+-0.125j [Y1 Y3 Y5 X7]
+    4  -1.07843893 0.125j [X0 X1 X2 Y7] +
+0.125j [X0 X1 Y2 X7] +
+-0.125j [X0 Y1 X2 X7] +
+0.125j [X0 Y1 Y2 Y7] +
+(-0-0.125j) [Y0 X1 X2 X7] +
+0.125j [Y0 X1 Y2 Y7] +
+-0.125j [Y0 Y1 X2 Y7] +
+-0.125j [Y0 Y1 Y2 X7]
+    5   0.41679602 (-0-0.5j) [X1 Y5] +
+0.5j [Y1 X5]
+    6  -1.76123050 0.125j [X1 X4 X6 Y7] +
+0.125j [X1 X4 Y6 X7] +
+-0.125j [X1 Y4 X6 X7] +
+0.125j [X1 Y4 Y6 Y7] +
+(-0-0.125j) [Y1 X4 X6 X7] +
+0.125j [Y1 X4 Y6 Y7] +
+-0.125j [Y1 Y4 X6 Y7] +
+-0.125j [Y1 Y4 Y6 X7]
+    7  -0.83585346 0.125j [X1 X3 X4 Y6] +
+-0.125j [X1 X3 Y4 X6] +
+0.125j [X1 Y3 X4 X6] +
+0.125j [X1 Y3 Y4 Y6] +
+(-0-0.125j) [Y1 X3 X4 X6] +
+-0.125j [Y1 X3 Y4 Y6] +
+0.125j [Y1 Y3 X4 Y6] +
+-0.125j [Y1 Y3 Y4 X6]
+    8   0.42411648 (-0-0.5j) [X3 Y7] +
+0.5j [Y3 X7]
+    9   1.81657040 0.125j [X0 X1 X3 Y6] +
+0.125j [X0 X1 Y3 X6] +
+-0.125j [X0 Y1 X3 X6] +
+0.125j [X0 Y1 Y3 Y6] +
+(-0-0.125j) [Y0 X1 X3 X6] +
+0.125j [Y0 X1 Y3 Y6] +
+-0.125j [Y0 Y1 X3 Y6] +
+-0.125j [Y0 Y1 Y3 X6]
+   10   2.09909161 0.125j [X0 X5 X6 Y7] +
+0.125j [X0 X5 Y6 X7] +
+-0.125j [X0 Y5 X6 X7] +
+0.125j [X0 Y5 Y6 Y7] +
+(-0-0.125j) [Y0 X5 X6 X7] +
+0.125j [Y0 X5 Y6 Y7] +
+-0.125j [Y0 Y5 X6 Y7] +
+-0.125j [Y0 Y5 Y6 X7]
+   11  -0.58314129 (-0-0.5j) [X2 Y6] +
+0.5j [Y2 X6]
+   12  -0.83217049 0.125j [X0 X3 X4 Y7] +
+0.125j [X0 X3 Y4 X7] +
+-0.125j [X0 Y3 X4 X7] +
+0.125j [X0 Y3 Y4 Y7] +
+(-0-0.125j) [Y0 X3 X4 X7] +
+0.125j [Y0 X3 Y4 Y7] +
+-0.125j [Y0 Y3 X4 Y7] +
+-0.125j [Y0 Y3 Y4 X7]
+   13  -0.63024692 0.125j [X1 X2 X5 Y6] +
+0.125j [X1 X2 Y5 X6] +
+-0.125j [X1 Y2 X5 X6] +
+0.125j [X1 Y2 Y5 Y6] +
+(-0-0.125j) [Y1 X2 X5 X6] +
+0.125j [Y1 X2 Y5 Y6] +
+-0.125j [Y1 Y2 X5 Y6] +
+-0.125j [Y1 Y2 Y5 X6]
+   14   0.08015930 0.125j [X0 X1 X6 Y7] +
+0.125j [X0 X1 Y6 X7] +
+-0.125j [X0 Y1 X6 X7] +
+0.125j [X0 Y1 Y6 Y7] +
+(-0-0.125j) [Y0 X1 X6 X7] +
+0.125j [Y0 X1 Y6 Y7] +
+-0.125j [Y0 Y1 X6 Y7] +
+-0.125j [Y0 Y1 Y6 X7]
+   15   0.02347511 0.125j [X2 X3 X4 Y5] +
+0.125j [X2 X3 Y4 X5] +
+-0.125j [X2 Y3 X4 X5] +
+0.125j [X2 Y3 Y4 Y5] +
+(-0-0.125j) [Y2 X3 X4 X5] +
+0.125j [Y2 X3 Y4 Y5] +
+-0.125j [Y2 Y3 X4 Y5] +
+-0.125j [Y2 Y3 Y4 X5]
+   16   0.23894902 0.125j [X1 X2 X4 Y7] +
+0.125j [X1 X2 Y4 X7] +
+-0.125j [X1 Y2 X4 X7] +
+0.125j [X1 Y2 Y4 Y7] +
+(-0-0.125j) [Y1 X2 X4 X7] +
+0.125j [Y1 X2 Y4 Y7] +
+-0.125j [Y1 Y2 X4 Y7] +
+-0.125j [Y1 Y2 Y4 X7]
+   17   0.40573517 0.125j [X0 X1 X4 Y5] +
+0.125j [X0 X1 Y4 X5] +
+-0.125j [X0 Y1 X4 X5] +
+0.125j [X0 Y1 Y4 Y5] +
+(-0-0.125j) [Y0 X1 X4 X5] +
+0.125j [Y0 X1 Y4 Y5] +
+-0.125j [Y0 Y1 X4 Y5] +
+-0.125j [Y0 Y1 Y4 X5]
+   18   0.19027109 0.125j [X0 X3 X5 Y6] +
+0.125j [X0 X3 Y5 X6] +
+-0.125j [X0 Y3 X5 X6] +
+0.125j [X0 Y3 Y5 Y6] +
+(-0-0.125j) [Y0 X3 X5 X6] +
+0.125j [Y0 X3 Y5 Y6] +
+-0.125j [Y0 Y3 X5 Y6] +
+-0.125j [Y0 Y3 Y5 X6]
+   19  -0.30869752 0.125j [X2 X3 X6 Y7] +
+0.125j [X2 X3 Y6 X7] +
+-0.125j [X2 Y3 X6 X7] +
+0.125j [X2 Y3 Y6 Y7] +
+(-0-0.125j) [Y2 X3 X6 X7] +
+0.125j [Y2 X3 Y6 Y7] +
+-0.125j [Y2 Y3 X6 Y7] +
+-0.125j [Y2 Y3 Y6 X7]
+ Final ADAPT-VQE energy:  -1.86729137
+ <S^2> of final state  :   0.00000000
