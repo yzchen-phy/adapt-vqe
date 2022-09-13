@@ -14,6 +14,7 @@ from pyscf import gto, scf, mcscf, fci, ao2mo, lo, molden, cc
 from pyscf.cc import ccsd
 
 import operator_pools
+import operator_pools_pauli
 import vqe_methods
 from tVQE import *
 
@@ -21,6 +22,150 @@ from openfermion import *
 
 
 import pyscf_helper
+
+def adapt_vqe_tetris(hamiltonian, pool, reference_ket, file_out, Tetris,
+        adapt_conver    = 'norm',
+        adapt_thresh    = 1e-3,
+        theta_thresh    = 1e-7,
+        adapt_maxiter   = 200,
+        psi4_filename   = "psi4_%12.12f"%random.random()
+        ):
+# {{{
+
+    ref_energy = reference_ket.T.conj().dot(hamiltonian.dot(reference_ket))[0,0].real
+    print(" Reference Energy: %12.8f" %ref_energy)
+
+    #Thetas
+    parameters = []
+
+    pool.generate_SparseMatrix()
+    pool.gradient_print_thresh = theta_thresh
+
+    ansatz_ops = []     #SQ operator strings in the ansatz
+    ansatz_mat = []     #Sparse Matrices for operators in ansatz
+
+    print(" Start ADAPT-VQE algorithm")
+    op_indices = []
+    parameters = []
+    curr_state = 1.0*reference_ket
+    
+    file_out.write("# n_iter -- energy -- index_op \n")
+    file_out.flush()
+
+    print(" Now start to grow the ansatz")
+    for n_iter in range(0,adapt_maxiter):
+
+        print("\n\n\n")
+        print(" --------------------------------------------------------------------------")
+        print("                         ADAPT-VQE iteration: ", n_iter)
+        print(" --------------------------------------------------------------------------")
+        next_index = None
+        next_deriv = 0
+        curr_norm = 0
+
+        print(" Check each new operator for coupling")
+        next_term = []
+        print(" Measure Operator Pool Gradients:")
+        sig = hamiltonian.dot(curr_state)
+        e_curr = curr_state.T.conj().dot(sig)[0,0]
+        var = sig.T.conj().dot(sig)[0,0] - e_curr**2
+        uncertainty = np.sqrt(var.real)
+        assert(np.isclose(var.imag,0))
+        print(" Variance:    %12.8f" %var.real)
+        print(" Uncertainty: %12.8f" %uncertainty)
+
+        # list of gradient norms
+        grad_list = []
+
+        for oi in range(pool.n_ops):
+
+            gi = pool.compute_gradient_i(oi, curr_state, sig)
+
+            grad_list.append((oi, abs(gi)))
+
+            curr_norm += gi*gi
+#            if abs(gi) > abs(next_deriv):
+#                next_deriv = gi
+#                next_index = oi
+
+        curr_norm = np.sqrt(curr_norm)
+
+        min_options = {'gtol': theta_thresh, 'disp':False}
+
+        max_of_gi = next_deriv
+        print(" Norm of <[H,A]> = %12.8f" %curr_norm)
+        print(" Max  of <[H,A]> = %12.8f" %max_of_gi)
+
+        converged = False
+        if adapt_conver == "norm":
+            if curr_norm < adapt_thresh:
+                converged = True
+        elif adapt_conver == "var":
+            if abs(var) < adapt_thresh:
+                #variance
+                converged = True
+        else:
+            print(" FAIL: Convergence criterion not defined")
+            exit()
+
+        if converged:
+            print(" Ansatz Growth Converged!")
+            print(" Number of operators in ansatz: ", len(ansatz_ops))
+            print(" *Finished: %20.12f" % trial_model.curr_energy)
+            print(" -----------Final ansatz----------- ")
+            print(" %4s %12s %18s" %("#","Coeff","Term"))
+            for si in range(len(ansatz_ops)):
+                print(" %4i %12.8f %s" %(si, parameters[si], ansatz_ops[si]) )
+            break
+
+        grad_list.sort(reverse = True, key = lambda x: x[1])
+#        for e in grad_list:
+#            print(pool.pauli_ops[e[0]], e[1])
+        next_index = grad_list[0][0]
+        added_op_index = [next_index]
+
+        print(" Add operator %4i" % next_index)
+        parameters.insert(0,0)
+        ansatz_ops.insert(0,pool.pauli_ops[next_index])
+        ansatz_mat.insert(0,pool.spmat_ops[next_index])
+
+        if Tetris == True:
+            for ii_op in range(1, pool.n_ops):
+                overlap = 0
+                for op_ex in added_op_index:
+                    if pool.has_overlap(grad_list[ii_op][0], op_ex):
+                        overlap += 1
+                        break
+                if overlap == 0:
+                    parameters.insert(0,0)
+                    ansatz_ops.insert(0,pool.pauli_ops[grad_list[ii_op][0]])
+                    ansatz_mat.insert(0,pool.spmat_ops[grad_list[ii_op][0]])
+                    added_op_index.append(grad_list[ii_op][0])
+                    print(" Add operator %4i" % grad_list[ii_op][0])
+
+        trial_model = tUCCSD(hamiltonian, ansatz_mat, reference_ket, parameters)
+
+
+        opt_result = scipy.optimize.minimize(trial_model.energy, parameters, jac=trial_model.gradient,
+                options = min_options, method = 'BFGS', callback=trial_model.callback)
+
+        parameters = list(opt_result['x'])
+        curr_state = trial_model.prepare_state(parameters)
+        
+        print(" Finished: %20.12f" % trial_model.curr_energy)
+        print(" -----------New ansatz----------- ")
+        print(" %4s %12s %18s" %("#","Coeff","Term"))
+        for si in range(len(ansatz_ops)):
+            print(" %4i %12.8f %s" %(si, parameters[si], ansatz_ops[si]))
+            
+        file_out.write("%d \t %12.8f \t %s \n" %(n_iter, trial_model.curr_energy, added_op_index))
+#        curr_param_list = "(\t" + join("%12.8f \t" % elem for elem in parameters) + ")"
+#        file_out.write("%d \t %12.8f \t %d \t %s \n" %(n_iter, trial_model.curr_energy, next_index, curr_param_list))
+        file_out.flush()
+        
+    return trial_model.curr_energy, curr_state, parameters
+
+# }}}
 
 def adapt_vqe(hamiltonian_op, pool, reference_ket,
         adapt_conver    = 'norm',
