@@ -200,6 +200,57 @@ class qaoa_sym(OperatorPool):
 
         return
 
+class qaoa_single(OperatorPool):
+    def generate_SQ_Operators(self):
 
+        A = QubitOperator('Z0 Z1', 0)
+        B = QubitOperator('X0', 0)
+        X = QubitOperator('X0', 0)
+        C = QubitOperator('X0', 0)
+
+        self.pool_ops = []
+
+        self.cost_ops = []
+        self.shift = 0
+        # Ising terms
+        for i in range(0,self.n):
+            #for j in range(i+1,self.n):
+            for j in range(i):
+                if self.w[i, j] != 0:
+                    #A += QubitOperator('Z%d Z%d' % (i, j), -1j*self.w[i, j])
+                    A += QubitOperator('Z%d Z%d' % (i, j), -0.5j*self.w[i, j])
+                    self.shift -= 0.5*self.w[i, j]
+        # symmetry breaking field on qubit q
+        A += QubitOperator('Z%d' % (self.q), -1j*self.field)
+        self.cost_ops.append(A)
+
+        # for regular QAOA
+        self.mixer_ops = []
+        
+        for i in range(0, self.n):
+            B += QubitOperator('X%d' % i, 1j) 
+        self.pool_ops.append(B)
+        self.mixer_ops.append(B)
+
+        for i in range(0, self.n):
+            C += QubitOperator('Y%d' % i, 1j) 
+        self.pool_ops.append(C)    
+
+        for i in range(0, self.n):
+            X = QubitOperator('X%d' % i, 1j)
+            self.pool_ops.append(X)
+            
+        for i in range(0, self.n):
+            Y = QubitOperator('Y%d' % i, 1j)
+            self.pool_ops.append(Y)
+            
+#        for i in range(0, self.n):
+#            H = QubitOperator('X%d' % i, 1j/np.sqrt(2))
+#            H += QubitOperator('Z%d' % i, 1j/np.sqrt(2))
+#            self.pool_ops.append(H)
+
+        self.n_ops = len(self.pool_ops)
+
+        return
 
 
