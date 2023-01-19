@@ -10,7 +10,7 @@ import pickle
 import math
 from scipy.linalg import norm
 
-import operator_pools_qaoa
+import operator_pools_qaoa as operator_pools
 from tVQE import *
 
 from openfermion import *
@@ -26,7 +26,7 @@ def run(n,
          adapt_thresh=1e-4,
          theta_thresh=1e-7,
          layer = 1,
-         pool=operator_pools.qaoa(),
+         pool=operator_pools.qaoa_sym(),
          psi_ref = '+',
          init_para = 0.01,
          structure = 'qaoa',
