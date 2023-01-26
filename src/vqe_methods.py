@@ -268,13 +268,16 @@ def adapt_vqe(hamiltonian_op, pool, reference_ket,
 
         parameters = list(opt_result['x'])
         curr_state = trial_model.prepare_state(parameters)
+        num_fun = opt_result['nfev']
+        num_jac = opt_result['njec']
+
         print(" Finished: %20.12f" % trial_model.curr_energy)
         print(" -----------New ansatz----------- ")
         print(" %4s %12s %18s" %("#","Coeff","Term"))
         for si in range(len(ansatz_ops)):
             opstring = pool.get_string_for_term(ansatz_ops[si])
             print(" %4i %12.8f %s" %(si, parameters[si], opstring) )
-    return trial_model.curr_energy, curr_state, parameters
+    return trial_model.curr_energy, curr_state, parameters, num_fun, num_jac
 
 # }}}
 
