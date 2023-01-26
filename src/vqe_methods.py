@@ -49,7 +49,7 @@ def adapt_vqe_tetris(hamiltonian, pool, reference_ket, file_out, Tetris,
     parameters = []
     curr_state = 1.0*reference_ket
     
-    file_out.write("# n_iter -- energy -- index_op \n")
+    file_out.write("# n_iter -- energy -- index_op -- n_func -- n_jaco \n")
     file_out.flush()
 
     print(" Now start to grow the ansatz")
@@ -151,16 +151,20 @@ def adapt_vqe_tetris(hamiltonian, pool, reference_ket, file_out, Tetris,
 
         parameters = list(opt_result['x'])
         curr_state = trial_model.prepare_state(parameters)
-        
+        num_fun = opt_result['nfev']
+        num_jac = opt_result['njec']
+
+       
         print(" Finished: %20.12f" % trial_model.curr_energy)
         print(" -----------New ansatz----------- ")
         print(" %4s %12s %18s" %("#","Coeff","Term"))
         for si in range(len(ansatz_ops)):
             print(" %4i %12.8f %s" %(si, parameters[si], ansatz_ops[si]))
             
-        file_out.write("%d \t %12.8f \t %s \n" %(n_iter, trial_model.curr_energy, added_op_index))
+        file_out.write("%d \t %12.8f \t %s \n" %(n_iter, trial_model.curr_energy, added_op_index, num_fun, num_jac))
 #        curr_param_list = "(\t" + join("%12.8f \t" % elem for elem in parameters) + ")"
 #        file_out.write("%d \t %12.8f \t %d \t %s \n" %(n_iter, trial_model.curr_energy, next_index, curr_param_list))
+ 
         file_out.flush()
         
     return trial_model.curr_energy, curr_state, parameters
@@ -268,16 +272,14 @@ def adapt_vqe(hamiltonian_op, pool, reference_ket,
 
         parameters = list(opt_result['x'])
         curr_state = trial_model.prepare_state(parameters)
-        num_fun = opt_result['nfev']
-        num_jac = opt_result['njec']
-
+        
         print(" Finished: %20.12f" % trial_model.curr_energy)
         print(" -----------New ansatz----------- ")
         print(" %4s %12s %18s" %("#","Coeff","Term"))
         for si in range(len(ansatz_ops)):
             opstring = pool.get_string_for_term(ansatz_ops[si])
             print(" %4i %12.8f %s" %(si, parameters[si], opstring) )
-    return trial_model.curr_energy, curr_state, parameters, num_fun, num_jac
+    return trial_model.curr_energy, curr_state, parameters
 
 # }}}
 
