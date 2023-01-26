@@ -152,7 +152,7 @@ def adapt_vqe_tetris(hamiltonian, pool, reference_ket, file_out, Tetris,
         parameters = list(opt_result['x'])
         curr_state = trial_model.prepare_state(parameters)
         num_fun = opt_result['nfev']
-        num_jac = opt_result['njec']
+        num_jac = opt_result['njev']
 
        
         print(" Finished: %20.12f" % trial_model.curr_energy)
@@ -161,7 +161,7 @@ def adapt_vqe_tetris(hamiltonian, pool, reference_ket, file_out, Tetris,
         for si in range(len(ansatz_ops)):
             print(" %4i %12.8f %s" %(si, parameters[si], ansatz_ops[si]))
             
-        file_out.write("%d \t %12.8f \t %s \n" %(n_iter, trial_model.curr_energy, added_op_index, num_fun, num_jac))
+        file_out.write("%d \t %12.8f \t %s \t %d \t %d \n" %(n_iter, trial_model.curr_energy, added_op_index, num_fun, num_jac))
 #        curr_param_list = "(\t" + join("%12.8f \t" % elem for elem in parameters) + ")"
 #        file_out.write("%d \t %12.8f \t %d \t %s \n" %(n_iter, trial_model.curr_energy, next_index, curr_param_list))
  
