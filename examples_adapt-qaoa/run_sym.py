@@ -6,7 +6,7 @@ sys.path.insert(0, '../src')
 import os
 os.environ['OPENBLAS_NUM_THREADS'] = '1'
 
-import qaoa_methods_es as qaoa_methods
+import qaoa_methods as qaoa_methods
 import operator_pools_qaoa as operator_pools
 import networkx as nx
 import numpy as np
