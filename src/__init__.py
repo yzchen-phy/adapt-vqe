@@ -5,6 +5,7 @@ import operator_pools_qaoa
 import oeprator_pools_pauli
 import tVQE
 import vqe_methods
+import qaoa_methods
 import qaoa_methods_es
 import qaoa_methods_spsa
 import pyscf_helper 
