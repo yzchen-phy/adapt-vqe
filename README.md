@@ -9,18 +9,15 @@ Includes simulation code for performing ADAPT-VQE and ADAPT-QAOA calculations.
         git clone https://github.com/yzchen-phy/adapt-vqe.git
         cd adapt-vqe/
 
-3. create virtual environment (optional)
+2. create virtual environment (optional)
          
         virtualenv -p python3 venv
         source venv/bin/activate
 
-4. Install
+3. Install
 
         pip install .
 
-5. run tests
-    
-        pytest test/*.py
 
 ### ADAPT-VQE
 
