@@ -96,6 +96,109 @@ class tUCCSD(Variational_Ansatz):
         self.der = grad
         return np.asarray(grad)
 
+    def entanglement_entropy(self, params):
+    
+        the_state = self.prepare_state(params)   
+        # Bipartition of equal numbers of qubits
+        sub_dim = int(np.sqrt(self.hilb_dim))
+        density_array = the_state.dot(the_state.conj().transpose()).toarray().reshape((sub_dim, sub_dim) * 2).trace(axis1 = 1, axis2 = 3)
+        # density_array = the_state.dot(the_state.conj().transpose()).toarray().reshape((2 ** 3, 2 ** 3) * 2).trace(axis1 = 1, axis2 = 3)
+                        
+        density = scipy.sparse.csr_matrix(density_array)
+        log_pho = scipy.sparse.csr_matrix(scipy.linalg.logm(density_array))
+
+        entropy_0 = -density.dot(log_pho).toarray().trace()
+
+        # if not np.isclose(entropy_0.imag, 0):
+        #     print("WARNING: anomalous derivative imaginary part: %12.8f" % entropy_0.imag)
+
+        entropy = entropy_0.real    
+        return entropy
+        
+    def entanglement_entropy1(self, params):
+    
+        the_state = self.prepare_state(params)    
+        # Bipartition of 1 qubit and the rest
+        q_num = int(np.log2(self.hilb_dim))
+        density_shape = (2, 2)*q_num
+        density_array = the_state.dot(the_state.conj().transpose()).toarray().reshape(density_shape)
+        entropy_tot = 0.0
+        for ii in range(q_num):
+            reduced_density = density_array.trace(axis1 = ii, axis2 = ii+q_num)
+            reduced_array = reduced_density.reshape(2**(q_num-1), 2**(q_num-1))
+            reduced_pho = scipy.sparse.csr_matrix(reduced_array)
+            log_pho = scipy.sparse.csr_matrix(scipy.linalg.logm(reduced_array))
+            entropy_0 = -reduced_pho.dot(log_pho).toarray().trace()
+            entropy_tot +=entropy_0.real
+        return entropy_tot
+        
+    def entanglement_spectrum(self, params):
+
+        the_state = self.prepare_state(params)   
+        
+        # Bipartition of equal numbers of qubits
+        sub_dim = int(np.sqrt(self.hilb_dim))
+        density_array = the_state.dot(the_state.conj().transpose()).toarray().reshape((sub_dim, sub_dim) * 2).trace(axis1 = 1, axis2 = 3)
+        # log_pho = scipy.linalg.logm(density_array)
+        # ent_spec = scipy.linalg.eigvals(log_pho)
+        
+        evals = scipy.linalg.eigvals(density_array)
+        ent_spec = []
+        # cutoff value about log2(1e-9)
+        x_cutoff = -30 
+
+    def entanglement_entropy_m(self, params):
+    
+        the_state = self.prepare_state(params)   
+        sub_dim = 2 ** (self.q_num//2 - 1)
+        # Project the leftmost qubit onto state 0
+        slice_state = the_state[0:(self.hilb_dim//2), :]
+        projected_state = slice_state / np.sqrt(slice_state.transpose().conj().dot(slice_state).toarray()[0][0])
+        assert(projected_state.transpose().conj().dot(projected_state).toarray()[0][0]-1<0.0000001)
+        # Bipartition of equal numbers of qubits
+        density_array = projected_state.dot(projected_state.conj().transpose()).toarray().reshape((sub_dim, 2*sub_dim) * 2).trace(axis1 = 1, axis2 = 3)
+                        
+        density = scipy.sparse.csr_matrix(density_array)
+        log_pho = scipy.sparse.csr_matrix(scipy.linalg.logm(density_array))
+        entropy_0 = -density.dot(log_pho).toarray().trace()
+
+        # if not np.isclose(entropy_0.imag, 0):
+        #     print("WARNING: anomalous derivative imaginary part: %12.8f" % entropy_0.imag)
+
+        entropy = entropy_0.real    
+        return entropy
+        
+    def entanglement_entropy1_m(self, params):
+    
+        the_state = self.prepare_state(params) 
+        # Project the leftmost qubit onto state 0
+        slice_state = the_state[0:(self.hilb_dim//2), :]
+        projected_state = slice_state / np.sqrt(slice_state.transpose().conj().dot(slice_state).toarray()[0][0])
+        assert(projected_state.transpose().conj().dot(projected_state).toarray()[0][0]-1<0.0000001)  
+        # Bipartition of 1 qubit and the rest
+        density_shape = (2, 2)*(self.q_num-1)
+        density_array = projected_state.dot(projected_state.conj().transpose()).toarray().reshape(density_shape)
+        entropy_tot = 0.0
+        for ii in range(self.q_num-1):
+            reduced_density = density_array.trace(axis1 = ii, axis2 = ii+self.q_num-1)
+            reduced_array = reduced_density.reshape(2**(self.q_num-2), 2**(self.q_num-2))
+            reduced_pho = scipy.sparse.csr_matrix(reduced_array)
+            log_pho = scipy.sparse.csr_matrix(scipy.linalg.logm(reduced_array))
+            entropy_0 = -reduced_pho.dot(log_pho).toarray().trace()
+            entropy_tot +=entropy_0.real
+        return entropy_tot
+        
+    def entanglement_spectrum_m(self, params):
+
+        the_state = self.prepare_state(params)   
+        sub_dim = 2 ** (self.q_num//2 - 1)
+        # Project the leftmost qubit onto state 0
+        slice_state = the_state[0:(self.hilb_dim//2), :]
+        projected_state = slice_state / np.sqrt(slice_state.transpose().conj().dot(slice_state).toarray()[0][0])
+        assert(projected_state.transpose().conj().dot(projected_state).toarray()[0][0]-1<0.0000001)
+        # Bipartition of equal numbers of qubits
+
+
     def Recurse(self, parameters, grad, hbra, ket, term):
         if term == 0:
             hbra = hbra
