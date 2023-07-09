@@ -65,7 +65,7 @@ def main():
     g.add_nodes_from(np.arange(0, n, 1))
     g.add_weighted_edges_from(elist)
     
-    qaoa_methods.run(n, 
+    qaoa_methods.run_sb(n, 
 	             g, 
 	             field_sb,
 	             q,
@@ -76,7 +76,7 @@ def main():
 	             adapt_thresh=1e-10, 
 	             theta_thresh=1e-7,
 	             layer=p, 
-	             pool=operator_pools.qaoa(), 
+	             pool=operator_pools.qaoa_sb(), 
 	             psi_ref=psi_ref,
 	             init_para=init_para, 
 	             structure = 'qaoa', 
