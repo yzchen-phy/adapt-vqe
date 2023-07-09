@@ -26,7 +26,8 @@ class Variational_Ansatz:
         self.ref = cp.deepcopy(_ref)
         self.curr_params = _params 
         self.n_params = len(self.curr_params)
-        self.hilb_dim = self.H.shape[0] 
+        self.hilb_dim = self.H.shape[0]
+        self.q_num = int(np.log2(self.hilb_dim)) 
         
         self.iter = 0
         self.energy_per_iteration = []
@@ -60,15 +61,23 @@ class Variational_Ansatz:
 
 
 
-
 class tUCCSD(Variational_Ansatz):
+
+    def variance(self, params):
+        new_state = self.prepare_state(params)
+        assert (new_state.transpose().conj().dot(new_state).toarray()[0][0] - 1 < 0.0000001)
+        variance = new_state.transpose().conj().dot(self.H.dot(self.H.dot(new_state)))[0, 0]
+        variance = self.curr_energy * self.curr_energy
+        assert (np.isclose(variance.imag, 0))
+        self.curr_variance = variance.real
+        return variance.real
     
     def energy(self,params):
         new_state = self.prepare_state(params)
         assert(new_state.transpose().conj().dot(new_state).toarray()[0][0]-1<0.0000001)
-        energy = new_state.transpose().conj().dot(self.H.dot(new_state))[0,0]
-        assert(np.isclose(energy.imag,0))
+        energy = new_state.transpose().conj().dot(self.H.dot(new_state))[0, 0].real
         self.curr_energy = energy.real
+        assert(np.isclose(energy.imag, 0))
         return energy.real
 
     def prepare_state(self,parameters):
@@ -145,7 +154,7 @@ class tUCCSD(Variational_Ansatz):
         evals = scipy.linalg.eigvals(density_array)
         ent_spec = []
         # cutoff value about log2(1e-9)
-        x_cutoff = -30
+        x_cutoff = -30 
         for e in evals:
             if e.real > 2**x_cutoff:
                 ent_spec.append(np.log2(e.real))
@@ -220,8 +229,6 @@ class tUCCSD(Variational_Ansatz):
                         
         return np.asarray(ent_spec)
         
- 
-
     def Recurse(self, parameters, grad, hbra, ket, term):
         if term == 0:
             hbra = hbra
@@ -234,10 +241,7 @@ class tUCCSD(Variational_Ansatz):
             term += 1
             self.Recurse(parameters, grad, hbra, ket, term)
         return np.asarray(grad)
-
-
-
-
+        
 
 class UCC(Variational_Ansatz):
     
