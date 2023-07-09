@@ -145,7 +145,15 @@ class tUCCSD(Variational_Ansatz):
         evals = scipy.linalg.eigvals(density_array)
         ent_spec = []
         # cutoff value about log2(1e-9)
-        x_cutoff = -30 
+        x_cutoff = -30
+        for e in evals:
+            if e.real > 2**x_cutoff:
+                ent_spec.append(np.log2(e.real))
+            else:
+                ent_spec.append(x_cutoff)
+        ent_spec.sort()
+                        
+        return np.asarray(ent_spec)
 
     def entanglement_entropy_m(self, params):
     
@@ -197,7 +205,22 @@ class tUCCSD(Variational_Ansatz):
         projected_state = slice_state / np.sqrt(slice_state.transpose().conj().dot(slice_state).toarray()[0][0])
         assert(projected_state.transpose().conj().dot(projected_state).toarray()[0][0]-1<0.0000001)
         # Bipartition of equal numbers of qubits
-
+        density_array =  projected_state.dot(projected_state.conj().transpose()).toarray().reshape((sub_dim, 2*sub_dim) * 2).trace(axis1 = 1, axis2 = 3)
+        
+        evals = scipy.linalg.eigvals(density_array)
+        ent_spec = []
+        # cutoff value about log2(1e-9)
+        x_cutoff = -30 
+        for e in evals:
+            if e.real > 2**x_cutoff:
+                ent_spec.append(np.log2(e.real))
+            else:
+                ent_spec.append(x_cutoff)
+        ent_spec.sort()
+                        
+        return np.asarray(ent_spec)
+        
+ 
 
     def Recurse(self, parameters, grad, hbra, ket, term):
         if term == 0:
