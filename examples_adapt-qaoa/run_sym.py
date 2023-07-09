@@ -35,6 +35,9 @@ def main():
         direcname = './discrete/'
     else:
         direcname = './continuous/'
+
+    if not os.path.isdir(direcname):
+        os.mkdir(direcname)
     
     filename = direcname + 'n%d-D%d-s%d_G%d_error' % (n, n-1, seed, ind) + '.txt'
     filename_1 = direcname + 'n%d-D%d-s%d_G%d_op' % (n, n-1, seed, ind) + '.txt'
