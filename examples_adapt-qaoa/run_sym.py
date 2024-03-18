@@ -20,9 +20,10 @@ def main():
     # number of vertices
     n = 6
     # number of layers
-    p = 10
+    p = 3
 
     init_para = 0.01
+    psi_ref = '+'
 
     opt_method = 'NM'
     Discrete = True # distribution of edge weights to sample from
@@ -31,13 +32,10 @@ def main():
 
 ################################################
     # File names
-    if Discrete:
-        direcname = './discrete/'
-    else:
-        direcname = './continuous/'
+    direcname = './'
 
-    if not os.path.isdir(direcname):
-        os.mkdir(direcname)
+    #if not os.path.isdir(direcname):
+    #    os.mkdir(direcname)
     
     filename = direcname + 'n%d-D%d-s%d_G%d_error' % (n, n-1, seed, ind) + '.txt'
     filename_1 = direcname + 'n%d-D%d-s%d_G%d_op' % (n, n-1, seed, ind) + '.txt'
@@ -79,8 +77,11 @@ def main():
     g.add_nodes_from(np.arange(0, n, 1))
     g.add_weighted_edges_from(elist)
     
+    pool=operator_pools.qaoa()
+    pool.init(n, g)
+    pool.generate_SparseMatrix()
+
     qaoa_methods.run(n, 
-	             g, 
 	             f,
 	             f_mix,
 	             f_ent,
@@ -89,7 +90,8 @@ def main():
 	             adapt_thresh=1e-5, 
 	             theta_thresh=1e-7,
 	             layer=p, 
-	             pool=operator_pools.qaoa_sym(), 
+	             pool=pool,
+                     psi_ref=psi_ref,
 	             init_para=init_para, 
 	             structure = 'qaoa', 
 	             selection = 'grad', 
