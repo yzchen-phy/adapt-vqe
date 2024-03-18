@@ -20,7 +20,6 @@ from openfermion import *
 ###########################################################################
 
 def run(n,
-         g,
          f,
          f_mix,
          f_ent,
@@ -29,7 +28,8 @@ def run(n,
          adapt_thresh=1e-4,
          theta_thresh=1e-7,
          layer = 1,
-         pool=operator_pools.qaoa_sym(),
+         pool=operator_pools.qaoa(),
+         psi_ref = '+',         
          init_para = 0.01,
          structure = 'qaoa',
          selection = 'NA',
@@ -40,10 +40,6 @@ def run(n,
          resolution = 100
          ):
     # {{{
-
-    G = g
-    pool.init(n, G, 0, 0)
-    pool.generate_SparseMatrix()
 
     hamiltonian = pool.cost_mat[0] * 1j
     # print('hamiltonian:',hamiltonian)
@@ -74,12 +70,41 @@ def run(n,
 
     print('energy:', GS_energy.real)
     print('maxcut objective:', GS_energy.real + pool.shift.real )
-    
+       
     # Start from |+> states
-    reference_ket = scipy.sparse.csc_matrix(
+    if psi_ref == '+':
+        reference_ket = scipy.sparse.csc_matrix(
         np.full((2**n, 1), 1/np.sqrt(2**n))
-    )    
-
+    )
+    
+    # Start from symmetry breaking state:
+    state_ref = np.full((2**n, 1), 0.0+0.0j)
+    # State |0++...>
+    if psi_ref == '0':
+        for ii in range(2**(n-1)):
+            state_ref[ii] = 1/np.sqrt(2**(n-1))
+        reference_ket = scipy.sparse.csc_matrix(
+            state_ref
+        )
+        
+    # Or state |1++...>
+    if psi_ref == '1':
+        for ii in range(2**(n-1)):
+            state_ref[ii+2**(n-1)] = 1/np.sqrt(2**(n-1))
+        reference_ket = scipy.sparse.csc_matrix(
+            state_ref
+        )
+        
+    # Or state |(+i)++...>
+    if psi_ref == 'i':
+        for ii in range(2**(n-1)):
+            state_ref[ii] = 1/np.sqrt(2**n)
+        for ii in range(2**(n-1)):
+            state_ref[ii+2**(n-1)] = 1j/np.sqrt(2**n)
+        reference_ket = scipy.sparse.csc_matrix(
+            state_ref
+        )
+    
     reference_bra = reference_ket.transpose().conj()
     E = reference_bra.dot(hamiltonian.dot(reference_ket))[0,0].real
 
@@ -283,9 +308,6 @@ def run(n,
 ###########################################################################
 
 def run_tetris(n,
-         g,
-         field_sb,
-         q,
          f,
          f_mix,
          f_ent,
@@ -308,10 +330,6 @@ def run_tetris(n,
          resolution = 100
          ):
     # {{{
-
-    G = g
-    pool.init(n, G, field_sb, q)
-    pool.generate_SparseMatrix()
 
     hamiltonian = pool.cost_mat[0] * 1j
     # print('hamiltonian:',hamiltonian)
@@ -351,7 +369,6 @@ def run_tetris(n,
     
     # Start from symmetry breaking state:
     state_ref = np.full((2**n, 1), 0.0+0.0j)
-    
     # State |0++...>
     if psi_ref == '0':
         for ii in range(2**(n-1)):
@@ -360,7 +377,7 @@ def run_tetris(n,
             state_ref
         )
         
-    # State |1++...>
+    # Or state |1++...>
     if psi_ref == '1':
         for ii in range(2**(n-1)):
             state_ref[ii+2**(n-1)] = 1/np.sqrt(2**(n-1))
@@ -368,7 +385,7 @@ def run_tetris(n,
             state_ref
         )
         
-    # State |(+i)++...>
+    # Or state |(+i)++...>
     if psi_ref == 'i':
         for ii in range(2**(n-1)):
             state_ref[ii] = 1/np.sqrt(2**n)
@@ -634,7 +651,6 @@ def run_tetris(n,
 ###########################################################################
 
 def run_pen_mixer(n,
-         g,
          f,
          f_mix,
          f_ent,
@@ -643,7 +659,8 @@ def run_pen_mixer(n,
          adapt_thresh=1e-4,
          theta_thresh=1e-7,
          layer = 1,
-         pool=operator_pools.qaoa_sym(),
+         pool=operator_pools.qaoa(),
+         psi_ref = '+',
          init_para = 0.01,
          structure = 'qaoa',
          selection = 'NA',
@@ -655,10 +672,6 @@ def run_pen_mixer(n,
          resolution = 100
          ):
     # {{{
-
-    G = g
-    pool.init(n, G, 0, 0)
-    pool.generate_SparseMatrix()
 
     hamiltonian = pool.cost_mat[0] * 1j
     # print('hamiltonian:',hamiltonian)
@@ -691,10 +704,39 @@ def run_pen_mixer(n,
     print('maxcut objective:', GS_energy.real + pool.shift.real )
     
     # Start from |+> states
-    reference_ket = scipy.sparse.csc_matrix(
+    if psi_ref == '+':
+        reference_ket = scipy.sparse.csc_matrix(
         np.full((2**n, 1), 1/np.sqrt(2**n))
     )
-   
+    
+    # Start from symmetry breaking state:
+    state_ref = np.full((2**n, 1), 0.0+0.0j)
+    # State |0++...>
+    if psi_ref == '0':
+        for ii in range(2**(n-1)):
+            state_ref[ii] = 1/np.sqrt(2**(n-1))
+        reference_ket = scipy.sparse.csc_matrix(
+            state_ref
+        )
+        
+    # Or state |1++...>
+    if psi_ref == '1':
+        for ii in range(2**(n-1)):
+            state_ref[ii+2**(n-1)] = 1/np.sqrt(2**(n-1))
+        reference_ket = scipy.sparse.csc_matrix(
+            state_ref
+        )
+        
+    # Or state |(+i)++...>
+    if psi_ref == 'i':
+        for ii in range(2**(n-1)):
+            state_ref[ii] = 1/np.sqrt(2**n)
+        for ii in range(2**(n-1)):
+            state_ref[ii+2**(n-1)] = 1j/np.sqrt(2**n)
+        reference_ket = scipy.sparse.csc_matrix(
+            state_ref
+        )
+    
     reference_bra = reference_ket.transpose().conj()
     E = reference_bra.dot(hamiltonian.dot(reference_ket))[0,0].real
 
@@ -905,9 +947,6 @@ def run_pen_mixer(n,
 ###########################################################################
 
 def run_sb(n,
-         g,
-         field_sb,
-         q,
          f,
          f_mix,
          f_ent,
@@ -927,10 +966,6 @@ def run_sb(n,
          resolution = 100
          ):
     # {{{
-
-    G = g
-    pool.init(n, G, field_sb, q)
-    pool.generate_SparseMatrix()
 
     hamiltonian = pool.cost_mat[0] * 1j
     # print('hamiltonian:',hamiltonian)
@@ -1188,9 +1223,6 @@ def run_sb(n,
 ###########################################################################
 
 def run_pen_sb(n,
-         g,
-         field_sb,
-         q,
          f,
          f_mix,
          f_ent,
@@ -1211,10 +1243,6 @@ def run_pen_sb(n,
          resolution = 100
          ):
     # {{{
-
-    G = g
-    pool.init(n, G, field_sb, q)
-    pool.generate_SparseMatrix()
 
     hamiltonian = pool.cost_mat[0] * 1j
     # print('hamiltonian:',hamiltonian)
