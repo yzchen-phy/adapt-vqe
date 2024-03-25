@@ -24,6 +24,7 @@ def run(n,
          f_mix,
          f_ent,
          f_ent_m,
+         f_Fid,
          f_fin,
          adapt_thresh=1e-4,
          theta_thresh=1e-7,
@@ -54,6 +55,7 @@ def run(n,
     
     hard_min = np.min(h)
     degenerate_indices = np.argwhere(h < hard_min + tolerance).flatten()
+    GS_energy = hard_min
 
     deg_manifold = []
     for ind in degenerate_indices:
@@ -64,9 +66,9 @@ def run(n,
     print('deg_manifold_length:', len(deg_manifold))
 
     ## Calculate the ground state energy
-    w, v = scipy.sparse.linalg.eigs(hamiltonian, which='SR')
-    GS = scipy.sparse.csc_matrix(v[:,w.argmin()]).transpose().conj()
-    GS_energy = min(w)
+    #w, v = scipy.sparse.linalg.eigs(hamiltonian, which='SR')
+    #GS = scipy.sparse.csc_matrix(v[:,w.argmin()]).transpose().conj()
+    #GS_energy = min(w)
 
     print('energy:', GS_energy.real)
     print('maxcut objective:', GS_energy.real + pool.shift.real )
@@ -148,24 +150,26 @@ def run(n,
 
             sig = hamiltonian.dot(curr_state)
 
+            # Find the operators in the pool causing the largest descent
+            next_index = 0
             next_deriv = 0
-            
-            # Find the operator in the pool causing the largest descent 
             for op_trial in range(pool.n_ops):
-
                 opA = pool.spmat_ops[op_trial]
                 com = 2 * (curr_state.transpose().conj().dot(opA.dot(sig))).real
                 assert (com.shape == (1, 1))
                 com = com[0, 0]
                 assert (np.isclose(com.imag, 0))
                 com = com.real
-
-                #print(" %4i %40s %12.8f" % (op_trial, pool.pool_ops[op_trial], com))
-    
                 if abs(com) > abs(next_deriv) + adapt_thresh:
-                    next_deriv = com
+                    next_deriv = abs(com)
                     next_index = op_trial
-
+                elif abs(com) > abs(next_deriv) - adapt_thresh:
+                    next_index = random.choice([next_index, op_trial])
+            
+            if next_deriv < adapt_thresh:
+                f_mix.write("#Ansatz Growth Converged!")
+                f_mix.flush()
+                break
             new_op = pool.pool_ops[next_index]
             new_mat = pool.spmat_ops[next_index]
     
@@ -260,6 +264,13 @@ def run(n,
         #f_overlap.write("%d    %20.15f \n" % (p, overlap))
         f.flush()
         
+        state_fin = trial_model.prepare_state(parameters)
+        overlap = 0.0
+        for ii in degenerate_indices:
+            overlap += abs(state_fin[ii, 0])**2
+        f_Fid.write("%d    %20.15f \n" % (p, overlap))
+        f_Fid.flush() 
+
         #state_fin = trial_model.prepare_state(parameters)
         #(row, col, val) = scipy.sparse.find(state_fin)
         #print('optimal state at layer %d' % (p))
@@ -344,6 +355,7 @@ def run_tetris(n,
     
     hard_min = np.min(h)
     degenerate_indices = np.argwhere(h < hard_min + tolerance).flatten()
+    GS_energy = hard_min
 
     deg_manifold = []
     for ind in degenerate_indices:
@@ -354,9 +366,9 @@ def run_tetris(n,
     print('deg_manifold_length:', len(deg_manifold))
 
     ## Calculate the ground state energy
-    w, v = scipy.sparse.linalg.eigs(hamiltonian, which='SR')
-    GS = scipy.sparse.csc_matrix(v[:,w.argmin()]).transpose().conj()
-    GS_energy = min(w)
+    #w, v = scipy.sparse.linalg.eigs(hamiltonian, which='SR')
+    #GS = scipy.sparse.csc_matrix(v[:,w.argmin()]).transpose().conj()
+    #GS_energy = min(w)
 
     print('energy:', GS_energy.real)
     print('maxcut objective:', GS_energy.real + pool.shift.real )
@@ -453,7 +465,7 @@ def run_tetris(n,
                 com = com[0, 0]
                 assert (np.isclose(com.imag, 0))
                 com = com.real
-                grad_list.append((op_trial, com))
+                grad_list.append((op_trial, abs(com)))
 
             grad_list.sort(reverse = True, key = lambda x: x[1])
 #            for e in grad_list:
@@ -465,6 +477,7 @@ def run_tetris(n,
             
             if next_deriv < adapt_thresh:
                 f_mix.write("#Ansatz Growth Converged!")
+                f_mix.flush()
                 break
             
             # Allow different parameters for different operators
@@ -655,6 +668,7 @@ def run_pen_mixer(n,
          f_mix,
          f_ent,
          f_ent_m,
+         f_Fid,
          f_fin,
          adapt_thresh=1e-4,
          theta_thresh=1e-7,
@@ -686,6 +700,7 @@ def run_pen_mixer(n,
     
     hard_min = np.min(h)
     degenerate_indices = np.argwhere(h < hard_min + tolerance).flatten()
+    GS_energy = hard_min
 
     deg_manifold = []
     for ind in degenerate_indices:
@@ -696,9 +711,9 @@ def run_pen_mixer(n,
     print('deg_manifold_length:', len(deg_manifold))
 
     ## Calculate the ground state energy
-    w, v = scipy.sparse.linalg.eigs(hamiltonian, which='SR')
-    GS = scipy.sparse.csc_matrix(v[:,w.argmin()]).transpose().conj()
-    GS_energy = min(w)
+    #w, v = scipy.sparse.linalg.eigs(hamiltonian, which='SR')
+    #GS = scipy.sparse.csc_matrix(v[:,w.argmin()]).transpose().conj()
+    #GS_energy = min(w)
 
     print('energy:', GS_energy.real)
     print('maxcut objective:', GS_energy.real + pool.shift.real )
@@ -781,7 +796,7 @@ def run_pen_mixer(n,
             sig = hamiltonian.dot(curr_state)
 
             next_deriv = 0
-            
+            next_index = 0
             # Find the operator in the pool causing the largest descent 
             for op_trial in range(pool.n_ops):
 
@@ -896,8 +911,15 @@ def run_pen_mixer(n,
         f.write("%d   %20.12f   %20.12f\n" % (p, (trial_model.curr_energy - GS_energy.real), (GS_energy.real - trial_model.curr_energy)/(GS_energy.real + pool.shift.real)))
         #f.write("%d   %20.12f   %20.12f\n" % (p, (trial_model.curr_energy - GS_energy.real), (GS_energy.real - trial_model.curr_energy)/(GS_energy.real)))
         #f_overlap.write("%d    %20.15f \n" % (p, overlap))
-        f.flush()
-        
+        f.flush()       
+
+        state_fin = trial_model.prepare_state(parameters)
+        overlap = 0.0
+        for ii in degenerate_indices:
+            overlap += abs(state_fin[ii, 0])**2
+        f_Fid.write("%d    %20.15f \n" % (p, overlap))
+        f_Fid.flush()
+
         #state_fin = trial_model.prepare_state(parameters)
         #(row, col, val) = scipy.sparse.find(state_fin)
         #print('optimal state at layer %d' % (p))
@@ -950,6 +972,7 @@ def run_sb(n,
          f,
          f_mix,
          f_ent,
+         f_Fid,
          f_fin,
          adapt_thresh=1e-4,
          theta_thresh=1e-7,
@@ -980,6 +1003,7 @@ def run_sb(n,
     
     hard_min = np.min(h)
     degenerate_indices = np.argwhere(h < hard_min + tolerance).flatten()
+    GS_energy = hard_min
 
     deg_manifold = []
     for ind in degenerate_indices:
@@ -990,9 +1014,9 @@ def run_sb(n,
     print('deg_manifold_length:', len(deg_manifold))
 
     ## Calculate the ground state energy
-    w, v = scipy.sparse.linalg.eigs(hamiltonian, which='SR')
-    GS = scipy.sparse.csc_matrix(v[:,w.argmin()]).transpose().conj()
-    GS_energy = min(w)
+    #w, v = scipy.sparse.linalg.eigs(hamiltonian, which='SR')
+    #GS = scipy.sparse.csc_matrix(v[:,w.argmin()]).transpose().conj()
+    #GS_energy = min(w)
 
     print('energy:', GS_energy.real)
     print('maxcut objective:', GS_energy.real + pool.shift.real )
@@ -1077,7 +1101,7 @@ def run_sb(n,
             sig = hamiltonian.dot(curr_state)
 
             next_deriv = 0
-            
+            next_index = 0
             # Find the operator in the pool causing the largest descent 
             for op_trial in range(pool.n_ops):
 
@@ -1175,6 +1199,13 @@ def run_sb(n,
         #f_overlap.write("%d    %20.15f \n" % (p, overlap))
         f.flush()
         
+        state_fin = trial_model.prepare_state(parameters)
+        overlap = 0.0
+        for ii in degenerate_indices:
+            overlap += abs(state_fin[ii, 0])**2
+        f_Fid.write("%d    %20.15f \n" % (p, overlap))
+        f_Fid.flush()
+
         #state_fin = trial_model.prepare_state(parameters)
         #(row, col, val) = scipy.sparse.find(state_fin)
         #print('optimal state at layer %d' % (p))
@@ -1227,6 +1258,7 @@ def run_pen_sb(n,
          f_mix,
          f_ent,
          f_fin,
+         f_Fid,
          adapt_thresh=1e-4,
          theta_thresh=1e-7,
          layer = 1,
@@ -1257,6 +1289,7 @@ def run_pen_sb(n,
     
     hard_min = np.min(h)
     degenerate_indices = np.argwhere(h < hard_min + tolerance).flatten()
+    GS_energy = hard_min
 
     deg_manifold = []
     for ind in degenerate_indices:
@@ -1270,8 +1303,7 @@ def run_pen_sb(n,
     #w, v = scipy.sparse.linalg.eigsh(hamiltonian, which='SR')
     #GS = scipy.sparse.csc_matrix(v[:,w.argmin()]).transpose().conj()
     #GS_energy = min(w)
-    GS_energy = hard_min
-
+    
     print('energy:', GS_energy.real)
     print('maxcut objective:', GS_energy.real + pool.shift.real )
     
@@ -1356,7 +1388,7 @@ def run_pen_sb(n,
             sig = hamiltonian.dot(curr_state)
 
             next_deriv = 0
-            
+            next_index = 0
             # Find the operator in the pool causing the largest descent 
             for op_trial in range(pool.n_ops):
 
@@ -1460,6 +1492,13 @@ def run_pen_sb(n,
         #f_overlap.write("%d    %20.15f \n" % (p, overlap))
         f.flush()
         
+        state_fin = trial_model.prepare_state(parameters)
+        overlap = 0.0
+        for ii in degenerate_indices:
+            overlap += abs(state_fin[ii, 0])**2
+        f_Fid.write("%d    %20.15f \n" % (p, overlap))
+        f_Fid.flush()
+
         #state_fin = trial_model.prepare_state(parameters)
         #(row, col, val) = scipy.sparse.find(state_fin)
         #print('optimal state at layer %d' % (p))
