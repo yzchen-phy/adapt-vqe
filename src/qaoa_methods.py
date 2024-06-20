@@ -160,11 +160,11 @@ def run(n,
                 com = com[0, 0]
                 assert (np.isclose(com.imag, 0))
                 com = com.real
-                if abs(com) > abs(next_deriv) + adapt_thresh:
+                if abs(com) > next_deriv + adapt_thresh:
                     next_deriv = abs(com)
                     next_index = op_trial
-                elif abs(com) > abs(next_deriv) - adapt_thresh:
-                    next_index = random.choice([next_index, op_trial])
+                elif abs(com) > next_deriv - adapt_thresh:
+                    (next_index, next_deriv) = random.choice([(next_index,next_deriv), (op_trial,abs(com))])
             
             if next_deriv < adapt_thresh:
                 f_mix.write("#Ansatz Growth Converged!")
@@ -810,15 +810,20 @@ def run_pen_mixer(n,
                 #print(" %4i %40s %12.8f" % (op_trial, pool.pool_ops[op_trial], com))
                 # Subtract from gradient a penalty term if the trial mixer operator is entangling                
                 if op_trial > pool.n_single:
-                    #compare_term = abs(com) - penalty
                     compare_term = abs(com) * (1 - penalty)
                 else:
                     compare_term = abs(com)
    
-                if compare_term > abs(next_deriv) + adapt_thresh:
+                if compare_term > next_deriv + adapt_thresh:
                     next_deriv = compare_term
                     next_index = op_trial
-
+                elif compare_term > next_deriv - adapt_thresh:
+                    (next_index, next_deriv) = random.choice([(next_index,next_deriv), (op_trial,abs(com))])
+            
+            if next_deriv < adapt_thresh:
+                f_mix.write("#Ansatz Growth Converged!")
+                f_mix.flush()
+                break
             new_op = pool.pool_ops[next_index]
             new_mat = pool.spmat_ops[next_index]
     
@@ -1114,10 +1119,16 @@ def run_sb(n,
 
                 #print(" %4i %40s %12.8f" % (op_trial, pool.pool_ops[op_trial], com))
     
-                if abs(com) > abs(next_deriv) + adapt_thresh:
-                    next_deriv = com
+                if abs(com) > next_deriv + adapt_thresh:
+                    next_deriv = abs(com)
                     next_index = op_trial
-
+                elif abs(com) > next_deriv - adapt_thresh:
+                    (next_index, next_deriv) = random.choice([(next_index,next_deriv), (op_trial,abs(com))])
+            
+            if next_deriv < adapt_thresh:
+                f_mix.write("#Ansatz Growth Converged!")
+                f_mix.flush()
+                break
             new_op = pool.pool_ops[next_index]
             new_mat = pool.spmat_ops[next_index]
     
@@ -1407,10 +1418,16 @@ def run_pen_sb(n,
                 else:
                     compare_term = abs(com)
     
-                if compare_term > abs(next_deriv) + adapt_thresh:
+                if compare_term > next_deriv + adapt_thresh:
                     next_deriv = compare_term
                     next_index = op_trial
-
+                elif compare_term > next_deriv - adapt_thresh:
+                    (next_index, next_deriv) = random.choice([(next_index,next_deriv), (op_trial,abs(com))])
+            
+            if next_deriv < adapt_thresh:
+                f_mix.write("#Ansatz Growth Converged!")
+                f_mix.flush()
+                break
             new_op = pool.pool_ops[next_index]
             new_mat = pool.spmat_ops[next_index]
     
