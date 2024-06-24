@@ -222,7 +222,9 @@ class qaoa(OperatorPool):
 #            H = QubitOperator('X%d' % i, 1j/np.sqrt(2))
 #            H += QubitOperator('Z%d' % i, 1j/np.sqrt(2))
 #            self.pool_ops.append(H)
-              
+         
+        self.n_single = len(self.pool_ops)
+     
         for i in range(0,self.n):
             for j in range(i+1,self.n):
                 #D = QubitOperator('Z%d Z%d' % (i, j), 1j)
@@ -364,7 +366,9 @@ class qaoa_red(OperatorPool):
         for i in range(0, self.n):
             Y = QubitOperator('Y%d' % i, 1j)
             self.pool_ops.append(Y)
-            
+        
+        self.n_single = len(self.pool_ops)
+   
         for i in range(0,self.n):
             for j in range(i+1,self.n):
                 if (i,j) in self.conn_pairs:
